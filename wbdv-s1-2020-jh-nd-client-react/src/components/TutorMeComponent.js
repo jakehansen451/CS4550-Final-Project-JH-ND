@@ -5,7 +5,13 @@ import SearchComponent from "./SearchComponent";
 import DetailsComponent from "./DetailsComponent";
 import ResultsComponent from "./ResultsComponent";
 
+import authorization from '../api/OauthService';
+
 class TutorMeComponent extends React.Component {
+    componentDidMount() {
+        authorization.oauthService();
+    }
+
     render() {
         return (
             <BrowserRouter>
