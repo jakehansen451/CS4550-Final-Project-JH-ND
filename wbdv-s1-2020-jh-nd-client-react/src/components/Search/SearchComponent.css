@@ -1,0 +1,28 @@
+.wbdv-three-column-container {
+  display: inline-flex;
+  width: 100%;
+}
+
+.wbdv-user-column {
+  display: flex;
+  flex-direction: column;
+  width: 33%;
+  justify-content: left;
+  padding-right: 1rem;
+  overflow: auto;
+}
+
+.wbdv-user-column:last-child {
+  padding-right: 0;
+}
+
+.wbdv-user-row {
+  background-color: #f9f9f9;
+  border: 1px solid #eeeeee;
+  padding: 0.5rem 1rem;
+}
+
+.wbdv-selected-user {
+  background-color: #4670f0;
+  border-color: #4169e1;
+}
