@@ -1,9 +1,10 @@
 import React from "react"
 import { connect } from 'react-redux'
 import * as Actions from '../../store/Actions'
+import { Link } from 'react-router-dom'
 import './SearchComponent.css'
 
-const fakeUsers = [
+let fakeUsers = [
   {
     _id: '0',
     username: 'hansen.j',
@@ -80,16 +81,35 @@ class SearchComponent extends React.Component {
         <div className='wbdv-three-column-container'>
           <div className='wbdv-user-column'>
             <h4>Course Administrators</h4>
-            {this.state.admin.map((admin) => this.renderUser(admin))}
+            <div className='wbdv-scroll-column'>
+              {this.state.admin.map((admin) => this.renderUser(admin))}
+            </div>
           </div>
           <div className='wbdv-user-column'>
             <h4>Tutors</h4>
-            {this.state.tutors.map((tutor) => this.renderUser(tutor))}
+            <div className='wbdv-scroll-column'>
+              {this.state.tutors.map((tutor) => this.renderUser(tutor))}
+            </div>
           </div>
           <div className='wbdv-user-column'>
             <h4>Students</h4>
-            {this.state.students.map((student) => this.renderUser(student))}
+            <div className='wbdv-scroll-column'>
+              {this.state.students.map((student) => this.renderUser(student))}
+            </div>
           </div>
+        </div>
+        <div className='wbdv-search-btn-chunk'>
+          <h4>
+            {this.props.selected_users.length !== 0
+                ? <Link
+                    className='wbdv-search-btn'
+                    to='/results'
+                >
+                  Search Calendars
+                </Link>
+                : 'Search Calendars'
+            }
+          </h4>
         </div>
       </div>
     )
