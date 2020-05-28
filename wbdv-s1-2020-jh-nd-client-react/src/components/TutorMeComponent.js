@@ -2,8 +2,8 @@ import React from 'react';
 import {BrowserRouter, Route} from "react-router-dom";
 import HomeComponent from "./HomeComponent";
 import SearchComponent from "./Search/SearchComponent";
-import DetailsComponent from "./DetailsComponent";
-import ResultsComponent from "./ResultsComponent";
+import DetailsComponent from "./Details/DetailsComponent";
+import ResultsComponent from "./Results/ResultsComponent";
 
 import '../styles.css';
 
