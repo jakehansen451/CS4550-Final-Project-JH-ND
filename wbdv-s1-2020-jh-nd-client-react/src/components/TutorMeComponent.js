@@ -5,12 +5,10 @@ import SearchComponent from "./SearchComponent";
 import DetailsComponent from "./DetailsComponent";
 import ResultsComponent from "./ResultsComponent";
 
-import authorization from '../api/OauthService';
+import LoginComponent from "./LoginComponent";
 
 class TutorMeComponent extends React.Component {
-    componentDidMount() {
-        authorization.oauthService();
-    }
+
 
     render() {
         return (
@@ -28,6 +26,9 @@ class TutorMeComponent extends React.Component {
                     <Route path="/details/"
                            exact
                            component={DetailsComponent}/>
+                    <Route path="/login/"
+                           exact
+                           component={LoginComponent}/>
                 </div>
             </BrowserRouter>
         )

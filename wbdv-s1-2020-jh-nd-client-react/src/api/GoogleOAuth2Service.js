@@ -1,7 +1,11 @@
+const REDIRECT_URI = 'https://google.com';
+const SCOPE = 'https://www.googleapis.com/auth/calendar';
+const CLIENT_ID = '46098970829-859lp0f58tvg2o77h1g8iclvgpflf17v.apps.googleusercontent.com';
+
 /*
  * Create form to request access token from Google's OAuth 2.0 server.
  */
-const oauthService = () => {
+const oauth2SignIn = () => {
     // Google's OAuth 2.0 endpoint for requesting an access token
     let oauth2Endpoint = 'https://accounts.google.com/o/oauth2/v2/auth';
 
@@ -12,10 +16,10 @@ const oauthService = () => {
     form.setAttribute('action', oauth2Endpoint);
 
     // Parameters to pass to OAuth 2.0 endpoint.
-    let params = {'client_id': '46098970829-859lp0f58tvg2o77h1g8iclvgpflf17v.apps.googleusercontent.com',
-        'redirect_uri': 'https://google.com',
+    let params = {'client_id': CLIENT_ID,
+        'redirect_uri': REDIRECT_URI,
         'response_type': 'token',
-        'scope': 'https://www.googleapis.com/auth/drive.metadata.readonly',
+        'scope': SCOPE,
         'include_granted_scopes': 'true',
         'state': 'pass-through value'};
 
@@ -34,5 +38,5 @@ const oauthService = () => {
 };
 
 export default {
-    oauthService
+    oauth2SignIn
 }
