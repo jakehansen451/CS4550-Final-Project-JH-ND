@@ -12,9 +12,6 @@ import './index.css';
 
 const store = createStore(rootReducer);
 
-import '../node_modules/bootstrap/dist/css/bootstrap.min.css';
-import '../node_modules/font-awesome/css/font-awesome.min.css';
-
 ReactDOM.render(
   <React.StrictMode>
     <Provider store={store}>
