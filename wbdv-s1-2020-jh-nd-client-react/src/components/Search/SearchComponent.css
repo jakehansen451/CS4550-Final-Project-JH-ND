@@ -11,13 +11,13 @@
   padding-right: 1rem;
 }
 
+.wbdv-user-column:last-child {
+  padding-right: 0;
+}
+
 .wbdv-scroll-column {
   overflow: auto;
   max-height: 400px;
-}
-
-.wbdv-user-column:last-child {
-  padding-right: 0;
 }
 
 .wbdv-user-row {

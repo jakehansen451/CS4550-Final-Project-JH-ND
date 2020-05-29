@@ -1,9 +1,10 @@
 import React from "react";
 import { connect } from 'react-redux'
 import { Link } from 'react-router-dom'
+import * as Actions from "../../store/Actions";
+import * as Utils from '../../utils/Utils'
 
 import './ResultsComponent.css'
-import * as Actions from "../../store/Actions";
 
 const days = ['Sunday', 'Monday', 'Tuesday', 'Wedensday', 'Thursday', 'Friday', 'Saturday'];
 
@@ -21,7 +22,6 @@ class ResultsComponent extends React.Component {
   };
 
   recomposeISO = (date, time) => `${date}T${time}Z`;
-
 
   renderFreeTimeBlock = (timeSlot, index) => {
     const start_datetime = new Date(this.recomposeISO(timeSlot.date, timeSlot.start));
@@ -47,13 +47,29 @@ class ResultsComponent extends React.Component {
     )
   };
 
+  renderUser = (user) =>
+      <div className='wbdv-user-row' key={user._id}>
+        {user.lastName.concat(', ', user.firstName)}
+      </div>;
+
   render() {
     return(
         <div>
-          <h1>Results</h1>
+          <div className='wbdv-results-page-title-bar'>
+            <h1>Results</h1>
+          </div>
           <div className='wbdv-time-select-body'>
+            <div className='wbdv-user-column'>
+              <h4>Participants</h4>
+              <Link to='/search' className='wbdv-edit-participants-button'>
+                <h6>Edit Participants</h6>
+              </Link>
+              <div className='wbdv-scroll-column'>
+                {this.props.selected_users.map((admin) => this.renderUser(admin))}
+              </div>
+            </div>
             <div className='wbdv-calendar'>
-              <CalendarComponent />
+              Placeholder Calendar Component
             </div>
             <div className='wbdv-time-list'>
               <h5>Choose from available times</h5><div className='wbdv-time-slot-row'>
@@ -62,11 +78,13 @@ class ResultsComponent extends React.Component {
               <div className='wbdv-time-slot-end'>End</div>
             </div>
               {this.state.free_time_blocks.map(this.renderFreeTimeBlock)}
+              <div className='wbdv-select-time-btn'>
+                {Utils.isEmpty(this.props.selected_time_block)
+                    ? <h4>Select</h4>
+                    : <Link to='/details'><h4>Select</h4></Link>}
+            </div>
             </div>
           </div>
-          <Link to='/search' className='wbdv-edit-participants-button'>
-            Edit Participants
-          </Link>
         </div>
     )}
 }
