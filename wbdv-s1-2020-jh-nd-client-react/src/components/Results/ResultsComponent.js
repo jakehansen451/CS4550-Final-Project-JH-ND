@@ -3,6 +3,7 @@ import { connect } from 'react-redux'
 import { Link } from 'react-router-dom'
 import * as Actions from "../../store/Actions";
 import * as Utils from '../../utils/Utils'
+import googleService from "../../api/GoogleAPIService";
 
 import './ResultsComponent.css'
 
@@ -16,10 +17,41 @@ const fake_time_blocks = [
   { date: '2020-05-31', start: '08:30:00.000', end: '18:30:00.000' },
 ];
 
+
+/**
+ *
+ *
+ attendees: [{…}]
+ conferenceData: {entryPoints: Array(1), conferenceSolution: {…}, conferenceId: "rfs-kgzg-wvt", signature: "ADR/mfOR6ojIvuReZDZafrVXHfcw"}
+ created: "2020-05-29T21:29:51.000Z"
+ creator: {email: "nadiia.damrina@gmail.com"}
+ description: "This event is to see if we can pool event list"
+ end: {dateTime: "2020-05-29T16:30:00-07:00"}
+ etag: ""3181575583378000""
+ hangoutLink: "https://meet.google.com/rfs-kgzg-wvt"
+ htmlLink: "https://www.google.com/calendar/event?eid=Nmg5b2xwZzh1cnJvbmRpMDNkaDdmMmxub2wgNW9wMzNzYW90aWg2NmtkdThpbnVkYnVjYTRAZw"
+ iCalUID: "6h9olpg8urrondi03dh7f2lnol@google.com"
+ id: "6h9olpg8urrondi03dh7f2lnol"
+ kind: "calendar#event"
+ organizer: {email: "5op33saotih66kdu8inudbuca4@group.calendar.google.com", displayName: "TutorMe", self: true}
+ reminders: {useDefault: true}
+ sequence: 0
+ start: {dateTime: "2020-05-29T15:30:00-07:00"}
+ status: "confirmed"
+ summary: "Testing event"
+ updated: "2020-05-29T21:29:51.689Z"
+ */
+
 class ResultsComponent extends React.Component {
   state={
-    free_time_blocks: fake_time_blocks,
+    free_time_blocks: [],
   };
+
+
+  componentDidMount() {
+    googleService.handleClientLoad(googleService.getEventsList());
+
+  }
 
   recomposeISO = (date, time) => `${date}T${time}Z`;
 
@@ -55,6 +87,14 @@ class ResultsComponent extends React.Component {
   render() {
     return(
         <div>
+          <button onClick={googleService.signIn}>
+            Sign in
+          </button>
+
+          <button onClick={googleService.getEventsList}>
+            Events
+          </button>
+
           <div className='wbdv-results-page-title-bar'>
             <h1>Results</h1>
           </div>

@@ -1,4 +1,6 @@
 import { gapi } from 'gapi-script';
+import store from '../store/Store';
+import * as Actions from '../store/Actions';
 
 let GoogleAuth;
 const SCOPE = 'https://www.googleapis.com/auth/calendar';
@@ -6,15 +8,14 @@ const CLIENT_ID = '46098970829-859lp0f58tvg2o77h1g8iclvgpflf17v.apps.googleuserc
 
 let API_KEY = "AIzaSyBNECVLm6gneH9sx6OT1DZLzqsFEhuCNCA";
 
-let isAuthorized;
-
-const handleClientLoad = () => {
+const handleClientLoad = (callback) => {
     // Load the API's client and auth2 modules.
     // Call the initClient function after the modules load.
-    gapi.load('client:auth2', initClient);
+    gapi.load('client:auth2', () => initClient(callback));
+
 };
 
-const initClient = () => {
+const initClient = (callback) => {
     // Retrieve the discovery document for version 3 of Google Drive API.
     // In practice, your app can retrieve one or more discovery documents.
     let discoveryUrl = "https://www.googleapis.com/discovery/v1/apis/calendar/v3/rest";
@@ -29,25 +30,28 @@ const initClient = () => {
         'scope': SCOPE
     }).then(function () {
         GoogleAuth = gapi.auth2.getAuthInstance();
-
-        // Handle initial sign-in state. (Determine if user is already signed in.)
         let user = GoogleAuth.currentUser.get();
+        let isAuthorized = user.hasGrantedScopes(SCOPE);
+        if (!isAuthorized) {
+            signIn();
+        }
 
-        console.log(user);
+        store.dispatch({type: Actions.SET_GOOGLE_AUTH, googleAuth: GoogleAuth});
+        callback();
     });
 };
-
 
 const signIn = () => {
     GoogleAuth.signIn();
 };
 
-const isUserSignedIn = () => {
-    return GoogleAuth.isSignedIn.get();
-};
 
 const getEventsList = () => {
     let calendarId = "5op33saotih66kdu8inudbuca4@group.calendar.google.com"; // TutorMe calendar's id
+
+
+    console.log(gapi.client);
+
     gapi.client.calendar.events.list({
         'calendarId': calendarId,
         'timeMin': (new Date()).toISOString(),
@@ -61,9 +65,9 @@ const getEventsList = () => {
     });
 };
 
+
 export default {
     handleClientLoad,
     signIn,
-    isUserSignedIn,
     getEventsList
 }

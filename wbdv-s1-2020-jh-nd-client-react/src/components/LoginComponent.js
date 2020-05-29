@@ -1,6 +1,5 @@
 import React from "react";
-import googleCalendar from "../api/GoogleCalendarService";
-import oauth from "../api/OAuth2Service";
+import oauth from "../api/GoogleAPIService";
 
 class LoginComponent extends React.Component {
 
