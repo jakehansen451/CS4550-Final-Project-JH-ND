@@ -4,57 +4,10 @@ import * as Actions from '../../store/Actions'
 import { Link } from 'react-router-dom'
 import './SearchComponent.css'
 
-let fakeUsers = [
-  {
-    _id: '0',
-    username: 'hansen.j',
-    password: 'password',
-    firstName: 'Jake',
-    lastName: 'Hansen',
-    email: 'hansen.j@husky.neu.edu',
-    phone: '503-348-4863',
-    role: 'admin',
-    roleData: {
-      coursesTutor: ['CS2500'],
-      officeHours: []
-    }
-  },
-  {
-    _id: '1',
-    username: 'damrina.n',
-    password: 'password',
-    firstName: 'Nadiia',
-    lastName: 'Damrina',
-    email: 'damrina.n@husky.neu.edu',
-    phone: '',
-    role: 'tutor',
-    roleData: {
-      coursesTutor: ['CS2500'],
-      coursesEnrolled: ['CS4550'],
-      officeHours: []
-    }
-  },
-  {
-    _id: '2',
-    username: 'annunziato.j',
-    password: 'password',
-    firstName: 'Jose',
-    lastName: 'Annunziato',
-    email: 'annunziato.j@northeastern.edu',
-    phone: '',
-    role: 'student',
-    roleData: {
-      coursesEnrolled: ['CS2500']
-    }
-  },
-];
-
 class SearchComponent extends React.Component {
-  state = {
-    admin: fakeUsers.filter((user) => user.role === 'admin'),
-    tutors: fakeUsers.filter((user) => user.role === 'tutor'),
-    students: fakeUsers.filter((user) => user.role === 'student'),
-  };
+  admin = this.props.users.filter((user) => user.role === 'admin');
+  tutors = this.props.users.filter((user) => user.role === 'tutor');
+  students = this.props.users.filter((user) => user.role === 'student');
 
   renderUser = (user) => {
     const userSelected = this.props.selected_users.includes(user);
@@ -82,19 +35,19 @@ class SearchComponent extends React.Component {
           <div className='wbdv-user-column'>
             <h4>Course Administrators</h4>
             <div className='wbdv-scroll-column'>
-              {this.state.admin.map((admin) => this.renderUser(admin))}
+              {this.admin.map((admin) => this.renderUser(admin))}
             </div>
           </div>
           <div className='wbdv-user-column'>
             <h4>Tutors</h4>
             <div className='wbdv-scroll-column'>
-              {this.state.tutors.map((tutor) => this.renderUser(tutor))}
+              {this.tutors.map((tutor) => this.renderUser(tutor))}
             </div>
           </div>
           <div className='wbdv-user-column'>
             <h4>Students</h4>
             <div className='wbdv-scroll-column'>
-              {this.state.students.map((student) => this.renderUser(student))}
+              {this.students.map((student) => this.renderUser(student))}
             </div>
           </div>
         </div>
@@ -118,7 +71,8 @@ class SearchComponent extends React.Component {
 
 
 const mapStateToProps = (state) => ({
-  selected_users: state.selected_users
+  users: state.users,
+  selected_users: state.selected_users,
 });
 
 const mapDispatchToProps = (dispatch) => ({

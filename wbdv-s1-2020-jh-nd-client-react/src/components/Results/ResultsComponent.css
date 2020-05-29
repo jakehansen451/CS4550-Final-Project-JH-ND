@@ -1,0 +1,38 @@
+.wbdv-time-list {
+  display: flex;
+  flex-direction: column;
+  width: 16rem;
+}
+
+.wbdv-time-slot-row {
+  display: inline-flex;
+  background-color: #f9f9f9;
+  border: 1px solid #e9e9e9;
+  border-bottom: none;
+  padding: 0.5rem;
+}
+
+.wbdv-time-slot-row:first-of-type {
+  border-top-left-radius: 0.25rem;
+  border-top-right-radius: 0.25rem;
+}
+
+.wbdv-time-slot-row:last-of-type {
+  border-bottom: 1px solid #e9e9e9;
+  border-bottom-left-radius: 0.25rem;
+  border-bottom-right-radius: 0.25rem;
+}
+
+.wbdv-time-slot-day,
+.wbdv-time-slot-start,
+.wbdv-time-slot-end {
+  width: 33.3333%;
+}
+
+.wbdv-time-slot-start,
+.wbdv-time-slot-end {
+  text-align: right;
+}
+.wbdv-selected-time {
+  background-color: #5487ff;
+}
