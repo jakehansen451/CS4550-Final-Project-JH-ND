@@ -49,7 +49,7 @@ class ResultsComponent extends React.Component {
 
 
   componentDidMount() {
-    googleService.handleClientLoad(googleService.getEventsList());
+    googleService.handleClientLoad(googleService.getEventsList);
 
   }
 
@@ -87,14 +87,6 @@ class ResultsComponent extends React.Component {
   render() {
     return(
         <div>
-          <button onClick={googleService.signIn}>
-            Sign in
-          </button>
-
-          <button onClick={googleService.getEventsList}>
-            Events
-          </button>
-
           <div className='wbdv-results-page-title-bar'>
             <h1>Results</h1>
           </div>
