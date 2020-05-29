@@ -1,12 +1,12 @@
-import React from 'react';
-import logo from './logo.svg';
-import './App.css';
+
+import React from 'react'
 import TutorMeComponent from "./components/TutorMeComponent";
+import './App.css';
 
 function App() {
   return (
     <div>
-        <TutorMeComponent />
+      <TutorMeComponent />
     </div>
   );
 }

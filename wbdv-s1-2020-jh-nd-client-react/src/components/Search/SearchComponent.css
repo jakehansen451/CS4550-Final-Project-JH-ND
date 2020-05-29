@@ -1,0 +1,57 @@
+.wbdv-three-column-container {
+  display: inline-flex;
+  width: 100%;
+}
+
+.wbdv-user-column {
+  display: flex;
+  flex-direction: column;
+  width: 33%;
+  justify-content: left;
+  padding-right: 1rem;
+}
+
+.wbdv-user-column:last-child {
+  padding-right: 0;
+}
+
+.wbdv-scroll-column {
+  overflow: auto;
+  max-height: 400px;
+}
+
+.wbdv-user-row {
+  background-color: #f9f9f9;
+  border: 1px solid #eeeeee;
+  padding: 0.5rem 1rem;
+  overflow: hidden;
+  margin: 0.25rem 0;
+  min-height: fit-content;
+}
+
+.wbdv-selected-user {
+  background-color: #5487ff;
+  border-color: #4169e1;
+}
+
+.wbdv-search-btn-chunk {
+  text-align: center;
+  margin: 1rem;
+}
+
+.wbdv-search-btn {
+
+}
+
+.wbdv-search-btn:hover {
+  text-decoration: none;
+}
+
+.wbdv-disabled-btn {
+  border: 1px solid lightgray;
+  color: darkgray;
+}
+
+.wbdv-disabled-btn:hover {
+  color: darkgray;
+}
