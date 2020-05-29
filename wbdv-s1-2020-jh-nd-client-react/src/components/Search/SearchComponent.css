@@ -1,6 +1,7 @@
 .wbdv-three-column-container {
   display: inline-flex;
   width: 100%;
+  justify-content: space-between;
 }
 
 .wbdv-user-column {
@@ -8,11 +9,10 @@
   flex-direction: column;
   width: 33%;
   justify-content: left;
-  padding-right: 1rem;
 }
 
-.wbdv-user-column:last-child {
-  padding-right: 0;
+.wbdv-user-column:nth-child(2) {
+  padding: 0 1rem;
 }
 
 .wbdv-scroll-column {

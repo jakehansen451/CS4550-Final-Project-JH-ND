@@ -1,0 +1,9 @@
+.wbdv-details-form {
+  max-width: 400px;
+}
+.wbdv-details-form-row {
+  padding: 0.5rem;
+  display: inline-flex;
+  justify-content: space-between;
+  width: 100%;
+}
