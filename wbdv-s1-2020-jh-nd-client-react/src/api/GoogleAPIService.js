@@ -1,4 +1,4 @@
-import { gapi } from 'gapi-script';
+import {gapi} from 'gapi-script';
 import store from '../store/Store';
 import * as Actions from '../store/Actions';
 
@@ -49,19 +49,16 @@ const signIn = () => {
 const getEventsList = () => {
     let calendarId = "5op33saotih66kdu8inudbuca4@group.calendar.google.com"; // TutorMe calendar's id
 
-
-    console.log(gapi.client);
-
-    gapi.client.calendar.events.list({
+    return gapi.client.calendar.events.list({
         'calendarId': calendarId,
         'timeMin': (new Date()).toISOString(),
         'showDeleted': false,
         'singleEvents': true,
-
         'orderBy': 'startTime'
-    }).then(function(response) {
+    }).then((response) => {
         let events = response.result.items;
-        console.log(events);
+
+        return events;
     });
 };
 
