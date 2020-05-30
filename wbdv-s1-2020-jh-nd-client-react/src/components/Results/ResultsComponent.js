@@ -20,16 +20,16 @@ const fake_time_blocks = [
 
 class ResultsComponent extends React.Component {
     state = {
-        free_time_blocks: [],
+        free_time_blocks: fake_time_blocks,
     };
 
 
     componentDidMount() {
         googleService.handleClientLoad(() => {
-            let events = googleService.getEventsList();
-            events.then((events) => {
-                this.parse(events)
-            })
+            // let events = googleService.getEventsList();
+            // events.then((events) => {
+            //     this.parse(events)
+            // })
         });
 
 

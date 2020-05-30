@@ -64,12 +64,10 @@ const addEvent = (startDateTime, endDateTime, attendees, title) => {
     let event = {
         'summary': title,
         'start': {
-            'dateTime': startDateTime,
-            'timeZone': 'America/Los_Angeles'
+            'dateTime': startDateTime
         },
         'end': {
-            'dateTime': endDateTime,
-            'timeZone': 'America/Los_Angeles'
+            'dateTime': endDateTime
         },
         'attendees': attendees
     };
