@@ -51,9 +51,29 @@ class ResultsComponent extends React.Component {
     componentDidMount() {
         googleService.handleClientLoad(() => {
             let events = googleService.getEventsList();
-            events.then((response) => console.log(response))
+            events.then((events) => {
+                this.parse(events)
+            })
         });
 
+
+    }
+
+    parse(events) {
+        const eventTimes = events.map((event) => {
+            const startDateTime = new Date(event.start.dateTime).toISOString();
+            const endDateTime = new Date(event.end.dateTime).toISOString();
+
+
+            return ({start: startDateTime.substring(11, 23),
+                end: endDateTime.substring(11, 23),
+                date: startDateTime.substring(0, 10)
+
+            });
+
+        });
+
+        console.log(eventTimes)
 
     }
 
