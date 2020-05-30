@@ -7,6 +7,8 @@ const SCOPE = 'https://www.googleapis.com/auth/calendar';
 const CLIENT_ID = '46098970829-859lp0f58tvg2o77h1g8iclvgpflf17v.apps.googleusercontent.com';
 
 let API_KEY = "AIzaSyBNECVLm6gneH9sx6OT1DZLzqsFEhuCNCA";
+let calendarId = "5op33saotih66kdu8inudbuca4@group.calendar.google.com"; // TutorMe calendar's id
+
 
 const handleClientLoad = (callback) => {
     // Load the API's client and auth2 modules.
@@ -47,8 +49,6 @@ const signIn = () => {
 
 
 const getEventsList = () => {
-    let calendarId = "5op33saotih66kdu8inudbuca4@group.calendar.google.com"; // TutorMe calendar's id
-
     return gapi.client.calendar.events.list({
         'calendarId': calendarId,
         'timeMin': (new Date()).toISOString(),
@@ -56,15 +56,35 @@ const getEventsList = () => {
         'singleEvents': true,
         'orderBy': 'startTime'
     }).then((response) => {
-        let events = response.result.items;
-
-        return events;
+        return  response.result.items;
     });
+};
+
+const addEvent = (startDateTime, endDateTime, attendees, title) => {
+    let event = {
+        'summary': title,
+        'start': {
+            'dateTime': startDateTime,
+            'timeZone': 'America/Los_Angeles'
+        },
+        'end': {
+            'dateTime': endDateTime,
+            'timeZone': 'America/Los_Angeles'
+        },
+        'attendees': attendees
+    };
+
+    gapi.client.calendar.events.insert({
+        'calendarId': calendarId,
+        'resource': event
+    }).then((response) => console.log(response.result));
+
 };
 
 
 export default {
     handleClientLoad,
     signIn,
-    getEventsList
+    getEventsList,
+    addEvent
 }
