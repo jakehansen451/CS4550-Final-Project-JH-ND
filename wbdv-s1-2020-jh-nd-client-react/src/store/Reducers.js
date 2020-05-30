@@ -107,11 +107,21 @@ const selectedTimeBlock = (selected_time_block = {}, action) => {
   }
 };
 
+const googleAuth = (googleAuth = {}, action) => {
+  switch(action.type) {
+    case Actions.SET_GOOGLE_AUTH:
+      return action.googleAuth;
+    default:
+      return googleAuth;
+  }
+};
+
 const rootReducer = (state = fakeState, action) => {
   return {
     users: state.users,
     selected_users: selectedUsers(state.selected_users, action),
     selected_time_block: selectedTimeBlock(state.selected_time_block, action),
+    googleAuth: googleAuth(state.googleAuth, action),
   }
 };
 

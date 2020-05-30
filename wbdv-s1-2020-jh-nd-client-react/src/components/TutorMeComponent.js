@@ -7,7 +7,11 @@ import ResultsComponent from "./Results/ResultsComponent";
 
 import '../styles.css';
 
+import LoginComponent from "./LoginComponent";
+
 class TutorMeComponent extends React.Component {
+
+
     render() {
         return (
             <BrowserRouter>
@@ -24,6 +28,9 @@ class TutorMeComponent extends React.Component {
                     <Route path="/details/"
                            exact
                            component={DetailsComponent}/>
+                    <Route path="/login/"
+                           exact
+                           component={LoginComponent}/>
                 </div>
             </BrowserRouter>
         )
