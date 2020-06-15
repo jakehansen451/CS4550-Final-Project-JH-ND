@@ -6,6 +6,7 @@ import DetailsComponent from "./Details/DetailsComponent";
 import ResultsComponent from "./Results/ResultsComponent";
 import LoginComponent from "./Login/LoginComponent";
 import ProfileComponent from "./Profile/ProfileComponent";
+import CourseBrowserComponent from "./CourseBrowser/CourseBrowserComponent";
 import {Redirect} from "react-router-dom";
 import '../styles.css';
 
@@ -23,21 +24,27 @@ class TutorMeComponent extends React.Component {
             <Route path="/"
                    exact
                    component={HomeComponent}/>
-            <Route path="/search"
+            <Route path="/search/"
                    exact
                    component={SearchComponent}/>
-            <Route path="/results"
+            <Route path="/results/"
                    exact
                    component={ResultsComponent}/>
-            <Route path="/details"
+            <Route path="/details/"
                    exact
                    component={DetailsComponent}/>
-            <Route path="/login"
+            <Route path="/login/"
                    exact
                    component={LoginComponent}/>
             <Route path="/profile/:userId"
                    component={ProfileComponent}
                    exact/>
+            <Route path="/courses/"
+                   component={CourseBrowserComponent}
+                   exact/>
+            {/*<Route path="/courses/:courseId"
+                   component={CourseDetailComponent}
+                   exact/>*/}
           </div>
         </BrowserRouter>
     )

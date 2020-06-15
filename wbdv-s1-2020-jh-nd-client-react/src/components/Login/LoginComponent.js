@@ -35,7 +35,7 @@ class LoginComponent extends React.Component {
   registerSection = () => {
     return (
         <div>
-          <Link to='/profile'>
+          <Link to='/profile/'>
             Register
           </Link>
           <button
@@ -50,7 +50,7 @@ class LoginComponent extends React.Component {
   loginSection = () => {
     return (
         <div>
-          <Link to='/profile'>
+          <Link to='/profile/'>
             Log in
           </Link>
           <button

@@ -93,7 +93,7 @@ class ResultsComponent extends React.Component {
                 <div className='wbdv-time-select-body'>
                     <div className='wbdv-user-column'>
                         <h4>Participants</h4>
-                        <Link to='/search' className='wbdv-edit-participants-button'>
+                        <Link to='/search/' className='wbdv-edit-participants-button'>
                             <h6>Edit Participants</h6>
                         </Link>
                         <div className='wbdv-scroll-column'>
@@ -114,7 +114,7 @@ class ResultsComponent extends React.Component {
                         <div className='wbdv-select-time-btn'>
                             {Utils.isEmpty(this.props.selected_time_block)
                                 ? <h4>Select</h4>
-                                : <Link to='/details'><h4>Select</h4></Link>}
+                                : <Link to='/details/'><h4>Select</h4></Link>}
                         </div>
                     </div>
                 </div>
