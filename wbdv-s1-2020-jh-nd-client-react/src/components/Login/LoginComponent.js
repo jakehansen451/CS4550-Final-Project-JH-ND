@@ -2,6 +2,7 @@ import React from "react";
 import {connect} from 'react-redux';
 import oauth from "../../api/GoogleAPIService";
 import {isEmpty} from '../../utils/Utils';
+import {Link} from "react-router-dom";
 
 class LoginComponent extends React.Component {
   state = {
@@ -14,7 +15,9 @@ class LoginComponent extends React.Component {
 
   alreadyLoggedIn = () => {
     let gSignedIn = oauth.isUserSignedIn();
-    if (!gSignedIn) oauth.signIn();
+    if (!gSignedIn) {
+      oauth.signIn();
+    }
     return (
         <div>
           <h2>
@@ -27,6 +30,36 @@ class LoginComponent extends React.Component {
           </div>
         </div>
     );
+  };
+
+  registerSection = () => {
+    return (
+        <div>
+          <Link to='/profile'>
+            Register
+          </Link>
+          <button
+              onClick={() => this.setState({register: false})}
+          >
+            Already have an account? Log in
+          </button>
+        </div>
+    )
+  };
+
+  loginSection = () => {
+    return (
+        <div>
+          <Link to='/profile'>
+            Log in
+          </Link>
+          <button
+              onClick={() => this.setState({register: true})}
+          >
+            Need an account? Register
+          </button>
+        </div>
+    )
   };
 
   loginOrRegister = () => {
@@ -49,28 +82,7 @@ class LoginComponent extends React.Component {
             <label>Confirm password:</label>
             <input/>
           </div>}
-          {this.state.register ?
-              <div>
-                <button>
-                  Register
-                </button>
-                <button
-                    onClick={() => this.setState({register: false})}
-                >
-                  Already have an account? Log in
-                </button>
-              </div>
-              :
-              <div>
-                <button>
-                  Log in
-                </button>
-                <button
-                    onClick={() => this.setState({register: true})}
-                >
-                  Need an account? Register
-                </button>
-              </div>}
+          {this.state.register ? this.registerSection() : this.loginSection()}
         </div>
     )
   };

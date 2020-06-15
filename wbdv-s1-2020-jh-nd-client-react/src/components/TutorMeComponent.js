@@ -8,33 +8,36 @@ import ResultsComponent from "./Results/ResultsComponent";
 import '../styles.css';
 
 import LoginComponent from "./Login/LoginComponent";
+import ProfileComponent from "./Profile/ProfileComponent";
 
 class TutorMeComponent extends React.Component {
 
-
-    render() {
-        return (
-            <BrowserRouter>
-                <div>
-                    <Route path="/"
-                           exact
-                           component={HomeComponent}/>
-                    <Route path="/search"
-                           exact
-                           component={SearchComponent}/>
-                    <Route path="/results"
-                           exact
-                           component={ResultsComponent}/>
-                    <Route path="/details/"
-                           exact
-                           component={DetailsComponent}/>
-                    <Route path="/login/"
-                           exact
-                           component={LoginComponent}/>
-                </div>
-            </BrowserRouter>
-        )
-    }
+  render() {
+    return (
+        <BrowserRouter>
+          <div>
+            <Route path="/"
+                   exact
+                   component={HomeComponent}/>
+            <Route path="/search"
+                   exact
+                   component={SearchComponent}/>
+            <Route path="/results"
+                   exact
+                   component={ResultsComponent}/>
+            <Route path="/details"
+                   exact
+                   component={DetailsComponent}/>
+            <Route path="/login"
+                   exact
+                   component={LoginComponent}/>
+            <Route path="/profile/:userId"
+                   component={ProfileComponent}
+                   exact/>
+          </div>
+        </BrowserRouter>
+    )
+  }
 }
 
 export default TutorMeComponent

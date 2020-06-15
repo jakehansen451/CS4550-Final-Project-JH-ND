@@ -1,0 +1,1 @@
+export const localApiUrl = 'localhost:8080/api';
