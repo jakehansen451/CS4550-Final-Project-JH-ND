@@ -1,5 +1,5 @@
 package com.example.myapp.models;
 
-public class Admin {
+public class Admin extends User {
 
 }

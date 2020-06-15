@@ -1,5 +1,5 @@
 package com.example.myapp.models;
 
-public class Event {
+public abstract class Event {
 
 }
