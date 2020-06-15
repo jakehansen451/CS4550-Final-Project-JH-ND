@@ -116,12 +116,24 @@ const googleAuth = (googleAuth = {}, action) => {
   }
 };
 
+const currentUser = (currentUser = {}, action) => {
+  switch(action.type) {
+    case Actions.LOGIN:
+      return action.user;
+    case Actions.LOGOUT:
+      return {};
+    default:
+      return currentUser;
+  }
+};
+
 const rootReducer = (state = fakeState, action) => {
   return {
     users: state.users,
     selected_users: selectedUsers(state.selected_users, action),
     selected_time_block: selectedTimeBlock(state.selected_time_block, action),
     googleAuth: googleAuth(state.googleAuth, action),
+    current_user: currentUser(state.current_user, action),
   }
 };
 

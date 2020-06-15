@@ -7,7 +7,7 @@ import ResultsComponent from "./Results/ResultsComponent";
 
 import '../styles.css';
 
-import LoginComponent from "./LoginComponent";
+import LoginComponent from "./Login/LoginComponent";
 
 class TutorMeComponent extends React.Component {
 

@@ -1,0 +1,91 @@
+import React from "react";
+import {connect} from 'react-redux';
+import oauth from "../../api/GoogleAPIService";
+import {isEmpty} from '../../utils/Utils';
+
+class LoginComponent extends React.Component {
+  state = {
+    register: false,
+  };
+
+  componentDidMount() {
+    oauth.handleClientLoad();
+  }
+
+  alreadyLoggedIn = () => {
+    let gSignedIn = oauth.isUserSignedIn();
+    if (!gSignedIn) oauth.signIn();
+    return (
+        <div>
+          <h2>
+            Already logged in.
+          </h2>
+          <div>
+            <button>
+              Log out
+            </button>
+          </div>
+        </div>
+    );
+  };
+
+  loginOrRegister = () => {
+    return (
+        <div>
+          <h2>
+            {this.state.register ? 'Register' : 'Log in'}
+          </h2>
+          <div>
+            <label>Username:</label>
+            <input/>
+          </div>
+
+          <div>
+            <label>Password:</label>
+            <input/>
+          </div>
+          {this.state.register &&
+          <div>
+            <label>Confirm password:</label>
+            <input/>
+          </div>}
+          {this.state.register ?
+              <div>
+                <button>
+                  Register
+                </button>
+                <button
+                    onClick={() => this.setState({register: false})}
+                >
+                  Already have an account? Log in
+                </button>
+              </div>
+              :
+              <div>
+                <button>
+                  Log in
+                </button>
+                <button
+                    onClick={() => this.setState({register: true})}
+                >
+                  Need an account? Register
+                </button>
+              </div>}
+        </div>
+    )
+  };
+
+  render() {
+    return isEmpty(this.props.current_user)
+        ? this.loginOrRegister()
+        : this.alreadyLoggedIn();
+  }
+}
+
+const mapStateToProps = (state) => ({
+  current_user: state.current_user,
+});
+
+const mapDispatchToProps = (dispatch) => ({});
+
+export default connect(mapStateToProps, mapDispatchToProps)(LoginComponent);
