@@ -1,13 +1,19 @@
+
 import React from 'react'
 import { connect } from 'react-redux'
 import { Link } from 'react-router-dom'
 import * as Utils from '../../utils/Utils'
 import * as Actions from "../../store/Actions";
 import * as DateUtils from '../../utils/DateUtils'
+import googleService from "../../api/GoogleAPIService";
 
 import './DetailsComponent.css'
 
 class DetailsComponent extends React.Component {
+    componentDidMount() {
+        googleService.handleClientLoad(() => {})
+    }
+
   createUserOption = (user) => {
     return (
         <option value={user._id}>
@@ -16,6 +22,14 @@ class DetailsComponent extends React.Component {
     )
   };
 
+    addMeeting = () => {
+        let date = this.props.selected_time_block.date;
+        let startDateTime = new Date(date + " " + this.props.selected_time_block.start + " UTC").toISOString();
+        let endDateTime = new Date(date + " " + this.props.selected_time_block.end + " UTC").toISOString();
+
+        googleService.addEvent(startDateTime, endDateTime, [], "Demo title");
+    };
+
   render() {
     const time_block = this.props.selected_time_block;
     const date = time_block.date;
@@ -23,16 +37,18 @@ class DetailsComponent extends React.Component {
     const end = time_block.end;
     const startLocal = DateUtils.localFromUTCDateTime(date, start, 'en-GB');
     const endLocal = DateUtils.localFromUTCDateTime(date, end, 'en-GB');
+
     return (
-    Utils.isEmpty(this.props.selected_time_block)
-    || this.props.selected_users.length === 0
-        ? <div>
-            <h1>Details</h1>
-            <Link to='/'>
-              <h4>Return home</h4>
-            </Link>
-          </div>
-        : <div>
+    // Utils.isEmpty(this.props.selected_time_block)
+    // || this.props.selected_users.length === 0
+    //     ? <div>
+    //         <h1>Details</h1>
+    //         <Link to='/'>
+    //           <h4>Return home</h4>
+    //         </Link>
+    //       </div>
+    //     :
+        <div>
             <h1>Details</h1>
             <div>
               <div>
@@ -88,7 +104,7 @@ class DetailsComponent extends React.Component {
                     </select>
                   </div>
                 </form>
-                <Link to='/'>
+                <Link onClick={this.addMeeting} to='/'>
                     <h4>Schedule Meeting</h4>
                 </Link>
               </div>

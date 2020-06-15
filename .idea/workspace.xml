@@ -2,7 +2,8 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="9f236db6-c3c1-4923-947e-c54b7080717c" name="Default Changelist" comment="">
-      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/wbdv-s1-2020-jh-nd-client-react/src/api/GoogleAPIService.js" beforeDir="false" afterPath="$PROJECT_DIR$/wbdv-s1-2020-jh-nd-client-react/src/api/GoogleAPIService.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/wbdv-s1-2020-jh-nd-client-react/src/components/Details/DetailsComponent.js" beforeDir="false" afterPath="$PROJECT_DIR$/wbdv-s1-2020-jh-nd-client-react/src/components/Details/DetailsComponent.js" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/wbdv-s1-2020-jh-nd-client-react/src/components/Results/ResultsComponent.js" beforeDir="false" afterPath="$PROJECT_DIR$/wbdv-s1-2020-jh-nd-client-react/src/components/Results/ResultsComponent.js" afterDir="false" />
     </list>
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
@@ -19,8 +20,8 @@
       <file pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/wbdv-s1-2020-jh-nd-client-react/src/components/Results/ResultsComponent.js">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="605">
-              <caret line="69" column="51" selection-start-line="69" selection-start-column="51" selection-end-line="69" selection-end-column="51" />
+            <state relative-caret-position="415">
+              <caret line="31" column="17" lean-forward="true" selection-start-line="28" selection-start-column="15" selection-end-line="31" selection-end-column="17" />
               <folding>
                 <element signature="e#0#26#0" expanded="true" />
               </folding>
@@ -29,10 +30,22 @@
         </entry>
       </file>
       <file pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/wbdv-s1-2020-jh-nd-client-react/src/components/Details/DetailsComponent.js">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="327">
+              <caret line="29" column="8" selection-start-line="29" selection-start-column="8" selection-end-line="29" selection-end-column="8" />
+              <folding>
+                <element signature="e#669#694#0" expanded="true" />
+              </folding>
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/wbdv-s1-2020-jh-nd-client-react/src/api/GoogleAPIService.js">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="545">
-              <caret line="53" column="20" selection-start-line="53" selection-start-column="20" selection-end-line="53" selection-end-column="20" />
+            <state relative-caret-position="528">
+              <caret line="66" column="34" lean-forward="true" selection-start-line="66" selection-start-column="34" selection-end-line="66" selection-end-column="34" />
               <folding>
                 <element signature="e#0#35#0" expanded="true" />
               </folding>
@@ -89,8 +102,9 @@
         <option value="$PROJECT_DIR$/wbdv-s1-2020-jh-nd-client-react/src/store/Reducers.js" />
         <option value="$PROJECT_DIR$/wbdv-s1-2020-jh-nd-client-react/src/index.js" />
         <option value="$PROJECT_DIR$/wbdv-s1-2020-jh-nd-client-react/src/store/Store.js" />
-        <option value="$PROJECT_DIR$/wbdv-s1-2020-jh-nd-client-react/src/api/GoogleAPIService.js" />
         <option value="$PROJECT_DIR$/wbdv-s1-2020-jh-nd-client-react/src/components/Results/ResultsComponent.js" />
+        <option value="$PROJECT_DIR$/wbdv-s1-2020-jh-nd-client-react/src/api/GoogleAPIService.js" />
+        <option value="$PROJECT_DIR$/wbdv-s1-2020-jh-nd-client-react/src/components/Details/DetailsComponent.js" />
       </list>
     </option>
   </component>
@@ -146,6 +160,14 @@
               <item name="wbdv-s1-2020-jh-nd-client-react" type="462c0819:PsiDirectoryNode" />
               <item name="src" type="462c0819:PsiDirectoryNode" />
               <item name="components" type="462c0819:PsiDirectoryNode" />
+            </path>
+            <path>
+              <item name="CS4550-Final-Project-JH-ND" type="b2602c69:ProjectViewProjectNode" />
+              <item name="CS4550-Final-Project-JH-ND" type="462c0819:PsiDirectoryNode" />
+              <item name="wbdv-s1-2020-jh-nd-client-react" type="462c0819:PsiDirectoryNode" />
+              <item name="src" type="462c0819:PsiDirectoryNode" />
+              <item name="components" type="462c0819:PsiDirectoryNode" />
+              <item name="Details" type="462c0819:PsiDirectoryNode" />
             </path>
             <path>
               <item name="CS4550-Final-Project-JH-ND" type="b2602c69:ProjectViewProjectNode" />
@@ -209,12 +231,12 @@
       <option name="number" value="Default" />
       <option name="presentableId" value="Default" />
       <updated>1590614642976</updated>
-      <workItem from="1590614644242" duration="21598000" />
+      <workItem from="1590614644242" duration="26017000" />
     </task>
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="21598000" />
+    <option name="totallyTimeSpent" value="26017000" />
   </component>
   <component name="ToolWindowManager">
     <frame x="0" y="0" width="1680" height="1050" extended-state="0" />
@@ -231,7 +253,7 @@
       <window_info anchor="bottom" id="Database Changes" />
       <window_info anchor="bottom" id="Version Control" />
       <window_info anchor="bottom" id="GraphQL" />
-      <window_info anchor="bottom" id="Terminal" visible="true" weight="0.20918368" />
+      <window_info anchor="bottom" id="Terminal" weight="0.20918368" />
       <window_info anchor="bottom" id="Event Log" side_tool="true" />
       <window_info anchor="bottom" id="Message" order="0" />
       <window_info anchor="bottom" id="Find" order="1" />
@@ -409,16 +431,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/wbdv-s1-2020-jh-nd-client-react/src/api/GoogleAPIService.js">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="545">
-          <caret line="53" column="20" selection-start-line="53" selection-start-column="20" selection-end-line="53" selection-end-column="20" />
-          <folding>
-            <element signature="e#0#35#0" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/wbdv-s1-2020-jh-nd-client-react/src/store/Reducers.js">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="1268">
@@ -426,10 +438,30 @@
         </state>
       </provider>
     </entry>
+    <entry file="file://$PROJECT_DIR$/wbdv-s1-2020-jh-nd-client-react/src/api/GoogleAPIService.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="528">
+          <caret line="66" column="34" lean-forward="true" selection-start-line="66" selection-start-column="34" selection-end-line="66" selection-end-column="34" />
+          <folding>
+            <element signature="e#0#35#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/wbdv-s1-2020-jh-nd-client-react/src/components/Details/DetailsComponent.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="327">
+          <caret line="29" column="8" selection-start-line="29" selection-start-column="8" selection-end-line="29" selection-end-column="8" />
+          <folding>
+            <element signature="e#669#694#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
     <entry file="file://$PROJECT_DIR$/wbdv-s1-2020-jh-nd-client-react/src/components/Results/ResultsComponent.js">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="605">
-          <caret line="69" column="51" selection-start-line="69" selection-start-column="51" selection-end-line="69" selection-end-column="51" />
+        <state relative-caret-position="415">
+          <caret line="31" column="17" lean-forward="true" selection-start-line="28" selection-start-column="15" selection-end-line="31" selection-end-column="17" />
           <folding>
             <element signature="e#0#26#0" expanded="true" />
           </folding>
