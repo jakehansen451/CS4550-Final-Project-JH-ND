@@ -9,39 +9,12 @@ let fakeState = {
         firstName: 'Jake',
         lastName: 'Hansen',
         email: 'hansen.j@husky.neu.edu',
-        phone: '503-348-4863',
-        role: 'admin',
+        role: 'ADMIN',
         roleData: {
-          coursesTutor: ['CS2500'],
+          coursesTaught: [{title: 'CS2500', _id: 0}],
           officeHours: [] // To be populated by Google API
         },
         events: [], // To be populated by Google API
-        sleep_times: {
-          /*
-           * Takes the format: X/Y where X is the earliest the user would get
-           * up for an event, and Y is the latest they would stay up for one
-           *
-           * A typical use case would look like: mo: '14:00:00/02:00:00',
-           * meaning a user would be willing to schedule an event any time from
-           * 2pm on Monday to 2am on Tuesday
-           *
-           *
-           * If Y is later in the day than X from the next day, that indicates
-           * the user has no preference and would schedule events at any time
-           * that day
-           *
-           * All times are in UTC
-           *
-           * Keyed by integer to allow easy mapping with Date.getDay()
-           */
-          '0': '10:00:00/22:00:00', // Sunday
-          '1': '08:00:00/22:00:00', // Monday
-          '2': '08:00:00/22:00:00', // Tuesday
-          '3': '08:00:00/22:00:00', // Wednesday
-          '4': '08:00:00/22:00:00', // Thursday
-          '5': '08:00:00/00:00:00', // Friday
-          '6': '10:00:00/00:00:00'  // Saturday
-        }
       },
       {
         _id: '1',
@@ -50,16 +23,13 @@ let fakeState = {
         firstName: 'Nadiia',
         lastName: 'Damrina',
         email: 'damrina.n@husky.neu.edu',
-        phone: '',
-        role: 'tutor',
+        role: 'TUTOR',
         roleData: {
-          coursesTutor: ['CS2500'],
-          coursesEnrolled: ['CS4550'],
+          coursesTaught: [{title: 'CS2500', _id: 0}],
+          coursesEnrolled: [{title: 'CS4550', _id: 1}],
           officeHours: []
         },
         events: [],
-        sleep_times: {
-        }
       },
       {
         _id: '2',
@@ -68,19 +38,70 @@ let fakeState = {
         firstName: 'Jose',
         lastName: 'Annunziato',
         email: 'annunziato.j@northeastern.edu',
-        phone: '',
-        role: 'student',
+        role: 'STUDENT',
         roleData: {
-          coursesEnrolled: ['CS2500']
+          coursesEnrolled: [{title: 'CS2500', _id: 0}]
         },
         events: [],
-        sleep_times: {
-        }
+      },
+      {
+        _id: '3',
+        username: 'alice',
+        password: 'alice',
+        firstName: 'Alice',
+        lastName: 'Albertson',
+        email: 'albertson.a@gmail.com',
+        role: 'STUDENT',
+        roleData: {
+          coursesEnrolled: [{title: 'CS2500', _id: 0}],
+        },
+        events: [], // To be populated by Google API
+      },
+      {
+        _id: '4',
+        username: 'bob',
+        password: 'bob',
+        firstName: 'Bo',
+        lastName: 'B',
+        email: 'bo.b@husky.neu.edu',
+        role: 'TUTOR',
+        roleData: {
+          coursesTaught: [{title: 'CS2500', _id: 0}],
+          coursesEnrolled: [{title: 'CS4550', _id: 1}],
+          officeHours: []
+        },
+        events: [],
+      },
+      {
+        _id: '5',
+        username: 'admin',
+        password: 'admin',
+        firstName: 'Ad',
+        lastName: 'Min',
+        email: 'ad.min@gmail.edu',
+        role: 'ADMIN',
+        roleData: {
+          coursesTaught: [{title: 'CS4550', _id: 1}],
+          officeHours: []
+        },
+        events: [],
       },
     ],
   selectedUsers: [],
-  selected_time_block: {
-  }
+  selected_time_block: {},
+  current_user: {
+    _id: '3',
+    username: 'alice',
+    password: 'alice',
+    firstName: 'Alice',
+    lastName: 'Albertson',
+    email: 'albertson.a@gmail.com',
+    role: 'STUDENT',
+    roleData: {
+      coursesEnrolled: [{title: 'CS2500', _id: 0}],
+    },
+    events: [],
+  },
 };
 
 const selectedUsers = (selected_users = [], action) => {

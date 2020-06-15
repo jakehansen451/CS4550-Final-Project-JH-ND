@@ -4,11 +4,10 @@ import HomeComponent from "./HomeComponent";
 import SearchComponent from "./Search/SearchComponent";
 import DetailsComponent from "./Details/DetailsComponent";
 import ResultsComponent from "./Results/ResultsComponent";
-
-import '../styles.css';
-
 import LoginComponent from "./Login/LoginComponent";
 import ProfileComponent from "./Profile/ProfileComponent";
+import {Redirect} from "react-router-dom";
+import '../styles.css';
 
 class TutorMeComponent extends React.Component {
 
@@ -16,6 +15,11 @@ class TutorMeComponent extends React.Component {
     return (
         <BrowserRouter>
           <div>
+            <Route
+                path="/:url*"
+                exact
+                strict
+                render={props => <Redirect to={`${props.location.pathname}/`}/>}/>
             <Route path="/"
                    exact
                    component={HomeComponent}/>

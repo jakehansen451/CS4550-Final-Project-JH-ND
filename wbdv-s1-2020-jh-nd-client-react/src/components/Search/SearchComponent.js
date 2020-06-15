@@ -5,9 +5,9 @@ import { Link } from 'react-router-dom'
 import './SearchComponent.css'
 
 class SearchComponent extends React.Component {
-  admin = this.props.users.filter((user) => user.role === 'admin');
-  tutors = this.props.users.filter((user) => user.role === 'tutor');
-  students = this.props.users.filter((user) => user.role === 'student');
+  admin = this.props.users.filter((user) => user.role === 'ADMIN');
+  tutors = this.props.users.filter((user) => user.role === 'TUTOR');
+  students = this.props.users.filter((user) => user.role === 'STUDENT');
 
   renderUser = (user) => {
     const userSelected = this.props.selected_users.includes(user);

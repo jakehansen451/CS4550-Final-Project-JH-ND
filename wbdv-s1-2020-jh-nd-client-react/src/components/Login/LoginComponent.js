@@ -79,8 +79,14 @@ class LoginComponent extends React.Component {
           </div>
           {this.state.register &&
           <div>
-            <label>Confirm password:</label>
-            <input/>
+            <div>
+              <label>Confirm password:</label>
+              <input/>
+            </div>
+            <div>
+              <label>Email:</label>
+              <input/>
+            </div>
           </div>}
           {this.state.register ? this.registerSection() : this.loginSection()}
         </div>
