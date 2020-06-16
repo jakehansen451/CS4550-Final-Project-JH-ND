@@ -3,12 +3,10 @@ package com.example.myapp.controllers;
 import com.example.myapp.models.people.User;
 import com.example.myapp.services.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.CrossOrigin;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpSession;
+import java.util.List;
 
 @RestController
 @CrossOrigin(
@@ -41,5 +39,30 @@ public class UserController {
   @PostMapping("/api/logout")
   public void logout(HttpSession session) {
     session.invalidate();
+  }
+
+  @GetMapping("/api/users")
+  public List<User> findAllUsers() {
+    return service.findAllUsers();
+  }
+
+  @GetMapping("/api/users/{userId}")
+  public User findUserById(@PathVariable("userId") Long userId) {
+    return service.findUserById(userId);
+  }
+
+  @PostMapping("/api/users")
+  public User createUser(@RequestBody User newUser) {
+    return service.createUser(newUser);
+  }
+
+  @PutMapping("/api/users/{userId}")
+  public User updateUser(@PathVariable("userId") Long userId, @RequestBody User updatedUser) {
+    return service.updateUser(userId, updatedUser);
+  }
+
+  @DeleteMapping("/api/users/{userId}")
+  public void deleteUserById(@PathVariable("userId") Long userId) {
+     service.deleteUserById(userId);
   }
 }

@@ -35,7 +35,6 @@ public class CourseController {
         return courseService.updateCourse(courseId, updatedCourse);
     }
 
-
     @DeleteMapping("api/courses/{courseId}")
     public void deleteCourseById(@PathVariable("courseId") Long courseId) {
         courseService.deleteCourseById(courseId);

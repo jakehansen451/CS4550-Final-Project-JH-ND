@@ -5,6 +5,8 @@ import com.example.myapp.repositories.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
+
 @Service
 public class UserService {
   @Autowired
@@ -19,5 +21,21 @@ public class UserService {
 
   public User findUserByCredentials(String username, String password) {
     return repository.findUserByCredentials(username, password);
+  }
+
+  public List<User> findAllUsers() {
+    return repository.findAllUsers();
+  }
+
+  public User updateUser(Long userId, User updatedUser) {
+    // TODO: check this
+    updatedUser.setId(userId);
+    repository.save(updatedUser);
+
+    return updatedUser;
+  }
+
+  public void deleteUserById(Long userId) {
+    repository.deleteById(userId);
   }
 }
