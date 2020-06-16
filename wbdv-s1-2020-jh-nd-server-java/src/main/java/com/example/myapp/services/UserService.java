@@ -13,7 +13,7 @@ public class UserService {
     return repository.save(user);
   }
 
-  public User findUserById(Integer id) {
+  public User findUserById(Long id) {
     return repository.findUserById(id);
   }
 
