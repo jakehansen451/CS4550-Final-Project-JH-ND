@@ -1,11 +1,26 @@
 package com.example.myapp.models;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.Table;
+
+@Entity
+@Table(name="users")
 public abstract class User {
+  @Id
+  @GeneratedValue(strategy = GenerationType.IDENTITY)
+  private String id;
   private String username;
   private String password;
   private String firstName;
   private String lastName;
   private String email;
+
+  @JsonProperty("_id")
+  public String getId() { return this.id; }
 
   public String getUsername() {
     return username;
