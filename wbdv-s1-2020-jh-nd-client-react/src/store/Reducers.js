@@ -62,8 +62,8 @@ let fakeState = {
       _id: '4',
       username: 'bob',
       password: 'bob',
-      firstName: 'Bo',
-      lastName: 'B',
+      firstName: 'Bob',
+      lastName: 'Bob',
       email: 'b.b@husky.neu.edu',
       role: 'ADMIN',
       roleData: {
