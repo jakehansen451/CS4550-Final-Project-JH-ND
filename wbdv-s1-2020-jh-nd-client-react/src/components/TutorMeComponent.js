@@ -5,6 +5,7 @@ import SearchComponent from "./Search/SearchComponent";
 import DetailsComponent from "./Details/DetailsComponent";
 import ResultsComponent from "./Results/ResultsComponent";
 import LoginComponent from "./Login/LoginComponent";
+import RegisterComponent from './Register/RegisterComponent';
 import ProfileComponent from "./Profile/ProfileComponent";
 import CourseBrowserComponent from "./CourseBrowser/CourseBrowserComponent";
 import {Redirect} from "react-router-dom";
@@ -37,6 +38,9 @@ class TutorMeComponent extends React.Component {
             <Route path="/login/"
                    exact
                    component={LoginComponent}/>
+            <Route path="/register/"
+                   exact
+                   component={RegisterComponent}/>
             <Route path="/profile/:userId"
                    component={ProfileComponent}
                    exact/>

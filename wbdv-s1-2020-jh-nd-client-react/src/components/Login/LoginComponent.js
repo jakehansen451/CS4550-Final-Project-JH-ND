@@ -1,6 +1,5 @@
 import React from "react";
 import {connect} from 'react-redux';
-import oauth from "../../api/GoogleAPIService";
 import {isEmpty} from '../../utils/Utils';
 import {Link} from "react-router-dom";
 import UserService from "../../services/UserService";
@@ -8,18 +7,9 @@ import * as Actions from "../../store/Actions";
 
 class LoginComponent extends React.Component {
   state = {
-    register: false,
-    currentUsername: '',
-    currentPassword: '',
-    currentConfirmPassword: '',
-    currentEmail: '',
+    username: '',
+    password: '',
   };
-
-  /*
-  componentDidMount() {
-    oauth.handleClientLoad();
-  }
-  */
 
   alreadyLoggedIn = () => {
     return (
@@ -39,73 +29,24 @@ class LoginComponent extends React.Component {
   logout = () => UserService.logout()
   .then(response => this.props.logout());
 
-  registerSection = () => {
-    return (
-        <div>
-          <button
-              onClick={this.register}
-          >
-            Register
-          </button>
-          <button
-              onClick={() => this.setState({register: false})}
-          >
-            Already have an account? Log in
-          </button>
-        </div>
-    )
-  };
-
-  register = () => {
-    if (this.state.currentUsername
-    && this.state.currentEmail
-    && this.state.currentPassword
-    && this.state.currentPassword === this.state.currentConfirmPassword) {
-      UserService.register({
-        username: this.state.currentUsername,
-        password: this.state.currentPassword,
-        email: this.state.currentEmail
-      })
-    }
-  };
-
-  loginSection = () => {
-    return (
-        <div>
-          <button
-              onClick={this.login}
-          >
-            Log in
-          </button>
-          <button
-              onClick={() => this.setState({register: true})}
-          >
-            Need an account? Register
-          </button>
-        </div>
-    )
-  };
-
   login = () => UserService.login({
-    username: this.state.currentUsername,
-    password: this.state.currentPassword
+    username: this.state.username,
+    password: this.state.password
   })
   .then(response => {
-    if(response.status !== '200') {
+    if (response.status == '500') {
       console.log('Error');
       console.log(response);
     } else {
       this.props.login(response);
-      this.props.history.push(`/profile/${response._id}`);
+      this.props.history.push(`/profile/${response._id}/`);
     }
   });
 
-  loginOrRegister = () => {
+  loginSection = () => {
     return (
         <div>
-          <h2>
-            {this.state.register ? 'Register' : 'Log in'}
-          </h2>
+          <h2>Log in</h2>
           <div>
             <label>Username:</label>
             <input/>
@@ -115,25 +56,23 @@ class LoginComponent extends React.Component {
             <label>Password:</label>
             <input/>
           </div>
-          {this.state.register &&
           <div>
-            <div>
-              <label>Confirm password:</label>
-              <input/>
-            </div>
-            <div>
-              <label>Email:</label>
-              <input/>
-            </div>
-          </div>}
-          {this.state.register ? this.registerSection() : this.loginSection()}
+            <button
+                onClick={this.login}
+            >
+              Log in
+            </button>
+            <Link to={'/register/'}>
+              Need an account? Register
+            </Link>
+          </div>
         </div>
     )
   };
 
   render() {
     return isEmpty(this.props.current_user)
-        ? this.loginOrRegister()
+        ? this.loginSection()
         : this.alreadyLoggedIn();
   }
 }
