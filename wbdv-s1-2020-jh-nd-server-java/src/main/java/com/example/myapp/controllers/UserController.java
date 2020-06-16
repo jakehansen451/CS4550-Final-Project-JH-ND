@@ -1,6 +1,6 @@
 package com.example.myapp.controllers;
 
-import com.example.myapp.models.User;
+import com.example.myapp.models.people.User;
 import com.example.myapp.services.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.CrossOrigin;
@@ -29,7 +29,7 @@ public class UserController {
   public User login(@RequestBody User user, HttpSession session) {
     User currentUser = service.findUserByCredentials(user.getUsername(), user.getPassword());
     session.setAttribute("currentUser", currentUser);
-    return currentUser;
+    return user;
   }
 
   @PostMapping("/api/profile")
