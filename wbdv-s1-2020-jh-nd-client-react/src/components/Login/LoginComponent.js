@@ -14,10 +14,12 @@ class LoginComponent extends React.Component {
   }
 
   alreadyLoggedIn = () => {
+    /*
     let gSignedIn = oauth.isUserSignedIn();
     if (!gSignedIn) {
       oauth.signIn();
     }
+    */
     return (
         <div>
           <h2>

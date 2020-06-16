@@ -106,6 +106,7 @@ class ResultsComponent extends React.Component {
             <div className='wbdv-calendar'>
               <WeekCalendar
                   onEventClick={(something) => console.log(something)}
+                  onIntervalSelect={(interval) => console.log(interval)}
               />
             </div>
             <div className='wbdv-time-list'>
