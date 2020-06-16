@@ -20,6 +20,12 @@ public class CourseController {
         return courseService.findAllCourses();
     }
 
+    @GetMapping("/api/courses/{courseId}/events")
+    public List<Course> findEventsForCourse(@PathVariable("courseId") Long courseId) {
+
+        return courseService.findAllCourses();
+    }
+
     @GetMapping("api/courses/{courseId}")
     public Course findCourseById(@PathVariable("courseId") Long courseId) {
         return courseService.findCourseById(courseId);
@@ -34,7 +40,6 @@ public class CourseController {
     public Course updateCourse(@PathVariable("courseId") Long courseId, @RequestBody Course updatedCourse) {
         return courseService.updateCourse(courseId, updatedCourse);
     }
-
 
     @DeleteMapping("api/courses/{courseId}")
     public void deleteCourseById(@PathVariable("courseId") Long courseId) {

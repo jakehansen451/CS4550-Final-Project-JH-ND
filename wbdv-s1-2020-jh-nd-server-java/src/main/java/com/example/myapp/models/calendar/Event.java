@@ -1,5 +1,6 @@
 package com.example.myapp.models.calendar;
 
+import com.example.myapp.models.course.Course;
 import com.example.myapp.models.people.User;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
@@ -33,4 +34,9 @@ public class Event {
     @ManyToOne
     @JoinColumn(name="users_id", nullable=false)
     private User organizer;
+
+
+    @ManyToOne
+    @JoinColumn(name="courses_events", nullable=false)
+    private Course course;
 }
