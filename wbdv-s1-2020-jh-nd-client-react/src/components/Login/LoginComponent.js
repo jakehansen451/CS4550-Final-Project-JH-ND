@@ -3,30 +3,32 @@ import {connect} from 'react-redux';
 import oauth from "../../api/GoogleAPIService";
 import {isEmpty} from '../../utils/Utils';
 import {Link} from "react-router-dom";
+import UserService from "../../services/UserService";
+import * as Actions from "../../store/Actions";
 
 class LoginComponent extends React.Component {
   state = {
     register: false,
+    currentUsername: '',
+    currentPassword: '',
+    currentConfirmPassword: '',
+    currentEmail: '',
   };
 
+  /*
   componentDidMount() {
     oauth.handleClientLoad();
   }
+  */
 
   alreadyLoggedIn = () => {
-    /*
-    let gSignedIn = oauth.isUserSignedIn();
-    if (!gSignedIn) {
-      oauth.signIn();
-    }
-    */
     return (
         <div>
           <h2>
             Already logged in.
           </h2>
           <div>
-            <button>
+            <button onClick={this.logout}>
               Log out
             </button>
           </div>
@@ -34,12 +36,17 @@ class LoginComponent extends React.Component {
     );
   };
 
+  logout = () => UserService.logout()
+  .then(response => this.props.logout());
+
   registerSection = () => {
     return (
         <div>
-          <Link to='/profile/'>
+          <button
+              onClick={this.register}
+          >
             Register
-          </Link>
+          </button>
           <button
               onClick={() => this.setState({register: false})}
           >
@@ -49,12 +56,27 @@ class LoginComponent extends React.Component {
     )
   };
 
+  register = () => {
+    if (this.state.currentUsername
+    && this.state.currentEmail
+    && this.state.currentPassword
+    && this.state.currentPassword === this.state.currentConfirmPassword) {
+      UserService.register({
+        username: this.state.currentUsername,
+        password: this.state.currentPassword,
+        email: this.state.currentEmail
+      })
+    }
+  };
+
   loginSection = () => {
     return (
         <div>
-          <Link to='/profile/'>
+          <button
+              onClick={this.login}
+          >
             Log in
-          </Link>
+          </button>
           <button
               onClick={() => this.setState({register: true})}
           >
@@ -63,6 +85,20 @@ class LoginComponent extends React.Component {
         </div>
     )
   };
+
+  login = () => UserService.login({
+    username: this.state.currentUsername,
+    password: this.state.currentPassword
+  })
+  .then(response => {
+    if(response.status !== '200') {
+      console.log('Error');
+      console.log(response);
+    } else {
+      this.props.login(response);
+      this.props.history.push(`/profile/${response._id}`);
+    }
+  });
 
   loginOrRegister = () => {
     return (
@@ -106,6 +142,9 @@ const mapStateToProps = (state) => ({
   current_user: state.current_user,
 });
 
-const mapDispatchToProps = (dispatch) => ({});
+const mapDispatchToProps = (dispatch) => ({
+  login: (user) => dispatch(Actions.login(user)),
+  logout: () => dispatch(Actions.logout()),
+});
 
 export default connect(mapStateToProps, mapDispatchToProps)(LoginComponent);

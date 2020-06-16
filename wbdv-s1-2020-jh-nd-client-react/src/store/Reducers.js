@@ -103,6 +103,7 @@ let fakeState = {
   ],
   selectedUsers: [],
   selected_time_block: {},
+  /*
   current_user: {
     _id: '3',
     username: 'alice',
@@ -116,6 +117,7 @@ let fakeState = {
     },
     events: [],
   },
+  */
   courses: [
     {title: 'CS2500', _id: '0'},
     {title: 'CS3800', _id: '1'},

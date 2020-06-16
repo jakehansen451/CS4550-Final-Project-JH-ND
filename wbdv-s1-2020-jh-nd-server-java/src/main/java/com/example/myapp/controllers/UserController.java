@@ -19,18 +19,14 @@ public class UserController {
   UserService service;
 
   @PostMapping("/api/register")
-  public User register(
-      @RequestBody User user,
-      HttpSession session) {
+  public User register(@RequestBody User user, HttpSession session) {
     User currentUser = service.createUser(user);
     session.setAttribute("currentUser", currentUser);
     return currentUser;
   }
 
   @PostMapping("/api/login")
-  public User login(
-      @RequestBody User user,
-      HttpSession session) {
+  public User login(@RequestBody User user, HttpSession session) {
     User currentUser = service.findUserByCredentials(user.getUsername(), user.getPassword());
     session.setAttribute("currentUser", currentUser);
     return currentUser;

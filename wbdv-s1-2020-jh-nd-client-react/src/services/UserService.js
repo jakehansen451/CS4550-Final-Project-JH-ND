@@ -27,10 +27,42 @@ const getAllUsers = () =>
     fetch(`${url}/users/`)
     .then(response => response.json());
 
+const login = (userInfo) =>
+    fetch(`${url}/login`, {
+      body: JSON.stringify(userInfo),
+      headers: {
+        'content-type': 'application/json'
+      },
+      method: 'POST',
+      credentials: "include"
+    }).then(response => response.json());
+
+const logout = () =>
+    fetch(`${url}/logout`, {
+      headers: {
+        'content-type': 'application/json'
+      },
+      method: 'POST',
+      credentials: "include"
+    }).then(response => response.json());
+
+const register = (userInfo) =>
+  fetch(`${url}/register`, {
+    body: JSON.stringify(userInfo),
+    headers: {
+      'content-type': 'application/json'
+    },
+    method: 'POST',
+    credentials: "include"
+  }).then(response => response.json());
+
 export default {
   createUser,
   updateUser,
   deleteUser,
   getUser,
-  getAllUsers
+  getAllUsers,
+  login,
+  logout,
+  register
 }
