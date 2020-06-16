@@ -1,6 +1,7 @@
 package com.example.myapp.models.course;
 
 
+import com.example.myapp.models.calendar.Event;
 import com.example.myapp.models.people.User;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.AllArgsConstructor;
@@ -9,6 +10,7 @@ import lombok.NoArgsConstructor;
 import lombok.ToString;
 
 import javax.persistence.*;
+import java.util.List;
 import java.util.Set;
 
 @Entity
@@ -39,4 +41,9 @@ public class Course {
     @ManyToOne
     @JoinColumn(name="users_id", nullable=false)
     private User admin;
+
+    @OneToMany(mappedBy="course")
+    @JsonIgnore
+    @ToString.Exclude
+    private List<Event> events;
 }
