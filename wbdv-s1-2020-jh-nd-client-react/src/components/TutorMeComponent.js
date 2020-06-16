@@ -9,6 +9,7 @@ import ProfileComponent from "./Profile/ProfileComponent";
 import CourseBrowserComponent from "./CourseBrowser/CourseBrowserComponent";
 import {Redirect} from "react-router-dom";
 import '../styles.css';
+import CourseDetailComponent from "./CourseDetail/CourseDetailComponent";
 
 class TutorMeComponent extends React.Component {
 
@@ -42,9 +43,9 @@ class TutorMeComponent extends React.Component {
             <Route path="/courses/"
                    component={CourseBrowserComponent}
                    exact/>
-            {/*<Route path="/courses/:courseId"
+            <Route path="/courses/:courseId"
                    component={CourseDetailComponent}
-                   exact/>*/}
+                   exact/>
           </div>
         </BrowserRouter>
     )

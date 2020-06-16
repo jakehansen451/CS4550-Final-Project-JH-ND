@@ -11,8 +11,8 @@ let fakeState = {
       email: 'hansen.j@husky.neu.edu',
       role: 'TUTOR',
       roleData: {
-        coursesTaught: [0],
-        coursesEnrolled: [1, 2],
+        coursesTaught: ['0'],
+        coursesEnrolled: ['1', '2'],
         officeHours: []
       },
       events: [],
@@ -26,8 +26,8 @@ let fakeState = {
       email: 'damrina.n@husky.neu.edu',
       role: 'TUTOR',
       roleData: {
-        coursesTaught: [0],
-        coursesEnrolled: [1],
+        coursesTaught: ['0'],
+        coursesEnrolled: ['1'],
         officeHours: []
       },
       events: [],
@@ -41,7 +41,7 @@ let fakeState = {
       email: 'annunziato.j@northeastern.edu',
       role: 'STUDENT',
       roleData: {
-        coursesEnrolled: [0]
+        coursesEnrolled: ['0']
       },
       events: [],
     },
@@ -54,7 +54,7 @@ let fakeState = {
       email: 'albertson.a@gmail.com',
       role: 'STUDENT',
       roleData: {
-        coursesEnrolled: [0],
+        coursesEnrolled: ['0'],
       },
       events: [], // To be populated by Google API
     },
@@ -67,7 +67,7 @@ let fakeState = {
       email: 'b.b@husky.neu.edu',
       role: 'ADMIN',
       roleData: {
-        coursesTaught: [0],
+        coursesTaught: ['0'],
         officeHours: []
       },
       events: [],
@@ -81,7 +81,7 @@ let fakeState = {
       email: 'lie.c@husky.neu.edu',
       role: 'ADMIN',
       roleData: {
-        coursesTaught: [1],
+        coursesTaught: ['1'],
         officeHours: []
       },
       events: [],
@@ -95,7 +95,7 @@ let fakeState = {
       email: 'ad.min@gmail.edu',
       role: 'ADMIN',
       roleData: {
-        coursesTaught: [2],
+        coursesTaught: ['2'],
         officeHours: []
       },
       events: [],
@@ -112,14 +112,14 @@ let fakeState = {
     email: 'albertson.a@gmail.com',
     role: 'STUDENT',
     roleData: {
-      coursesEnrolled: [0],
+      coursesEnrolled: ['0'],
     },
     events: [],
   },
   courses: [
-    {title: 'CS2500', _id: 0},
-    {title: 'CS3800', _id: 1},
-    {title: 'CS4550', _id: 2},
+    {title: 'CS2500', _id: '0'},
+    {title: 'CS3800', _id: '1'},
+    {title: 'CS4550', _id: '2'},
   ]
 };
 
