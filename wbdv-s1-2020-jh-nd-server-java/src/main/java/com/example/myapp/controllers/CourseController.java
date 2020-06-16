@@ -23,7 +23,7 @@ public class CourseController {
     @GetMapping("/api/courses/{courseId}/events")
     public List<Course> findEventsForCourse(@PathVariable("courseId") Long courseId) {
 
-        return courseService.findAllCourses();
+        return courseService.findEventsByCourseId(courseId);
     }
 
     @GetMapping("api/courses/{courseId}")

@@ -3,6 +3,7 @@ package com.example.myapp.services;
 
 import com.example.myapp.models.course.Course;
 import com.example.myapp.repositories.CourseRepository;
+import com.example.myapp.repositories.EventRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -13,6 +14,9 @@ import java.util.List;
 public class CourseService {
     @Autowired
     private CourseRepository courseRepository;
+
+    @Autowired
+    private EventRepository eventRepository;
 
 
     public Course createCourse(Course newCourse) {
@@ -38,5 +42,9 @@ public class CourseService {
         courseRepository.save(updatedCourse);
 
         return updatedCourse;
+    }
+
+    public List<Course> findEventsByCourseId(Long courseId) {
+        return null;
     }
 }
