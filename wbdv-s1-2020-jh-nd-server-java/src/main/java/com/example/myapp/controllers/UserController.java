@@ -2,6 +2,7 @@ package com.example.myapp.controllers;
 
 import com.example.myapp.models.people.User;
 import com.example.myapp.services.UserService;
+import javassist.NotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
@@ -27,6 +28,9 @@ public class UserController {
   @PostMapping("/api/login")
   public User login(@RequestBody User user, HttpSession session) {
     User currentUser = service.findUserByCredentials(user.getUsername(), user.getPassword());
+    if (currentUser == null) {
+      throw new NotFoundException();
+    }
     session.setAttribute("currentUser", currentUser);
     return currentUser;
   }
@@ -35,7 +39,7 @@ public class UserController {
   public User profile(HttpSession session) {
     User currentUser = (User)session.getAttribute("currentUser");
     if (currentUser == null) {
-      throw new SessionNotFoundException("Session not found.");
+      throw new NotFoundException();
     }
     return currentUser;
   }
@@ -53,7 +57,11 @@ public class UserController {
 
   @GetMapping("/api/users/{userId}")
   public User findUserById(@PathVariable("userId") Long userId) {
-    return service.findUserById(userId);
+    User user = service.findUserById(userId);
+    if (user == null) {
+      throw new NotFoundException();
+    }
+    return user;
   }
 
   @PostMapping("/api/users")
@@ -71,10 +79,6 @@ public class UserController {
      service.deleteUserById(userId);
   }
 
-  @ResponseStatus(code = HttpStatus.NOT_FOUND, reason = "Session not found")
-  private class SessionNotFoundException extends RuntimeException {
-    SessionNotFoundException(String message) {
-      super(message);
-    }
-  }
+  @ResponseStatus(code = HttpStatus.NOT_FOUND, reason = "Not found")
+  private class NotFoundException extends RuntimeException {}
 }

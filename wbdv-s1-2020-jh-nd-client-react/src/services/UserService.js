@@ -22,7 +22,10 @@ const deleteUser = (userId) => {
 
 const getUser = (userId) =>
     fetch(`${url}/users/${userId}`)
-    .then(response => response.json());
+    .then(response => {
+      if (response.status === 404) return null;
+      else return response.json();
+    });
 
 const getAllUsers = () =>
     fetch(`${url}/users/`)
@@ -36,7 +39,10 @@ const login = (userInfo) =>
       },
       method: 'POST',
       credentials: "include"
-    }).then(response => response.json());
+    }).then(response => {
+      if (response.status === 404) return null;
+      else return response.json();
+    });
 
 const logout = () =>
     fetch(`${url}/logout`, {

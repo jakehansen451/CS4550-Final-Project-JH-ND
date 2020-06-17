@@ -37,13 +37,12 @@ class LoginComponent extends React.Component {
     password: this.state.password
   })
   .then(response => {
-    if (response.status == '500') {
-      console.log('Error');
-      console.log(response);
-    } else {
+    if (response) {
       console.log(response);
       this.props.login(response);
-      //this.props.history.push(`/profile/${response._id}/`);
+      this.props.history.push(`/profile/${response._id}/`);
+    } else {
+      alert('Invalid username or password');
     }
   });
 
