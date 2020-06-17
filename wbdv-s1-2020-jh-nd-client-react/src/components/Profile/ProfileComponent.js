@@ -15,7 +15,10 @@ class ProfileComponent extends React.Component {
   };
 
   componentDidMount() {
-      GoogleAPIService.handleClientLoad();
+    UserService.getSession()
+    .then(response => response && this.props.setUser(response));
+
+    GoogleAPIService.handleClientLoad();
     UserService.getUser(this.state.userId)
     .then(user => this.setState({user}));
   }
@@ -88,8 +91,12 @@ class ProfileComponent extends React.Component {
               </div>
               {this.state.user._id === this.props.current_user._id
               && this.editProfileSection()}
-                <button onClick={(event) => GoogleAPIService.handleAuthClick(event)}>Authorize</button>
-                <button onClick={(event) => GoogleAPIService.handleSignoutClick(event)}>Sign out</button>
+              <button onClick={(event) => GoogleAPIService.handleAuthClick(
+                  event)}>Authorize
+              </button>
+              <button onClick={(event) => GoogleAPIService.handleSignoutClick(
+                  event)}>Sign out
+              </button>
             </div>
 
             :

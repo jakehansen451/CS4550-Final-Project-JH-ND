@@ -11,6 +11,11 @@ class LoginComponent extends React.Component {
     password: '',
   };
 
+  componentDidMount() {
+    UserService.getSession()
+    .then(response => response && this.props.login(response));
+  }
+
   alreadyLoggedIn = () => {
     return (
         <div>

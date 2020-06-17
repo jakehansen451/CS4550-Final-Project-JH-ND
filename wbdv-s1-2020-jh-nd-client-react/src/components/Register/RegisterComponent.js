@@ -16,6 +16,11 @@ class RegisterComponent extends React.Component {
     role: 'STUDENT',
   };
 
+  componentDidMount() {
+    UserService.getSession()
+    .then(response => response && this.props.login(response));
+  }
+
   alreadyLoggedIn = () => {
     return (
         <div>

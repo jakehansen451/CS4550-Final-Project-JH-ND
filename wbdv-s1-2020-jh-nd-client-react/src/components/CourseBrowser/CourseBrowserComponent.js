@@ -4,6 +4,7 @@ import {Link} from 'react-router-dom';
 import CourseService from '../../services/CourseService';
 import * as Actions from '../../store/Actions';
 import {isEmpty} from "../../utils/Utils";
+import UserService from "../../services/UserService";
 
 class CourseBrowserComponent extends React.Component {
   state = {
@@ -12,6 +13,9 @@ class CourseBrowserComponent extends React.Component {
   };
 
   componentDidMount() {
+    UserService.getSession()
+    .then(response => response && this.props.setUser(response));
+
     CourseService.getAllCourses()
     .then(courses => this.setState({courses}))
   }
@@ -67,7 +71,9 @@ const mapStateToProps = (state) => ({
   current_user: state.current_user,
 });
 
-const mapDispatchToProps = (dispatch) => ({});
+const mapDispatchToProps = (dispatch) => ({
+  setUser: (user) => dispatch(Actions.setUser(user)),
+});
 
 export default connect(mapStateToProps, mapDispatchToProps)(
     CourseBrowserComponent);

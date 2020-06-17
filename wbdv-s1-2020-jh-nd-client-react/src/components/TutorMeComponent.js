@@ -52,11 +52,11 @@ class TutorMeComponent extends React.Component {
                    component={ProfileComponent}
                    exact/>
             <Route path="/courses/"
-                   component={CourseBrowserComponent}
-                   exact/>
+                   exact
+                   component={CourseBrowserComponent}/>
             <Route path="/courses/:courseId"
-                   component={CourseDetailComponent}
-                   exact/>
+                   exact
+                   component={CourseDetailComponent}/>
           </div>
         </BrowserRouter>
     )

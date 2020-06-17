@@ -27,10 +27,18 @@ const getAllCourses = () =>
     fetch(`${url}/courses/`)
     .then(response => response.json());
 
+const getEventsForCourse = (courseId) =>
+    fetch(`${url}/courses/${courseId}/events`)
+    .then(response => {
+      if (response.status === 404) return null;
+      else return response.json();
+    });
+
 export default {
   createCourse,
   updateCourse,
   deleteCourse,
   getCourse,
-  getAllCourses
+  getAllCourses,
+  getEventsForCourse,
 }

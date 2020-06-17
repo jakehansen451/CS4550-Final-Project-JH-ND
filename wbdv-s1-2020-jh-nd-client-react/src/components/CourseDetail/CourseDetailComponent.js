@@ -5,6 +5,7 @@ import CourseService from "../../services/CourseService";
 import {isEmpty} from "../../utils/Utils";
 import UserService from "../../services/UserService";
 import EditCourseComponent from './EditCourse/EditCourseComponent';
+import * as Actions from '../../store/Actions';
 
 class CourseDetailComponent extends React.Component {
   state = {
@@ -12,10 +13,14 @@ class CourseDetailComponent extends React.Component {
     course: {},
     tutors: [],
     students: [],
+    events: [],
     newCourseTitle: '',
   };
 
   componentDidMount() {
+    UserService.getSession()
+    .then(response => response && this.props.setUser(response));
+
     CourseService.getCourse(this.state.courseId)
     .then(course => this.setState({course}));
 
@@ -24,6 +29,9 @@ class CourseDetailComponent extends React.Component {
 
     UserService.getStudentsForCourse(this.state.courseId)
     .then(students => this.setState({students}));
+
+    CourseService.getEventsForCourse(this.state.courseId)
+    .then(events => this.setState({events}));
   }
 
   renderUserRow = (user, index) =>
@@ -60,9 +68,13 @@ class CourseDetailComponent extends React.Component {
             {tutors: [...this.state.students, this.props.current_user]})
       });
 
+  renderEventRow = (event, index) =>
+      <Link key={index} to={`/events/${event._id}`}>
+        <div>{event.title}</div>
+        <div>`${event.startTime} to ${event.endTime}</div>
+      </Link>;
+
   render() {
-    console.log(this.state);
-    console.log(this.props);
     return (
         <div>
           {!isEmpty(this.state.course) &&
@@ -74,6 +86,14 @@ class CourseDetailComponent extends React.Component {
                 {`${this.state.course.admin.firstName} ${this.state.course.admin.lastName}`}
               </div>
             </div>
+            {(!isEmpty(this.props.current_user) && !isEmpty(this.state.course)
+                &&
+                this.props.current_user._id === this.state.course.admin._id)
+            &&
+            <EditCourseComponent
+                course={this.state.course}
+                courseUpdated={(course) => this.setState({course})}
+            />}
             {this.canEnrollTutor() &&
             <div>
               <button
@@ -110,13 +130,15 @@ class CourseDetailComponent extends React.Component {
               </div>
             </div>
           </div>}
-          {(!isEmpty(this.props.current_user) && !isEmpty(this.state.course) &&
-              this.props.current_user._id === this.state.course.admin._id)
-          &&
-          <EditCourseComponent
-              course={this.state.course}
-              courseUpdated={(course) => this.setState({course})}
-          />}
+          <div>
+            <h6>Office Hours</h6>
+            {this.state.events.length === 0 ?
+                <div>This course has no scheduled events.</div>
+                :
+                <div>
+                  {this.events.map(this.renderEventRow)}
+                </div>}
+          </div>
         </div>
     )
   }
@@ -126,7 +148,9 @@ const mapStateToProps = (state) => ({
   current_user: state.current_user,
 });
 
-const mapDispatchToProps = (dispatch) => ({});
+const mapDispatchToProps = (dispatch) => ({
+  setUser: (user) => dispatch(Actions.setUser(user)),
+});
 
 export default connect(mapStateToProps, mapDispatchToProps)(
     CourseDetailComponent);

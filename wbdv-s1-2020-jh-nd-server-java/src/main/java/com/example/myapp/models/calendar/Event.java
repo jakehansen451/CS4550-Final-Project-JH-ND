@@ -24,6 +24,7 @@ public class Event {
     @JsonProperty("_id")
     private Long id;
 
+    private String title;
     private String date;
     private String startTime;
     private String endTime;
