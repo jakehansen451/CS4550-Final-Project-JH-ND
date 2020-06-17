@@ -39,10 +39,11 @@ public class CourseService {
 
     public Course updateCourse(Long courseId, Course updatedCourse) {
         // TODO: check if this is the best way to update
-        updatedCourse.setId(courseId);
-        courseRepository.save(updatedCourse);
+        Course course = findCourseById(courseId);
+        course.setTitle(updatedCourse.getTitle());
+        courseRepository.save(course);
 
-        return updatedCourse;
+        return course;
     }
 
     public List<Event> findEventsByCourseId(Long courseId) {

@@ -72,6 +72,26 @@ const getSession = () =>
       else return response.json();
     });
 
+const getTutorsForCourse = (courseId) =>
+    fetch(`${url}/users/tutors/${courseId}/`)
+    .then(response => {
+      if (response.status === 404) return null;
+      else return response.json();
+    });
+
+const getStudentsForCourse = (courseId) =>
+    fetch(`${url}/users/students/${courseId}/`)
+    .then(response => {
+      if (response.status === 404) return null;
+      else return response.json();
+    });
+
+const enrollAsTutor = (userId) =>
+    alert('Pretending to add as tutor');
+
+const enrollAsStudent = (userId) =>
+    alert('Pretending to add as student');
+
 export default {
   createUser,
   updateUser,
@@ -82,4 +102,8 @@ export default {
   logout,
   register,
   getSession,
+  getTutorsForCourse,
+  getStudentsForCourse,
+  enrollAsTutor,
+  enrollAsStudent,
 }

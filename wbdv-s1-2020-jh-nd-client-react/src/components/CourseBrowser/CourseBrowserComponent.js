@@ -3,6 +3,7 @@ import {connect} from 'react-redux';
 import {Link} from 'react-router-dom';
 import CourseService from '../../services/CourseService';
 import * as Actions from '../../store/Actions';
+import {isEmpty} from "../../utils/Utils";
 
 class CourseBrowserComponent extends React.Component {
   state = {
@@ -12,10 +13,7 @@ class CourseBrowserComponent extends React.Component {
 
   componentDidMount() {
     CourseService.getAllCourses()
-    .then(courses => {
-      console.log(courses);
-      this.setState({courses})
-    })
+    .then(courses => this.setState({courses}))
   }
 
   renderCourseRow = (course, index) => {
@@ -23,13 +21,12 @@ class CourseBrowserComponent extends React.Component {
         <div key={index}>
           <Link to={`/courses/${course._id}`}>{course.title}</Link>
           <div>{`${course.admin.lastName}, ${course.admin.firstName}`}</div>
-          <div>
-            <button>
-              Enroll
-            </button>
-          </div>
         </div>
     )
+  };
+
+  enrollStudentInCourse = (course) => {
+
   };
 
   addCourse = () => {
