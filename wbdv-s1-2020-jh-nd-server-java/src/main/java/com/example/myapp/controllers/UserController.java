@@ -2,7 +2,9 @@ package com.example.myapp.controllers;
 
 import com.example.myapp.models.people.User;
 import com.example.myapp.services.UserService;
+import javassist.NotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpSession;
@@ -26,13 +28,19 @@ public class UserController {
   @PostMapping("/api/login")
   public User login(@RequestBody User user, HttpSession session) {
     User currentUser = service.findUserByCredentials(user.getUsername(), user.getPassword());
+    if (currentUser == null) {
+      throw new NotFoundException();
+    }
     session.setAttribute("currentUser", currentUser);
-    return user;
+    return currentUser;
   }
 
   @PostMapping("/api/profile")
   public User profile(HttpSession session) {
     User currentUser = (User)session.getAttribute("currentUser");
+    if (currentUser == null) {
+      throw new NotFoundException();
+    }
     return currentUser;
   }
 
@@ -58,8 +66,18 @@ public class UserController {
   }
 
   @GetMapping("/api/users/{userId}")
-  public User findUserById(@PathVariable("userId") Long userId) {
-    return service.findUserById(userId);
+  public User findUserById(@PathVariable("userId") String userId) {
+    Long userIdLong;
+    try {
+      userIdLong = Long.parseLong(userId);
+    } catch (NumberFormatException nfe) {
+      throw new NotFoundException();
+    }
+    User user = service.findUserById(userIdLong);
+    if (user == null) {
+      throw new NotFoundException();
+    }
+    return user;
   }
 
   @PostMapping("/api/users")
@@ -76,4 +94,7 @@ public class UserController {
   public void deleteUserById(@PathVariable("userId") Long userId) {
      service.deleteUserById(userId);
   }
+
+  @ResponseStatus(code = HttpStatus.NOT_FOUND, reason = "Not found")
+  private class NotFoundException extends RuntimeException {}
 }

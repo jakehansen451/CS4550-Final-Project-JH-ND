@@ -1,4 +1,5 @@
 import React from 'react';
+import {connect} from 'react-redux';
 import {BrowserRouter, Route} from "react-router-dom";
 import HomeComponent from "./HomeComponent";
 import SearchComponent from "./Search/SearchComponent";
@@ -9,10 +10,21 @@ import RegisterComponent from './Register/RegisterComponent';
 import ProfileComponent from "./Profile/ProfileComponent";
 import CourseBrowserComponent from "./CourseBrowser/CourseBrowserComponent";
 import {Redirect} from "react-router-dom";
+import * as Actions from '../store/Actions';
 import '../styles.css';
 import CourseDetailComponent from "./CourseDetail/CourseDetailComponent";
+import UserService from "../services/UserService";
 
 class TutorMeComponent extends React.Component {
+  componentDidMount() {
+    UserService.getSession()
+    .then(response => {
+      console.log('Logging in on refresh as:');
+      console.log(response);
+          response && this.props.login(response)
+        }
+    );
+  }
 
   render() {
     return (
@@ -56,4 +68,8 @@ class TutorMeComponent extends React.Component {
   }
 }
 
-export default TutorMeComponent
+const mapDispatchToProps = (dispatch) => ({
+  login: (user) => dispatch(Actions.setUser(user)),
+});
+
+export default connect(null, mapDispatchToProps)(TutorMeComponent);

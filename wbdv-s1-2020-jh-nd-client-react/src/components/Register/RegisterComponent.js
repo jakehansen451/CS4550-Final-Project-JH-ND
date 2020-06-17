@@ -23,6 +23,9 @@ class RegisterComponent extends React.Component {
             Already logged in.
           </h2>
           <div>
+            <Link to={`/profile/${this.props.current_user._id}`}>
+              Profile
+            </Link>
             <button onClick={this.logout}>
               Log out
             </button>
@@ -32,7 +35,7 @@ class RegisterComponent extends React.Component {
   };
 
   logout = () => UserService.logout()
-  .then(response => {console.log(response); this.props.logout()});
+  .then(response => this.props.logout());
 
   register = () => {
     if (this.state.username
@@ -49,23 +52,15 @@ class RegisterComponent extends React.Component {
         email: this.state.email,
         role: this.state.role,
       })
-      .then(newUser => {this.props.login(newUser)})
+      .then(newUser => {
+        if (newUser.status === 500) {
+          alert('Registration failed. Please try a different username.');
+        }
+        this.props.login(newUser);
+        this.props.history.push(`/profile/${newUser._id}`);
+      })
     }
   };
-
-  login = () => UserService.login({
-    username: this.state.username,
-    password: this.state.password
-  })
-  .then(response => {
-    if (response.status !== '200') {
-      console.log('Error');
-      console.log(response);
-    } else {
-      this.props.login(response);
-      this.props.history.push(`/profile/${response._id}`);
-    }
-  });
 
   registerSection = () => {
     return (
@@ -75,7 +70,6 @@ class RegisterComponent extends React.Component {
             <label>Username:</label>
             <input onChange={(e) => this.setState({username: e.target.value})}/>
           </div>
-
           <div>
             <label>Password:</label>
             <input onChange={(e) => this.setState({password: e.target.value})}/>
@@ -130,7 +124,8 @@ const mapStateToProps = (state) => ({
 });
 
 const mapDispatchToProps = (dispatch) => ({
-  login: (user) => dispatch(Actions.login(user)),
+  login: (user) => dispatch(Actions.setUser(user)),
+  logout: () => dispatch(Actions.unsetUser()),
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(RegisterComponent);

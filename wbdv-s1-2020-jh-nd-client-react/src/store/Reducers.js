@@ -1,106 +1,6 @@
 import * as Actions from './Actions';
 
 let fakeState = {
-  users: [
-    {
-      _id: '0',
-      username: 'hansen.j',
-      password: 'password',
-      firstName: 'Jake',
-      lastName: 'Hansen',
-      email: 'hansen.j@husky.neu.edu',
-      role: 'TUTOR',
-      roleData: {
-        coursesTaught: ['0'],
-        coursesEnrolled: ['1', '2'],
-        officeHours: []
-      },
-      events: [],
-    },
-    {
-      _id: '1',
-      username: 'damrina.n',
-      password: 'password',
-      firstName: 'Nadiia',
-      lastName: 'Damrina',
-      email: 'damrina.n@husky.neu.edu',
-      role: 'TUTOR',
-      roleData: {
-        coursesTaught: ['0'],
-        coursesEnrolled: ['1'],
-        officeHours: []
-      },
-      events: [],
-    },
-    {
-      _id: '2',
-      username: 'annunziato.j',
-      password: 'password',
-      firstName: 'Jose',
-      lastName: 'Annunziato',
-      email: 'annunziato.j@northeastern.edu',
-      role: 'STUDENT',
-      roleData: {
-        coursesEnrolled: ['0']
-      },
-      events: [],
-    },
-    {
-      _id: '3',
-      username: 'alice',
-      password: 'alice',
-      firstName: 'Alice',
-      lastName: 'Albertson',
-      email: 'albertson.a@gmail.com',
-      role: 'STUDENT',
-      roleData: {
-        coursesEnrolled: ['0'],
-      },
-      events: [], // To be populated by Google API
-    },
-    {
-      _id: '4',
-      username: 'bob',
-      password: 'bob',
-      firstName: 'Bob',
-      lastName: 'Bob',
-      email: 'b.b@husky.neu.edu',
-      role: 'ADMIN',
-      roleData: {
-        coursesTaught: ['0'],
-        officeHours: []
-      },
-      events: [],
-    },
-    {
-      _id: '5',
-      username: 'charlie',
-      password: 'charlie',
-      firstName: 'Char',
-      lastName: 'Lie',
-      email: 'lie.c@husky.neu.edu',
-      role: 'ADMIN',
-      roleData: {
-        coursesTaught: ['1'],
-        officeHours: []
-      },
-      events: [],
-    },
-    {
-      _id: '6',
-      username: 'admin',
-      password: 'admin',
-      firstName: 'Ad',
-      lastName: 'Min',
-      email: 'ad.min@gmail.edu',
-      role: 'ADMIN',
-      roleData: {
-        coursesTaught: ['2'],
-        officeHours: []
-      },
-      events: [],
-    },
-  ],
   selectedUsers: [],
   selected_time_block: {},
   /*
@@ -161,9 +61,10 @@ const googleAuth = (googleAuth = {}, action) => {
 
 const currentUser = (currentUser = {}, action) => {
   switch (action.type) {
-    case Actions.LOGIN:
+    case Actions.SET_USER:
+      console.log(action.user)
       return action.user;
-    case Actions.LOGOUT:
+    case Actions.UNSET_USER:
       return {};
     default:
       return currentUser;

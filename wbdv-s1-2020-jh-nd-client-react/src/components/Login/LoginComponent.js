@@ -18,6 +18,9 @@ class LoginComponent extends React.Component {
             Already logged in.
           </h2>
           <div>
+            <Link to={`/profile/${this.props.current_user._id}`}>
+              Profile
+            </Link>
             <button onClick={this.logout}>
               Log out
             </button>
@@ -34,12 +37,11 @@ class LoginComponent extends React.Component {
     password: this.state.password
   })
   .then(response => {
-    if (response.status == '500') {
-      console.log('Error');
-      console.log(response);
-    } else {
+    if (response) {
       this.props.login(response);
       this.props.history.push(`/profile/${response._id}/`);
+    } else {
+      alert('Invalid username or password');
     }
   });
 
@@ -49,12 +51,11 @@ class LoginComponent extends React.Component {
           <h2>Log in</h2>
           <div>
             <label>Username:</label>
-            <input/>
+            <input onChange={(e) => this.setState({username: e.target.value})}/>
           </div>
-
           <div>
             <label>Password:</label>
-            <input/>
+            <input onChange={(e) => this.setState({password: e.target.value})}/>
           </div>
           <div>
             <button
@@ -82,8 +83,8 @@ const mapStateToProps = (state) => ({
 });
 
 const mapDispatchToProps = (dispatch) => ({
-  login: (user) => dispatch(Actions.login(user)),
-  logout: () => dispatch(Actions.logout()),
+  login: (user) => dispatch(Actions.setUser(user)),
+  logout: () => dispatch(Actions.unsetUser()),
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(LoginComponent);

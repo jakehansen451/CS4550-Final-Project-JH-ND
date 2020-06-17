@@ -21,7 +21,10 @@ const deleteUser = (userId) => {
 
 const getUser = (userId) =>
     fetch(`${url}/users/${userId}`)
-    .then(response => response.json());
+    .then(response => {
+      if (response.status === 404) return null;
+      else return response.json();
+    });
 
 const getAllUsers = () =>
     fetch(`${url}/users/`)
@@ -35,7 +38,10 @@ const login = (userInfo) =>
       },
       method: 'POST',
       credentials: "include"
-    }).then(response => response.json());
+    }).then(response => {
+      if (response.status === 404) return null;
+      else return response.json();
+    });
 
 const logout = () =>
     fetch(`${url}/logout`, {
@@ -56,6 +62,15 @@ const register = (userInfo) =>
     credentials: "include"
   }).then(response => response.json());
 
+const getSession = () =>
+    fetch(`${url}/profile`, {
+      method: 'POST',
+      credentials: 'include'
+    }).then(response => {
+      if (response.status === 404) return null;
+      else return response.json();
+    });
+
 export default {
   createUser,
   updateUser,
@@ -64,5 +79,6 @@ export default {
   getAllUsers,
   login,
   logout,
-  register
+  register,
+  getSession,
 }
