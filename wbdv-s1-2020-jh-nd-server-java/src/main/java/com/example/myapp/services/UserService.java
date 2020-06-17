@@ -1,6 +1,7 @@
 package com.example.myapp.services;
 
 import com.example.myapp.models.people.User;
+import com.example.myapp.repositories.CourseRepository;
 import com.example.myapp.repositories.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -11,6 +12,9 @@ import java.util.List;
 public class UserService {
   @Autowired
   UserRepository repository;
+  @Autowired
+  CourseRepository courseRepository;
+
   public User createUser(User user) {
     return repository.save(user);
   }
@@ -37,5 +41,13 @@ public class UserService {
 
   public void deleteUserById(Long userId) {
     repository.deleteById(userId);
+  }
+
+    public List<User> findTutorsByCourseId(Long courseId) {
+      return courseRepository.findTutorsByCourseId(courseId);
+    }
+
+  public List<User> findStudentsByCourseId(Long courseId) {
+    return courseRepository.findStudentsByCourseId(courseId);
   }
 }

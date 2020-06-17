@@ -42,6 +42,16 @@ public class UserController {
     return 1;
   }
 
+  @GetMapping("/api/users/tutors/{courseId}")
+  public List<User> findTutorsByCourseId(@PathVariable("courseId") Long courseId) {
+    return service.findTutorsByCourseId(courseId);
+  }
+
+  @GetMapping("/api/users/students/{courseId}")
+  public List<User> findStudentsByCourseId(@PathVariable("courseId") Long courseId) {
+    return service.findStudentsByCourseId(courseId);
+  }
+
   @GetMapping("/api/users")
   public List<User> findAllUsers() {
     return service.findAllUsers();
