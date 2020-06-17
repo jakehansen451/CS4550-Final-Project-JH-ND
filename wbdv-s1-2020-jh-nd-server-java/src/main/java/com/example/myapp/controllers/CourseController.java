@@ -1,6 +1,7 @@
 package com.example.myapp.controllers;
 
 
+import com.example.myapp.models.calendar.Event;
 import com.example.myapp.models.course.Course;
 import com.example.myapp.models.people.User;
 import com.example.myapp.services.CourseService;
@@ -26,11 +27,10 @@ public class CourseController {
         return courseService.findAllCourses();
     }
 
-    /*@GetMapping("/api/courses/{courseId}/events")
-    public List<Course> findEventsForCourse(@PathVariable("courseId") Long courseId) {
-
+    @GetMapping("/api/courses/{courseId}/events")
+    public List<Event> findEventsForCourse(@PathVariable("courseId") Long courseId) {
         return courseService.findEventsByCourseId(courseId);
-    }*/
+    }
 
     @GetMapping("api/courses/{courseId}")
     public Course findCourseById(@PathVariable("courseId") Long courseId) {

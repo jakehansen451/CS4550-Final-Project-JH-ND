@@ -1,18 +1,21 @@
 import React from 'react';
 import {connect} from 'react-redux';
-import UserService from "../../services/UserService";
 import EditProfileComponent from './EditProfile/EditProfileComponent';
 import {Link} from "react-router-dom";
 import {isEmpty} from "../../utils/Utils";
 import * as Actions from '../../store/Actions';
+import UserService from "../../services/UserService";
+import GoogleAPIService from "../../api/GoogleAPIService";
 
 class ProfileComponent extends React.Component {
+
   state = {
     userId: this.props.match.params.userId,
     user: {}
   };
 
   componentDidMount() {
+      GoogleAPIService.handleClientLoad();
     UserService.getUser(this.state.userId)
     .then(user => this.setState({user}));
   }
@@ -85,11 +88,15 @@ class ProfileComponent extends React.Component {
               </div>
               {this.state.user._id === this.props.current_user._id
               && this.editProfileSection()}
+                <button onClick={(event) => GoogleAPIService.handleAuthClick(event)}>Authorize</button>
+                <button onClick={(event) => GoogleAPIService.handleSignoutClick(event)}>Sign out</button>
             </div>
+
             :
             <h2>
               User not found.
             </h2>
+
     )
   }
 }
