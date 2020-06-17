@@ -18,6 +18,9 @@ class LoginComponent extends React.Component {
             Already logged in.
           </h2>
           <div>
+            <Link to={`/profile/${this.props.current_user._id}`}>
+              Profile
+            </Link>
             <button onClick={this.logout}>
               Log out
             </button>
@@ -38,8 +41,9 @@ class LoginComponent extends React.Component {
       console.log('Error');
       console.log(response);
     } else {
+      console.log(response);
       this.props.login(response);
-      this.props.history.push(`/profile/${response._id}/`);
+      //this.props.history.push(`/profile/${response._id}/`);
     }
   });
 
@@ -49,12 +53,11 @@ class LoginComponent extends React.Component {
           <h2>Log in</h2>
           <div>
             <label>Username:</label>
-            <input/>
+            <input onChange={(e) => this.setState({username: e.target.value})}/>
           </div>
-
           <div>
             <label>Password:</label>
-            <input/>
+            <input onChange={(e) => this.setState({password: e.target.value})}/>
           </div>
           <div>
             <button

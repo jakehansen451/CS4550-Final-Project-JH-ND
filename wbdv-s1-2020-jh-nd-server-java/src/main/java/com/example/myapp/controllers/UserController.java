@@ -3,6 +3,7 @@ package com.example.myapp.controllers;
 import com.example.myapp.models.people.User;
 import com.example.myapp.services.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpSession;
@@ -27,12 +28,15 @@ public class UserController {
   public User login(@RequestBody User user, HttpSession session) {
     User currentUser = service.findUserByCredentials(user.getUsername(), user.getPassword());
     session.setAttribute("currentUser", currentUser);
-    return user;
+    return currentUser;
   }
 
   @PostMapping("/api/profile")
   public User profile(HttpSession session) {
     User currentUser = (User)session.getAttribute("currentUser");
+    if (currentUser == null) {
+      throw new SessionNotFoundException("Session not found.");
+    }
     return currentUser;
   }
 
@@ -65,5 +69,12 @@ public class UserController {
   @DeleteMapping("/api/users/{userId}")
   public void deleteUserById(@PathVariable("userId") Long userId) {
      service.deleteUserById(userId);
+  }
+
+  @ResponseStatus(code = HttpStatus.NOT_FOUND, reason = "Session not found")
+  private class SessionNotFoundException extends RuntimeException {
+    SessionNotFoundException(String message) {
+      super(message);
+    }
   }
 }

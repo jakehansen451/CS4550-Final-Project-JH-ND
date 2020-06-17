@@ -1,4 +1,5 @@
 import { localApiUrl as url } from '../config';
+import {isEmpty} from '../utils/Utils';
 
 const createUser = (user) =>
     fetch(`${url}/users/`, {
@@ -56,6 +57,15 @@ const register = (userInfo) =>
     credentials: "include"
   }).then(response => response.json());
 
+const getSession = () =>
+    fetch(`${url}/profile`, {
+      method: 'POST',
+      credentials: 'include'
+    }).then(response => {
+      if (response.status === 404) return null;
+      else return response.json();
+    });
+
 export default {
   createUser,
   updateUser,
@@ -64,5 +74,6 @@ export default {
   getAllUsers,
   login,
   logout,
-  register
+  register,
+  getSession,
 }

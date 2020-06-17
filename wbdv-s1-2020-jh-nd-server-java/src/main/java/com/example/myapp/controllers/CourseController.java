@@ -20,11 +20,11 @@ public class CourseController {
         return courseService.findAllCourses();
     }
 
-    @GetMapping("/api/courses/{courseId}/events")
+    /*@GetMapping("/api/courses/{courseId}/events")
     public List<Course> findEventsForCourse(@PathVariable("courseId") Long courseId) {
 
         return courseService.findEventsByCourseId(courseId);
-    }
+    }*/
 
     @GetMapping("api/courses/{courseId}")
     public Course findCourseById(@PathVariable("courseId") Long courseId) {
