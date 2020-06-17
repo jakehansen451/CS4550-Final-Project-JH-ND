@@ -1,6 +1,7 @@
 import React from 'react';
 import {connect} from 'react-redux';
 import UserService from "../../services/UserService";
+import GoogleService from "../../api/GoogleAPIService";
 import EditProfileComponent from './EditProfile/EditProfileComponent';
 import {Link} from "react-router-dom";
 

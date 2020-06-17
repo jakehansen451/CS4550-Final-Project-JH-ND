@@ -1,6 +1,5 @@
 import {gapi} from 'gapi-script';
-import store from '../store/Store';
-import * as Actions from '../store/Actions';
+import UserService from "../services/UserService";
 
 let GoogleAuth;
 const SCOPE = 'https://www.googleapis.com/auth/calendar';
@@ -10,14 +9,15 @@ let API_KEY = "AIzaSyBNECVLm6gneH9sx6OT1DZLzqsFEhuCNCA";
 let calendarId = "5op33saotih66kdu8inudbuca4@group.calendar.google.com"; // TutorMe calendar's id
 
 
-const handleClientLoad = (callback) => {
+const handleClientLoad = (user) => {
+    console.log(user)
     // Load the API's client and auth2 modules.
     // Call the initClient function after the modules load.
-    gapi.load('client:auth2', () => initClient(callback));
+    gapi.load('client:auth2', () => initClient(user));
 
 };
 
-const initClient = (callback) => {
+const initClient = (user) => {
     // Retrieve the discovery document for version 3 of Google Drive API.
     // In practice, your app can retrieve one or more discovery documents.
     let discoveryUrl = "https://www.googleapis.com/discovery/v1/apis/calendar/v3/rest";
@@ -32,19 +32,25 @@ const initClient = (callback) => {
         'scope': SCOPE
     }).then(function () {
         GoogleAuth = gapi.auth2.getAuthInstance();
-        let user = GoogleAuth.currentUser.get();
-        let isAuthorized = user.hasGrantedScopes(SCOPE);
-        if (!isAuthorized) {
-            signIn();
+        let googleUser = GoogleAuth.currentUser.get();
+        let isAuthorized = googleUser.hasGrantedScopes(SCOPE);
+        let isSignedIn = googleUser.isSignedIn();
+
+        if (!isAuthorized || !isSignedIn) {
+            signIn()
+        } else {
+
+            let accessToken = googleUser.uc.access_token;
+            console.log(accessToken);
+
+            UserService.updateUser(user._id, {...user, "accessToken": accessToken}).then(response => console.log(response))
         }
 
-        store.dispatch({type: Actions.SET_GOOGLE_AUTH, googleAuth: GoogleAuth});
-        callback();
     });
 };
 
 const signIn = () => {
-    GoogleAuth.signIn();
+    GoogleAuth.signIn()
 };
 
 
