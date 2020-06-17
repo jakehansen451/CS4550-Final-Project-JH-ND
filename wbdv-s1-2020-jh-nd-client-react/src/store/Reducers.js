@@ -84,7 +84,7 @@ const rootReducer = (state = fakeState, action) => {
     selected_time_block: selectedTimeBlock(state.selected_time_block, action),
     googleAuth: googleAuth(state.googleAuth, action),
     current_user: currentUser(state.current_user, action),
-    courses: course(state.courses, action),
+    course: course(state.courses, action),
   }
 };
 

@@ -2,9 +2,10 @@ import React from 'react';
 import {connect} from 'react-redux';
 import {Link} from 'react-router-dom';
 import CourseService from '../../services/CourseService';
+import * as Actions from '../../store/Actions';
 
 class CourseBrowserComponent extends React.Component {
-  state={
+  state = {
     courses: [],
     newCourseTitle: 'New Course',
   };
@@ -21,6 +22,7 @@ class CourseBrowserComponent extends React.Component {
     return (
         <div key={index}>
           <Link to={`/courses/${course._id}`}>{course.title}</Link>
+          <div>{`${course.admin.lastName}, ${course.admin.firstName}`}</div>
           <div>
             <button>
               Enroll
@@ -34,7 +36,8 @@ class CourseBrowserComponent extends React.Component {
     CourseService.createCourse({
       title: this.state.newCourseTitle,
       adminId: this.props.current_user._id,
-    }).then(r => console.log(r));
+    }).then(newCourse => this.setState(
+        {courses: [...this.state.courses, newCourse]}));
   };
 
   render() {
@@ -46,7 +49,8 @@ class CourseBrowserComponent extends React.Component {
             <label htmlFor={'new-course-title'}>New Course Title:</label>
             <input
                 defaultValue={this.state.newCourseTitle}
-                onChange={(e) => this.setState({newCourseTitle: e.target.value})}
+                onChange={(e) => this.setState(
+                    {newCourseTitle: e.target.value})}
             />
             <button
                 onClick={this.addCourse}
@@ -66,7 +70,7 @@ const mapStateToProps = (state) => ({
   current_user: state.current_user,
 });
 
-const mapDispatchToProps = (dispatch) => ({
-});
+const mapDispatchToProps = (dispatch) => ({});
 
-export default connect(mapStateToProps, mapDispatchToProps)(CourseBrowserComponent);
+export default connect(mapStateToProps, mapDispatchToProps)(
+    CourseBrowserComponent);
