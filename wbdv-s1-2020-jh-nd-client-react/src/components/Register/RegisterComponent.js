@@ -35,7 +35,7 @@ class RegisterComponent extends React.Component {
   };
 
   logout = () => UserService.logout()
-  .then(response => {console.log(response); this.props.logout()});
+  .then(response => this.props.logout());
 
   register = () => {
     if (this.state.username
@@ -56,9 +56,8 @@ class RegisterComponent extends React.Component {
         if (newUser.status === 500) {
           alert('Registration failed. Please try a different username.');
         }
-        console.log(newUser);
-        //this.props.login(newUser);
-        //this.props.history.push(`/profile/${newUser._id}`);
+        this.props.login(newUser);
+        this.props.history.push(`/profile/${newUser._id}`);
       })
     }
   };

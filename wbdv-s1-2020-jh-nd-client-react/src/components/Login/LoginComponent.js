@@ -38,7 +38,6 @@ class LoginComponent extends React.Component {
   })
   .then(response => {
     if (response) {
-      console.log(response);
       this.props.login(response);
       this.props.history.push(`/profile/${response._id}/`);
     } else {

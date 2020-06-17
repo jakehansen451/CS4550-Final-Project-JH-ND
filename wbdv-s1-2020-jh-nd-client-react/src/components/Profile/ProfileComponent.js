@@ -50,7 +50,8 @@ class ProfileComponent extends React.Component {
 
   render() {
     return (
-        (this.state.user && !isEmpty(this.state.user)) ?
+        (this.state.user && !isEmpty(this.state.user))
+            ?
             <div>
               <h2>Profile</h2>
               <div>

@@ -56,8 +56,14 @@ public class UserController {
   }
 
   @GetMapping("/api/users/{userId}")
-  public User findUserById(@PathVariable("userId") Long userId) {
-    User user = service.findUserById(userId);
+  public User findUserById(@PathVariable("userId") String userId) {
+    Long userIdLong;
+    try {
+      userIdLong = Long.parseLong(userId);
+    } catch (NumberFormatException nfe) {
+      throw new NotFoundException();
+    }
+    User user = service.findUserById(userIdLong);
     if (user == null) {
       throw new NotFoundException();
     }
