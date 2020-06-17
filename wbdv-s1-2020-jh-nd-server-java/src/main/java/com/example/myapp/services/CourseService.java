@@ -1,6 +1,7 @@
 package com.example.myapp.services;
 
 
+import com.example.myapp.models.calendar.Event;
 import com.example.myapp.models.course.Course;
 import com.example.myapp.repositories.CourseRepository;
 import com.example.myapp.repositories.EventRepository;
@@ -44,7 +45,7 @@ public class CourseService {
         return updatedCourse;
     }
 
-    public List<Course> findEventsByCourseId(Long courseId) {
-        return null;
+    public List<Event> findEventsByCourseId(Long courseId) {
+        return eventRepository.findEventsByCourseId(courseId);
     }
 }

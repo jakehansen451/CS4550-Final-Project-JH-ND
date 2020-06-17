@@ -1,6 +1,7 @@
 package com.example.myapp.controllers;
 
 
+import com.example.myapp.models.calendar.Event;
 import com.example.myapp.models.course.Course;
 import com.example.myapp.services.CourseService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -21,8 +22,7 @@ public class CourseController {
     }
 
     @GetMapping("/api/courses/{courseId}/events")
-    public List<Course> findEventsForCourse(@PathVariable("courseId") Long courseId) {
-
+    public List<Event> findEventsForCourse(@PathVariable("courseId") Long courseId) {
         return courseService.findEventsByCourseId(courseId);
     }
 
