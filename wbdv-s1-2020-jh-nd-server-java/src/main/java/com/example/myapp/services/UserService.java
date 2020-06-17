@@ -32,7 +32,6 @@ public class UserService {
   }
 
   public User updateUser(Long userId, User updatedUser) {
-    // TODO: check this
     updatedUser.setId(userId);
     repository.save(updatedUser);
 
@@ -40,6 +39,7 @@ public class UserService {
   }
 
   public void deleteUserById(Long userId) {
+    // TODO: fix deleting
     repository.deleteById(userId);
   }
 
