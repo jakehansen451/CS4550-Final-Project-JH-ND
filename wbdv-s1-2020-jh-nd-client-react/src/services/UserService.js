@@ -11,7 +11,8 @@ const updateUser = (userId, user) =>
     fetch(`${url}/users/${userId}`, {
       method: 'PUT',
       body: JSON.stringify(user),
-      headers: {'content-type': 'application/json'}
+      headers: {'content-type': 'application/json'},
+      credentials: 'include'
     }).then(response => response.json());
 
 const deleteUser = (userId) => {

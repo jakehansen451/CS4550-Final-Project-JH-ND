@@ -18,12 +18,7 @@ import UserService from "../services/UserService";
 class TutorMeComponent extends React.Component {
   componentDidMount() {
     UserService.getSession()
-    .then(response => {
-      console.log('Logging in on refresh as:');
-      console.log(response);
-          response && this.props.login(response)
-        }
-    );
+    .then(response => response && this.props.login(response));
   }
 
   render() {

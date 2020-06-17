@@ -18,15 +18,11 @@ class ProfileComponent extends React.Component {
   }
 
   componentDidUpdate(prevProps, prevState, snapshot) {
-    if (this.props !== prevProps) {
-      if (this.props.current_user._id === this.userId
-      && this.props.current_user !== this.state.user) {
-        this.props.setUser(this.props.current_user)
-      }
+    if (this.props.current_user._id === this.state.user._id
+        && this.props.current_user !== this.state.user) {
+      this.setState({user: this.props.current_user});
     }
   }
-
-
 
   courseRow = (course, index) => {
     return (

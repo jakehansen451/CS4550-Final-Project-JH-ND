@@ -76,7 +76,9 @@ public class UserController {
   }
 
   @PutMapping("/api/users/{userId}")
-  public User updateUser(@PathVariable("userId") Long userId, @RequestBody User updatedUser) {
+  public User updateUser(HttpSession session,
+      @PathVariable("userId") Long userId, @RequestBody User updatedUser) {
+    session.setAttribute("currentUser", updatedUser);
     return service.updateUser(userId, updatedUser);
   }
 

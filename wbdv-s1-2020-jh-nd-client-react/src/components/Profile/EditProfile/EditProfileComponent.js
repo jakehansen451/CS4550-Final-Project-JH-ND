@@ -19,8 +19,6 @@ class EditProfileComponent extends React.Component {
       return;
     }
 
-    console.log(this.state);
-
     const updatedProfile = {
       ...this.props.current_user,
       password: this.state.password || this.props.current_user.password,
@@ -31,22 +29,8 @@ class EditProfileComponent extends React.Component {
     };
 
     if (updatedProfile !== this.props.current_user) {
-      UserService.updateUser(this.props.current_user._id,
-          {
-            username: this.state.username,
-            password: this.state.password,
-            firstName: this.state.firstName,
-            lastName: this.state.lastName,
-            email: this.state.email,
-            role: this.state.role,
-          })
-      .then(user =>
-          UserService.logout()
-          .then(result =>
-              UserService.login({
-                username: this.props.current_user.username,
-                password: this.state.password
-              }).then(response => this.props.updateUser(response))))
+      UserService.updateUser(this.props.current_user._id, updatedProfile)
+      .then(user => this.props.setUser(user));
     }
   };
 
@@ -115,7 +99,7 @@ const mapStateToProps = (state) => ({
 });
 
 const mapDispatchToProps = (dispatch) => ({
-  updateUser: (user) => dispatch(Actions.setUser(user)),
+  setUser: (user) => dispatch(Actions.setUser(user)),
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(
