@@ -61,9 +61,10 @@ const googleAuth = (googleAuth = {}, action) => {
 
 const currentUser = (currentUser = {}, action) => {
   switch (action.type) {
-    case Actions.LOGIN:
+    case Actions.SET_USER:
+      console.log(action.user)
       return action.user;
-    case Actions.LOGOUT:
+    case Actions.UNSET_USER:
       return {};
     default:
       return currentUser;

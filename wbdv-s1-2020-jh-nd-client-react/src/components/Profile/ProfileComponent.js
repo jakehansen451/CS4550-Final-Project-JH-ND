@@ -4,6 +4,7 @@ import UserService from "../../services/UserService";
 import EditProfileComponent from './EditProfile/EditProfileComponent';
 import {Link} from "react-router-dom";
 import {isEmpty} from "../../utils/Utils";
+import * as Actions from '../../store/Actions';
 
 class ProfileComponent extends React.Component {
   state = {
@@ -15,6 +16,17 @@ class ProfileComponent extends React.Component {
     UserService.getUser(this.state.userId)
     .then(user => this.setState({user}));
   }
+
+  componentDidUpdate(prevProps, prevState, snapshot) {
+    if (this.props !== prevProps) {
+      if (this.props.current_user._id === this.userId
+      && this.props.current_user !== this.state.user) {
+        this.props.setUser(this.props.current_user)
+      }
+    }
+  }
+
+
 
   courseRow = (course, index) => {
     return (
@@ -90,6 +102,8 @@ const mapStateToProps = (state) => ({
   current_user: state.current_user,
 });
 
-const mapDispatchToProps = (dispatch) => ({});
+const mapDispatchToProps = (dispatch) => ({
+  setUser: (user) => dispatch(Actions.setUser(user)),
+});
 
 export default connect(mapStateToProps, mapDispatchToProps)(ProfileComponent);

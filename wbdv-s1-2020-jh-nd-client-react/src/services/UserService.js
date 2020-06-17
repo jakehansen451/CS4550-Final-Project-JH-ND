@@ -1,5 +1,4 @@
 import { localApiUrl as url } from '../config';
-import {isEmpty} from '../utils/Utils';
 
 const createUser = (user) =>
     fetch(`${url}/users/`, {

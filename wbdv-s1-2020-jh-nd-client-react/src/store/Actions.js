@@ -3,8 +3,8 @@ export const SELECT_USER = 'SELECT_USER';
 export const DESELECT_USER = 'DESELECT_USER';
 export const SELECT_TIME = 'SELECT_TIME';
 export const SET_GOOGLE_AUTH = "SET_GOOGLE_AUTH";
-export const LOGIN = 'LOGIN';
-export const LOGOUT = 'LOGOUT';
+export const SET_USER = 'SET_USER';
+export const UNSET_USER = 'UNSET_USER';
 
 // Action creators
 export const selectUser = (selected_user) => {
@@ -23,10 +23,10 @@ export const setGoogleAuth = (googleAuth) => {
   return {type: SET_GOOGLE_AUTH, googleAuth}
 };
 
-export const login = (user) => {
-  return {type: LOGIN, user}
+export const setUser = (user) => {
+  return {type: SET_USER, user}
 };
 
-export const logout = () => {
-  return {type: LOGOUT}
+export const unsetUser = () => {
+  return {type: UNSET_USER}
 };
