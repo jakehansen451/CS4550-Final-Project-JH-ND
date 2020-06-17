@@ -2,8 +2,12 @@ package com.example.myapp.controllers;
 
 
 import com.example.myapp.models.course.Course;
+import com.example.myapp.models.people.User;
 import com.example.myapp.services.CourseService;
+import com.example.myapp.services.UserService;
+import java.util.Map;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -14,6 +18,8 @@ import java.util.List;
 public class CourseController {
     @Autowired
     private CourseService courseService;
+    @Autowired
+    private UserService userService;
 
     @GetMapping("/api/courses")
     public List<Course> findAllCourses() {
@@ -32,7 +38,18 @@ public class CourseController {
     }
 
     @PostMapping("api/courses")
-    public Course createCourse(@RequestBody Course newCourse) {
+    public Course createCourse(@RequestBody Map<String, String> payload) {
+        Course newCourse = new Course(payload.get("title"));
+        User admin;
+        try {
+            admin = userService.findUserById(Long.parseLong(payload.get("adminId")));
+        } catch (NumberFormatException nfe) {
+            throw new IllegalArgumentException();
+        }
+        if (admin == null) {
+            throw new NotFoundException();
+        }
+        newCourse.setAdmin(admin);
         return courseService.createCourse(newCourse);
     }
 
@@ -45,4 +62,7 @@ public class CourseController {
     public void deleteCourseById(@PathVariable("courseId") Long courseId) {
         courseService.deleteCourseById(courseId);
     }
+
+    @ResponseStatus(code = HttpStatus.NOT_FOUND, reason = "Not found")
+    private class NotFoundException extends RuntimeException {}
 }

@@ -1,8 +1,22 @@
 import React from 'react';
 import {connect} from 'react-redux';
 import {Link} from 'react-router-dom';
+import CourseService from '../../services/CourseService';
 
 class CourseBrowserComponent extends React.Component {
+  state={
+    courses: [],
+    newCourseTitle: 'New Course',
+  };
+
+  componentDidMount() {
+    CourseService.getAllCourses()
+    .then(courses => {
+      console.log(courses);
+      this.setState({courses})
+    })
+  }
+
   renderCourseRow = (course, index) => {
     return (
         <div key={index}>
@@ -16,13 +30,32 @@ class CourseBrowserComponent extends React.Component {
     )
   };
 
+  addCourse = () => {
+    CourseService.createCourse({
+      title: this.state.newCourseTitle,
+      adminId: this.props.current_user._id,
+    }).then(r => console.log(r));
+  };
+
   render() {
-    console.log(this.props);
     return (
         <div>
           <h2>Browse Courses</h2>
+          {this.props.current_user.role === 'ADMIN' &&
           <div>
-            {this.props.courses.map(this.renderCourseRow)}
+            <label htmlFor={'new-course-title'}>New Course Title:</label>
+            <input
+                defaultValue={this.state.newCourseTitle}
+                onChange={(e) => this.setState({newCourseTitle: e.target.value})}
+            />
+            <button
+                onClick={this.addCourse}
+            >
+              Add Course
+            </button>
+          </div>}
+          <div>
+            {this.state.courses.map(this.renderCourseRow)}
           </div>
         </div>
     )
@@ -30,7 +63,7 @@ class CourseBrowserComponent extends React.Component {
 }
 
 const mapStateToProps = (state) => ({
-  courses: state.courses,
+  current_user: state.current_user,
 });
 
 const mapDispatchToProps = (dispatch) => ({

@@ -27,6 +27,10 @@ public class Course {
     private String abbreviation;
     private Integer number;
 
+    public Course(String title) {
+        this.title = title;
+    }
+
 
     @ManyToMany(mappedBy = "studentInCourses")
     @JsonIgnore
