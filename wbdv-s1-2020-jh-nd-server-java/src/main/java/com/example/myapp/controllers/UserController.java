@@ -108,15 +108,8 @@ public class UserController {
         return service.createUser(newUser);
     }
 
-    @PutMapping("/api/users/{userId}")
-    public User updateUser(@PathVariable("userId") Long userId, @RequestBody User updatedUser) {
-        return service.updateUser(userId, updatedUser);
-    }
 
-    @DeleteMapping("/api/users/{userId}")
-    public void deleteUserById(@PathVariable("userId") Long userId) {
-        service.deleteUserById(userId);
-    }
+
 
     @PostMapping("/api/users/{userId}/tokens")
     public User addAuthorizationTokensToUser(@RequestBody Map<String, String> body, @PathVariable("userId") Long userId) {
