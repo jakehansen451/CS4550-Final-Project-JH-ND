@@ -2,7 +2,6 @@
 import React from 'react'
 import { connect } from 'react-redux'
 import { Link } from 'react-router-dom'
-import * as Utils from '../../utils/Utils'
 import * as Actions from "../../store/Actions";
 import * as DateUtils from '../../utils/DateUtils'
 import googleService from "../../api/GoogleAPIService";

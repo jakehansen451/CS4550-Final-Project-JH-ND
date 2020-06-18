@@ -5,7 +5,8 @@
   --screen-xs: 520px;
   --screen-xxs: 320px;
   --text-color: #212529;
-  --faded-light-green: rgba(210, 238, 172, 0.1);
+  --faded-lighter-green: rgba(210, 238, 172, 0.1);
+  --faded-light-green: rgba(210, 238, 172, 0.4);
   --lightest-green: #aecb91;
   --lighter-green: #9baf86;
   --light-green: #6d7f5c;
@@ -72,7 +73,7 @@ a {
 
 .wbdv-input {
   border-radius: 0.25rem;
-  background-color: var(--faded-light-green);
+  background-color: var(--faded-lighter-green);
   border: 1px solid var(--light-green);
   padding: 0 0.25rem;
 }

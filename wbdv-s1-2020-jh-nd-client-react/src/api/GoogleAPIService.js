@@ -1,8 +1,5 @@
 import {gapi} from 'gapi-script';
 import UserService from "../services/UserService";
-import React from "react";
-import {connect} from "react-redux";
-import * as Actions from "../store/Actions";
 
 import store from '../store/Store';
 
@@ -10,7 +7,7 @@ import store from '../store/Store';
 const SCOPE = 'https://www.googleapis.com/auth/calendar';
 const CLIENT_ID = '46098970829-859lp0f58tvg2o77h1g8iclvgpflf17v.apps.googleusercontent.com';
 let API_KEY = "AIzaSyBNECVLm6gneH9sx6OT1DZLzqsFEhuCNCA";
-let calendarId = "5op33saotih66kdu8inudbuca4@group.calendar.google.com"; // TutorMe calendar's id
+// let calendarId = "5op33saotih66kdu8inudbuca4@group.calendar.google.com"; // TutorMe calendar's id
 
 const url = 'https://accounts.google.com/o/oauth2/auth?access_type=offline&client_id=46098970829-859lp0f58tvg2o77h1g8iclvgpflf17v.apps.googleusercontent.com&redirect_uri=http://localhost:3000/Callback&response_type=code&scope=https://www.googleapis.com/auth/calendar';
 

@@ -1,0 +1,54 @@
+.wbdv-course-browser {
+  max-width: 500px;
+}
+
+.wbdv-course-table-row {
+  border-width: 0 1px 0 1px;
+  border-color: var(--lighter-grey);
+  border-style: solid;
+  background-color: var(--lightest-grey);
+  padding: 0.5rem 1rem;
+}
+
+.wbdv-course-table-row:nth-child(odd) {
+  background-color: var(--faded-light-green);
+}
+
+.wbdv-course-table-row:first-of-type {
+  border-top-left-radius: 0.25rem;
+  border-top-right-radius: 0.25rem;
+  border-top: 1px solid var(--lighter-grey);
+  border-bottom: 1px solid var(--lighter-grey);
+  background-color: var(--lighter-green);
+}
+
+.wbdv-course-table-row:last-of-type {
+  border-bottom-left-radius: 0.25rem;
+  border-bottom-right-radius: 0.25rem;
+  border-bottom: 1px solid var(--lighter-grey);
+}
+
+.wbdv-course-row-contents {
+  display: inline-flex;
+  font-size: larger;
+  font-weight: 500;
+  justify-content: space-between;
+  width: 100%
+}
+
+.wbdv-add-course-block {
+  margin-bottom: 1rem;
+  display: inline-flex;
+  justify-content: space-between;
+  width: 100%;
+}
+
+.wbdv-new-course-label {
+  font-size: larger;
+  font-weight: 500;
+  margin-bottom: 0;
+}
+
+.wbdv-new-course-input {
+  margin-right: 0.5rem;
+}

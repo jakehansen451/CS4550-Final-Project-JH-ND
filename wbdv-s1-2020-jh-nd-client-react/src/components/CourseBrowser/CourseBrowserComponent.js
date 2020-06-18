@@ -3,8 +3,9 @@ import {connect} from 'react-redux';
 import {Link} from 'react-router-dom';
 import CourseService from '../../services/CourseService';
 import * as Actions from '../../store/Actions';
-import {isEmpty} from "../../utils/Utils";
 import UserService from "../../services/UserService";
+import '../../styles.css';
+import './CourseBrowserComponent.css';
 
 class CourseBrowserComponent extends React.Component {
   state = {
@@ -22,15 +23,13 @@ class CourseBrowserComponent extends React.Component {
 
   renderCourseRow = (course, index) => {
     return (
-        <div key={index}>
-          <Link to={`/courses/${course._id}`}>{course.title}</Link>
-          <div>{`${course.admin.lastName}, ${course.admin.firstName}`}</div>
+        <div key={index} className='wbdv-course-table-row'>
+          <div className='wbdv-course-row-contents'>
+            <Link to={`/courses/${course._id}`}>{course.title}</Link>
+            <div>{`${course.admin.lastName}, ${course.admin.firstName}`}</div>
+          </div>
         </div>
     )
-  };
-
-  enrollStudentInCourse = (course) => {
-
   };
 
   addCourse = () => {
@@ -43,23 +42,38 @@ class CourseBrowserComponent extends React.Component {
 
   render() {
     return (
-        <div>
+        <div className='wbdv-course-browser'>
           <h2>Browse Courses</h2>
           {this.props.current_user.role === 'ADMIN' &&
-          <div>
-            <label htmlFor={'new-course-title'}>New Course Title:</label>
-            <input
-                defaultValue={this.state.newCourseTitle}
-                onChange={(e) => this.setState(
-                    {newCourseTitle: e.target.value})}
-            />
-            <button
-                onClick={this.addCourse}
+          <div className='wbdv-add-course-block'>
+            <label
+                className='wbdv-new-course-label'
+                htmlFor={'new-course-title'}
             >
-              Add Course
-            </button>
+              New Course Title:
+            </label>
+            <div>
+              <input
+                  className='wbdv-input wbdv-new-course-input'
+                  defaultValue={this.state.newCourseTitle}
+                  onChange={(e) => this.setState(
+                      {newCourseTitle: e.target.value})}
+              />
+              <button
+                  className='wbdv-btn wbdv-green-btn'
+                  onClick={this.addCourse}
+              >
+                Add Course
+              </button>
+            </div>
           </div>}
-          <div>
+          <div className='wbdv-course-table'>
+            <div className='wbdv-course-table-row'>
+              <div className='wbdv-course-row-contents'>
+                <div>Course Title</div>
+                <div>Administrator</div>
+              </div>
+            </div>
             {this.state.courses.map(this.renderCourseRow)}
           </div>
         </div>
