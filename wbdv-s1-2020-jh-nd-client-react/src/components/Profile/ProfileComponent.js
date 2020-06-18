@@ -7,6 +7,8 @@ import * as Actions from '../../store/Actions';
 import UserService from "../../services/UserService";
 import GoogleAPIService from "../../api/GoogleAPIService";
 import CourseService from "../../services/CourseService";
+import '../../styles.css';
+import './ProfileComponent.css';
 
 class ProfileComponent extends React.Component {
 
@@ -67,17 +69,29 @@ class ProfileComponent extends React.Component {
   renderCourseLists = () => {
     return (
         <div>
-          {(this.state.user.role === 'STUDENT' || this.state.user.role
-              === 'TUTOR') &&
+          {this.state.user.role === 'STUDENT' &&
           <div>
-            <div>User is enrolled in:</div>
-            {this.state.coursesEnrolled.map(
-                this.courseRow)}
+            {this.state.coursesEnrolled.length > 0 &&
+            <div>User is enrolled in:</div>}
+            {this.state.coursesEnrolled.map(this.courseRow)}
           </div>}
-          {(this.state.user.role === 'ADMIN' || this.state.user.role
-              === 'TUTOR') &&
+          {this.state.user.role === 'TUTOR' &&
+          <div className='wbdv-course-list-two-column'>
+            {this.state.coursesTutored.length > 0 &&
+            <div className='wbdv-tutor-tutored-col'>
+              <div>User is course staff for:</div>
+              {this.state.coursesTutored.map(this.courseRow)}
+            </div>}
+            {this.state.coursesEnrolled.length > 0 &&
+            <div className='wbdv-tutor-enrolled-col'>
+              <div>User is enrolled in:</div>
+              {this.state.coursesEnrolled.map(this.courseRow)}
+            </div>}
+          </div>}
+          {this.state.user.role === 'ADMIN' &&
           <div>
-            <div>User is course staff for:</div>
+            {this.state.coursesTaught.length > 0 &&
+            <div>User is the course administrator for:</div>}
             {this.state.coursesTaught.map(this.courseRow)}
           </div>}
         </div>
@@ -91,47 +105,66 @@ class ProfileComponent extends React.Component {
           this.props.logout();
           this.props.history.push('/login/');
         }
-    )};
+    )
+  };
 
   render() {
     return (
         (this.state.user && !isEmpty(this.state.user))
             ?
-            <div>
+            <div className='wbdv-profile'>
               <h2>Profile</h2>
               <div>
-                <div>
-                  <div>
-                    <div>Username:</div>
-                    <div>{this.state.user.username}</div>
+                <div className='wbdv-profile-two-column'>
+                  <div className='wbdv-info-column'>
+                    <div className='wbdv-profile-row'>
+                      <div className='wbdv-info-column-label'>
+                        Username:
+                      </div>
+                      <div className='wbdv-info-column-value'>
+                        {this.state.user.username}
+                      </div>
+                    </div>
+                    <div className='wbdv-profile-row'>
+                      <div className='wbdv-info-column-label'>
+                        Name:
+                      </div>
+                      <div className='wbdv-info-column-value'>
+                        {`${this.state.user.lastName}, ${this.state.user.firstName}`}
+                      </div>
+                    </div>
+                    <div className='wbdv-profile-row'>
+                      <div className='wbdv-info-column-label'>
+                        Role:
+                      </div>
+                      <div className='wbdv-info-column-value'>
+                        {this.state.user.role}
+                      </div>
+                    </div>
+                    <div className='wbdv-profile-row'>
+                      <div className='wbdv-info-column-label'>Email:</div>
+                      <div className='wbdv-info-column-value'>
+                        {this.state.user.email}
+                      </div>
+                    </div>
                   </div>
-                  <div>
-                    <div>Name:</div>
-                    <div>{`${this.state.user.lastName}, ${this.state.user.firstName}`}</div>
-                  </div>
-                  <div>
-                    <div>Role:</div>
-                    <div>{this.state.user.role}</div>
-                  </div>
-                  <div>
-                    <div>Email:</div>
-                    <div>{this.state.user.email}</div>
+                  <div className='wbdv-course-list-column'>
+                    {this.renderCourseLists()}
                   </div>
                 </div>
-                <div>
-                  {this.renderCourseLists()}
-                </div>
+                {this.state.user._id === this.props.current_user._id &&
+                <EditProfileComponent
+                    deleteUser={this.deleteUser}
+                />}
               </div>
-              {this.state.user._id === this.props.current_user._id &&
-              <EditProfileComponent
-                  deleteUser={this.deleteUser}
-              />}
-              <button onClick={(event) => GoogleAPIService.handleAuthClick(
-                  event)}>Authorize
-              </button>
-              <button onClick={(event) => GoogleAPIService.handleSignoutClick(
-                  event)}>Sign out
-              </button>
+              <div>
+                <button onClick={(event) => GoogleAPIService.handleAuthClick(
+                    event)}>Authorize
+                </button>
+                <button onClick={(event) => GoogleAPIService.handleSignoutClick(
+                    event)}>Sign out
+                </button>
+              </div>
             </div>
             :
             <h2>

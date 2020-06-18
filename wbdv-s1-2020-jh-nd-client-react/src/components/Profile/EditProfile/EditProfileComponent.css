@@ -1,0 +1,42 @@
+.wbdv-edit-profile {
+  max-width: 400px;
+}
+
+.wbdv-edit-profile-input-row {
+  width: 100%;
+  display: inline-flex;
+  justify-content: space-between;
+  margin-bottom: 1rem;
+}
+
+.wbdv-edit-profile-input-label {
+  margin-bottom: 0;
+  min-width: 100px;
+  font-weight: 500;
+}
+
+.wbdv-edit-profile-input {
+  flex-basis: 15rem;
+}
+
+.wbdv-edit-profile-button {
+  flex-basis: 10rem;
+}
+
+.wbdv-edit-profile-buttons {
+  width: 100%;
+  display: inline-flex;
+  justify-content: space-between;
+  align-items: baseline;
+  flex-wrap: wrap;
+}
+
+@media screen and (max-width: 500px) {
+  .wbdv-edit-profile-input-row {
+    flex-direction: column;
+  }
+
+  .wbdv-edit-profile-input {
+    flex-basis: 0;
+  }
+}

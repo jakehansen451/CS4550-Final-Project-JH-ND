@@ -1,0 +1,65 @@
+.wbdv-profile {
+  max-width: 800px;
+}
+
+.wbdv-profile-two-column {
+  display: inline-flex;
+  width: 100%;
+}
+
+.wbdv-info-column {
+  width: 50%;
+  padding-right: 1rem;
+}
+
+.wbdv-course-list-column {
+  width: 50%;
+  padding-left: 1rem;
+}
+
+.wbdv-info-column-label {
+  font-weight: 500;
+  min-width: 90px;
+}
+
+.wbdv-profile-row {
+  display: inline-flex;
+  justify-content: space-between;
+  width: 100%;
+  overflow: auto;
+}
+
+.wbdv-course-list-two-column {
+  display: inline-flex;
+  width: 100%;
+}
+
+.wbdv-tutor-tutored-col {
+  width: 50%;
+  padding-right: 1rem;
+}
+
+.wbdv-tutor-enrolled-col {
+  width: 50%;
+  padding-left: 1rem;
+}
+
+@media screen and (max-width: 600px) {
+  .wbdv-profile-row {
+    flex-direction: column;
+  }
+
+  .wbdv-course-list-two-column {
+    flex-direction: column;
+  }
+
+  .wbdv-tutor-tutored-col {
+    width: 100%;
+    padding-right: 0;
+  }
+  .wbdv-tutor-enrolled-col {
+    width: 100%;
+    margin-top: 1rem;
+    padding-left: 0;
+  }
+}

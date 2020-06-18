@@ -39,6 +39,7 @@ a {
 .wbdv-btn {
   background-color: inherit;
   border: none;
+  border-radius: 0.25rem;
 }
 
 .wbdv-link {
@@ -47,19 +48,19 @@ a {
 
 .wbdv-green-btn {
   background-color: var(--lighter-green);
-  border-color: var(--green);
+  border: 1px solid var(--light-green);
   color: var(--dark-green);
 }
 
 .wbdv-green-btn:hover {
-  background-color: var(--green);
+  background-color: var(--light-green);
   border-color: var(--dark-green);
   color: var(--darker-green);
 }
 
 .wbdv-red-btn {
   background-color: var(--light-red);
-  border-color: var(--red);
+  border: 1px solid var(--red);
   color: var(--dark-red);
 }
 

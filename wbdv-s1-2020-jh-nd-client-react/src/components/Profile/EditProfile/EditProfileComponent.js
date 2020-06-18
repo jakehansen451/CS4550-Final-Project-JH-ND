@@ -2,6 +2,8 @@ import React from 'react';
 import {connect} from 'react-redux';
 import * as Actions from '../../../store/Actions';
 import UserService from "../../../services/UserService";
+import '../../../styles.css';
+import './EditProfileComponent.css';
 
 class EditProfileComponent extends React.Component {
   state = {
@@ -36,42 +38,60 @@ class EditProfileComponent extends React.Component {
 
   render() {
     return (
-        <div>
-          <div>
-            <label>Password:</label>
+        <div className='wbdv-edit-profile'>
+          <br/>
+          <h5>Edit Profile</h5>
+          <div className='wbdv-edit-profile-input-row'>
+            <label className='wbdv-edit-profile-input-label'>
+              Password:
+            </label>
             <input
+                className='wbdv-input wbdv-edit-profile-input'
                 onChange={(e) => this.setState({password: e.target.value})}
             />
           </div>
           <div>
-            <div>
-              <label>Confirm password:</label>
+            <div className='wbdv-edit-profile-input-row'>
+              <label className='wbdv-edit-profile-input-label'>
+                Confirm password:
+              </label>
               <input
+                  className='wbdv-input wbdv-edit-profile-input'
                   onChange={(e) => this.setState(
                       {confirmPassword: e.target.value})}
               />
             </div>
-            <div>
-              <label>First name:</label>
+            <div className='wbdv-edit-profile-input-row'>
+              <label className='wbdv-edit-profile-input-label'>
+                First name:
+              </label>
               <input
+                  className='wbdv-input wbdv-edit-profile-input'
                   onChange={(e) => this.setState({firstName: e.target.value})}
               />
             </div>
-            <div>
-              <label>Last name:</label>
+            <div className='wbdv-edit-profile-input-row'>
+              <label className='wbdv-edit-profile-input-label'>
+                Last name:
+              </label>
               <input
+                  className='wbdv-input wbdv-edit-profile-input'
                   onChange={(e) => this.setState({lastName: e.target.value})}
               />
             </div>
-            <div>
-              <label>Email:</label>
+            <div className='wbdv-edit-profile-input-row'>
+              <label className='wbdv-edit-profile-input-label'>
+                Email:
+              </label>
               <input
+                  className='wbdv-input wbdv-edit-profile-input'
                   onChange={(e) => this.setState({email: e.target.value})}
               />
             </div>
-            <div>
+            <div className='wbdv-edit-profile-input-row'>
               <div>Role:</div>
               <select
+                  className='wbdv-input wbdv-edit-profile-input'
                   defaultValue={this.state.role}
                   onChange={(e) => this.setState({role: e.target.value})}
               >
@@ -81,11 +101,15 @@ class EditProfileComponent extends React.Component {
               </select>
             </div>
           </div>
-          <div>
-            <button onClick={this.updateProfile}>
+          <div className='wbdv-edit-profile-buttons'>
+            <button
+                className='wbdv-btn wbdv-green-btn wbdv-edit-profile-button'
+                onClick={this.updateProfile}
+            >
               Update Profile
             </button>
             <button
+                className='wbdv-btn wbdv-red-btn wbdv-edit-profile-button'
                 onClick={this.props.deleteUser}
             >
               Delete Profile

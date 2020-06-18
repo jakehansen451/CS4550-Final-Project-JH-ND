@@ -153,7 +153,7 @@ class CourseDetailComponent extends React.Component {
               <button
                   onClick={this.quitAsStudent}
               >
-                Enroll
+                Unenroll
               </button>
             </div>
             }

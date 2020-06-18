@@ -16,7 +16,6 @@
 }
 
 .wbdv-login-button {
-  border-radius: 0.25rem;
   padding: 0.25rem 0.75rem;
   flex-basis: 8rem;
 }
@@ -31,7 +30,7 @@
 .wbdv-login-input-label {
   margin-bottom: 0;
   min-width: 100px;
-  font-weight: 400;
+  font-weight: 500;
 }
 
 .wbdv-login-input {

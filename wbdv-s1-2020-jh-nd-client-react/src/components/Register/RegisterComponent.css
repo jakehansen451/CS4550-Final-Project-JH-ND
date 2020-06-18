@@ -25,7 +25,7 @@
 .wbdv-register-input-label {
   margin-bottom: 0;
   min-width: 150px;
-  font-weight: 400;
+  font-weight: 500;
 }
 
 .wbdv-register-input {
@@ -40,7 +40,6 @@
 }
 
 .wbdv-register-button {
-  border-radius: 0.25rem;
   padding: 0.25rem 0.75rem;
   flex-basis: 8rem;
 }
