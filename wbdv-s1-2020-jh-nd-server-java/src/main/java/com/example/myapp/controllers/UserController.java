@@ -51,11 +51,6 @@ public class UserController {
     return 1;
   }
 
-  @PostMapping("/api/users")
-  public User createUser(@RequestBody User newUser) {
-    return service.createUser(newUser);
-  }
-
   @PutMapping("/api/users/{userId}")
   public User updateUser(HttpSession session, @PathVariable("userId") Long userId,
       @RequestBody User updatedUser) {
@@ -81,11 +76,6 @@ public class UserController {
     return service.findStudentsByCourseId(courseId);
   }
 
-  @GetMapping("/api/users")
-  public List<User> findAllUsers() {
-    return service.findAllUsers();
-  }
-
   @GetMapping("/api/users/{userId}")
   public User findUserById(@PathVariable("userId") String userId) {
     Long userIdLong;
@@ -101,14 +91,22 @@ public class UserController {
     return user;
   }
 
-  @PostMapping("/api/users/{userId}/tokens")
-  public User addAuthorizationTokensToUser(@RequestBody Map<String, String> body,
-      @PathVariable("userId") Long userId) {
-    return service.addTokensToUser(body, userId);
-  }
+    @GetMapping("/api/users")
+    public List<User> findAllUsers() {
+        return service.findAllUsers();
+    }
 
-  @ResponseStatus(code = HttpStatus.NOT_FOUND, reason = "Not found")
-  private class NotFoundException extends RuntimeException {
+    @PostMapping("/api/users")
+    public User createUser(@RequestBody User newUser) {
+        return service.createUser(newUser);
+    }
 
-  }
+    @PostMapping("/api/users/{userId}/tokens")
+    public User addAuthorizationTokensToUser(@RequestBody Map<String, String> body, @PathVariable("userId") Long userId) {
+        return service.addTokensToUser(body, userId);
+    }
+
+    @ResponseStatus(code = HttpStatus.NOT_FOUND, reason = "Not found")
+    private class NotFoundException extends RuntimeException {
+    }
 }
