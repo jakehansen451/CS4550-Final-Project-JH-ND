@@ -17,52 +17,101 @@ import java.util.List;
 @RestController
 @CrossOrigin(origins = "*")
 public class CourseController {
-    @Autowired
-    private CourseService courseService;
-    @Autowired
-    private UserService userService;
 
-    @GetMapping("/api/courses")
-    public List<Course> findAllCourses() {
-        return courseService.findAllCourses();
+  @Autowired
+  private CourseService courseService;
+  @Autowired
+  private UserService userService;
+
+
+  @GetMapping("/api/courses")
+  public List<Course> findAllCourses() {
+    return courseService.findAllCourses();
+  }
+
+  @GetMapping("/api/courses/{courseId}/events")
+  public List<Event> findEventsForCourse(@PathVariable("courseId") Long courseId) {
+    return courseService.findEventsByCourseId(courseId);
+  }
+
+  @GetMapping("/api/courses/{courseId}")
+  public Course findCourseById(@PathVariable("courseId") Long courseId) {
+    return courseService.findCourseById(courseId);
+  }
+
+  @PostMapping("api/courses")
+  public Course createCourse(@RequestBody Map<String, String> payload) {
+    Course newCourse = new Course(payload.get("title"));
+    User admin;
+    try {
+      admin = userService.findUserById(Long.parseLong(payload.get("adminId")));
+    } catch (NumberFormatException nfe) {
+      throw new IllegalArgumentException();
     }
-
-    @GetMapping("/api/courses/{courseId}/events")
-    public List<Event> findEventsForCourse(@PathVariable("courseId") Long courseId) {
-        return courseService.findEventsByCourseId(courseId);
+    if (admin == null) {
+      throw new NotFoundException();
     }
+    newCourse.setAdmin(admin);
+    return courseService.createCourse(newCourse);
+  }
 
-    @GetMapping("api/courses/{courseId}")
-    public Course findCourseById(@PathVariable("courseId") Long courseId) {
-        return courseService.findCourseById(courseId);
-    }
+  @PutMapping("/api/courses/{courseId}")
+  public Course updateCourse(@PathVariable("courseId") Long courseId,
+      @RequestBody Course updatedCourse) {
+    return courseService.updateCourse(courseId, updatedCourse);
+  }
 
-    @PostMapping("api/courses")
-    public Course createCourse(@RequestBody Map<String, String> payload) {
-        Course newCourse = new Course(payload.get("title"));
-        User admin;
-        try {
-            admin = userService.findUserById(Long.parseLong(payload.get("adminId")));
-        } catch (NumberFormatException nfe) {
-            throw new IllegalArgumentException();
-        }
-        if (admin == null) {
-            throw new NotFoundException();
-        }
-        newCourse.setAdmin(admin);
-        return courseService.createCourse(newCourse);
-    }
+  @DeleteMapping("/api/courses/{courseId}")
+  public void deleteCourseById(@PathVariable("courseId") Long courseId) {
+    courseService.deleteCourseById(courseId);
+  }
 
-    @PutMapping("api/courses/{courseId}")
-    public Course updateCourse(@PathVariable("courseId") Long courseId, @RequestBody Course updatedCourse) {
-        return courseService.updateCourse(courseId, updatedCourse);
-    }
+  @PostMapping("/api/courses/{courseId}/students")
+  public Course addStudent(@PathVariable("courseId") Long courseId, @RequestBody User user) {
+    User student = userService.findUserById(user.getId());
+    Course course = courseService.findCourseById(courseId);
 
-    @DeleteMapping("api/courses/{courseId}")
-    public void deleteCourseById(@PathVariable("courseId") Long courseId) {
-        courseService.deleteCourseById(courseId);
-    }
+    student.getStudentInCourses().add(course);
+    userService.updateUser(user.getId(), student);
 
-    @ResponseStatus(code = HttpStatus.NOT_FOUND, reason = "Not found")
-    private class NotFoundException extends RuntimeException {}
+    return course;
+  }
+
+  @PostMapping("/api/courses/{courseId}/students/remove")
+  public Course removeStudent(@PathVariable("courseId") Long courseId, @RequestBody User user) {
+    User student = userService.findUserById(user.getId());
+    Course course = courseService.findCourseById(courseId);
+
+    student.getStudentInCourses().remove(course);
+    userService.updateUser(user.getId(), student);
+
+    return course;
+  }
+
+  @PostMapping("/api/courses/{courseId}/tutors")
+  public Course addTutor(@PathVariable("courseId") Long courseId, @RequestBody User user) {
+    User tutor = userService.findUserById(user.getId());
+    Course course = courseService.findCourseById(courseId);
+
+    tutor.getTutorInCourses().add(course);
+    userService.updateUser(user.getId(), tutor);
+
+    return course;
+  }
+
+  @PostMapping("/api/courses/{courseId}/tutors/remove")
+  public Course removeTutor(@PathVariable("courseId") Long courseId, @RequestBody User user) {
+    User tutor = userService.findUserById(user.getId());
+    Course course = courseService.findCourseById(courseId);
+
+    tutor.getTutorInCourses().remove(course);
+    userService.updateUser(user.getId(), tutor);
+
+    return course;
+  }
+
+  @ResponseStatus(code = HttpStatus.NOT_FOUND, reason = "Not found")
+  private class NotFoundException extends RuntimeException {
+
+  }
 }

@@ -36,37 +36,53 @@ class CourseDetailComponent extends React.Component {
 
   renderUserRow = (user, index) =>
       <Link key={index} to={`/profile/${user._id}/`}>
-        {user.name}
+        {`${user.lastName}, ${user.firstName}`}
       </Link>;
 
   canEnrollTutor = () =>
       this.props.current_user
       && !isEmpty(this.props.current_user)
       && this.props.current_user.role === 'TUTOR'
-      && !this.state.tutors.includes(this.current_user);
+      && !this.state.tutors.find(t => t._id === this.props.current_user._id)
+      && !this.state.students.find(s => s._id === this.props.current_user._id);
 
   enrollAsTutor = () =>
-      UserService.enrollAsTutor(this.props.current_user._id)
-      .then(response => {
-        console.log(response);
-        this.setState({tutors: [...this.state.tutors, this.props.current_user]})
-      });
+      CourseService.addTutor(this.state.courseId, this.props.current_user)
+      .then(course => this.setState({
+        course,
+        tutors: [...this.state.tutors, this.props.current_user]
+      }));
+
+  quitAsTutor = () =>
+      CourseService.removeTutor(this.state.courseId, this.props.current_user)
+      .then(course => this.setState({
+        course,
+        tutors: this.state.tutors.filter(
+            t => t._id !== this.props.current_user._id)
+      }));
 
   canEnrollStudent = () =>
       this.props.current_user
       && !isEmpty(this.props.current_user)
       && (this.props.current_user.role === 'TUTOR'
       || this.props.current_user.role === 'STUDENT')
-      && !this.state.tutors.includes(this.props.current_user)
-      && !this.state.students.includes(this.props.current_user);
+      && !this.state.tutors.find(t => t._id === this.props.current_user._id)
+      && !this.state.students.find(s => s._id === this.props.current_user._id);
 
   enrollAsStudent = () =>
-      UserService.enrollAsStudent(this.props.current_user._id)
-      .then(response => {
-        console.log(response);
-        this.setState(
-            {tutors: [...this.state.students, this.props.current_user]})
-      });
+      CourseService.addStudent(this.state.courseId, this.props.current_user)
+      .then(course => this.setState({
+        course,
+        students: [...this.state.students, this.props.current_user]
+      }));
+
+  quitAsStudent = () =>
+      CourseService.removeStudent(this.state.courseId, this.props.current_user)
+      .then(course => this.setState({
+        course,
+        students: this.state.students.filter(
+            s => s._id !== this.props.current_user._id)
+      }));
 
   renderEventRow = (event, index) =>
       <Link key={index} to={`/events/${event._id}`}>
@@ -103,10 +119,30 @@ class CourseDetailComponent extends React.Component {
               </button>
             </div>
             }
+            {this.state.tutors.find(
+                t => t._id === this.props.current_user._id) &&
+            <div>
+              <button
+                  onClick={this.quitAsTutor}
+              >
+                Leave as Tutor
+              </button>
+            </div>
+            }
             {this.canEnrollStudent() &&
             <div>
               <button
                   onClick={this.enrollAsStudent}
+              >
+                Enroll
+              </button>
+            </div>
+            }
+            {this.state.students.find(
+                s => s._id === this.props.current_user._id) &&
+            <div>
+              <button
+                  onClick={this.quitAsStudent}
               >
                 Enroll
               </button>

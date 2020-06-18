@@ -86,12 +86,6 @@ const getStudentsForCourse = (courseId) =>
       else return response.json();
     });
 
-const enrollAsTutor = (userId) =>
-    alert('Pretending to add as tutor');
-
-const enrollAsStudent = (userId) =>
-    alert('Pretending to add as student');
-
 export default {
   createUser,
   updateUser,
@@ -104,6 +98,4 @@ export default {
   getSession,
   getTutorsForCourse,
   getStudentsForCourse,
-  enrollAsTutor,
-  enrollAsStudent,
 }

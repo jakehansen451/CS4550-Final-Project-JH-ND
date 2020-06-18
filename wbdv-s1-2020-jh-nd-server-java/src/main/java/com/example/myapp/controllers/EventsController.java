@@ -5,6 +5,7 @@ import com.example.myapp.services.GoogleCalendarService;
 import com.example.myapp.services.UserService;
 import com.google.api.services.calendar.model.Event;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
 
 import org.springframework.web.bind.annotation.PathVariable;
@@ -17,6 +18,7 @@ import java.util.List;
 
 
 @RestController
+@CrossOrigin(origins = "http://localhost:3000")
 public class EventsController {
     @Autowired
     private GoogleCalendarService googleCalendarService;

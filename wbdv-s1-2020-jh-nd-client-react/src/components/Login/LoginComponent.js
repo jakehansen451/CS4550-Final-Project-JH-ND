@@ -60,7 +60,10 @@ class LoginComponent extends React.Component {
           </div>
           <div>
             <label>Password:</label>
-            <input onChange={(e) => this.setState({password: e.target.value})}/>
+            <input
+                type={'password'}
+                onChange={(e) => this.setState({password: e.target.value})}
+            />
           </div>
           <div>
             <button

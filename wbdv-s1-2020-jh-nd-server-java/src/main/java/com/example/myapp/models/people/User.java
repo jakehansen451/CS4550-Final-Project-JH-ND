@@ -5,12 +5,11 @@ import com.example.myapp.models.course.Course;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
-import lombok.AllArgsConstructor;
-import lombok.Data;
-import lombok.NoArgsConstructor;
-import lombok.ToString;
+import lombok.*;
 
 import javax.persistence.*;
+import java.util.HashSet;
+import java.util.Objects;
 import java.util.Set;
 
 @Entity
@@ -18,6 +17,7 @@ import java.util.Set;
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
+@EqualsAndHashCode
 public class User {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -37,6 +37,7 @@ public class User {
     @ManyToMany
     @JsonIgnore
     @ToString.Exclude
+    @EqualsAndHashCode.Exclude
     @JoinTable(
             name = "course_tutors",
             joinColumns = @JoinColumn(name = "users_id"),
@@ -46,20 +47,23 @@ public class User {
     @ManyToMany
     @JsonIgnore
     @ToString.Exclude
+    @EqualsAndHashCode.Exclude
     @JoinTable(
             name = "course_students",
             joinColumns = @JoinColumn(name = "users_id"),
             inverseJoinColumns = @JoinColumn(name = "courses_id"))
-    private Set<Course> studentInCourses;
+    private Set<Course> studentInCourses = new HashSet<>();
 
     @OneToMany(mappedBy="admin")
     @JsonIgnore
     @ToString.Exclude
+    @EqualsAndHashCode.Exclude
     private Set<Course> adminInCourses;
 
     @ManyToMany
     @JsonIgnore
     @ToString.Exclude
+    @EqualsAndHashCode.Exclude
     @JoinTable(
             name = "event_participants",
             joinColumns = @JoinColumn(name = "users_id"),
@@ -69,5 +73,8 @@ public class User {
     @OneToMany(mappedBy="organizer")
     @JsonIgnore
     @ToString.Exclude
+    @EqualsAndHashCode.Exclude
     private Set<Event> organizerInEvents;
+
+
 }

@@ -1,4 +1,4 @@
-import { localApiUrl as url } from '../config';
+import {localApiUrl as url} from '../config';
 
 const createCourse = (course) =>
     fetch(`${url}/courses/`, {
@@ -30,9 +30,48 @@ const getAllCourses = () =>
 const getEventsForCourse = (courseId) =>
     fetch(`${url}/courses/${courseId}/events`)
     .then(response => {
-      if (response.status === 404) return null;
-      else return response.json();
+      if (response.status === 404) {
+        return null;
+      } else {
+        return response.json();
+      }
     });
+
+const addTutor = (courseId, user) =>
+    fetch(`${url}/courses/${courseId}/tutors/`, {
+      method: 'POST',
+      body: JSON.stringify(user),
+      headers: {
+        'content-type': 'application/json'
+      }
+    }).then(response => response.json());
+
+const removeTutor = (courseId, user) =>
+    fetch(`${url}/courses/${courseId}/tutors/remove`, {
+      method: 'POST',
+      body: JSON.stringify(user),
+      headers: {
+        'content-type': 'application/json'
+      }
+    }).then(response => response.json());
+
+const addStudent = (courseId, user) =>
+    fetch(`${url}/courses/${courseId}/students`, {
+      method: 'POST',
+      body: JSON.stringify(user),
+      headers: {
+        'content-type': 'application/json'
+      }
+    }).then(response => response.json());
+
+const removeStudent = (courseId, user) =>
+    fetch(`${url}/courses/${courseId}/students/remove`, {
+      method: 'POST',
+      body: JSON.stringify(user),
+      headers: {
+        'content-type': 'application/json'
+      }
+    }).then(response => response.json());
 
 export default {
   createCourse,
@@ -41,4 +80,8 @@ export default {
   getCourse,
   getAllCourses,
   getEventsForCourse,
+  addTutor,
+  removeTutor,
+  addStudent,
+  removeStudent
 }

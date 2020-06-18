@@ -60,9 +60,10 @@ class RegisterComponent extends React.Component {
       .then(newUser => {
         if (newUser.status === 500) {
           alert('Registration failed. Please try a different username.');
+        } else {
+          this.props.login(newUser);
+          this.props.history.push(`/profile/${newUser._id}`);
         }
-        this.props.login(newUser);
-        this.props.history.push(`/profile/${newUser._id}`);
       })
     }
   };
@@ -77,12 +78,18 @@ class RegisterComponent extends React.Component {
           </div>
           <div>
             <label>Password:</label>
-            <input onChange={(e) => this.setState({password: e.target.value})}/>
+            <input
+                type={'password'}
+                onChange={(e) => this.setState({password: e.target.value})}
+            />
           </div>
           <div>
             <div>
               <label>Confirm password:</label>
-              <input onChange={(e) => this.setState({confirmPassword: e.target.value})}/>
+              <input
+                  type={'password'}
+                  onChange={(e) => this.setState({confirmPassword: e.target.value})}
+              />
             </div>
             <div>
               <label>First name:</label>
