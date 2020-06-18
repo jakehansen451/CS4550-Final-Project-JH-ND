@@ -10,7 +10,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
-import java.util.Set;
 
 
 @RestController
@@ -52,7 +51,6 @@ public class CourseController {
     public void deleteCourseById(@PathVariable("courseId") Long courseId) {
         courseService.deleteCourseById(courseId);
     }
-
 
 
     @PostMapping("/api/courses/{courseId}/students")

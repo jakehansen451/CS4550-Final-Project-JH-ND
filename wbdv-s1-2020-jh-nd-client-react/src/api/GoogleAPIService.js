@@ -68,7 +68,7 @@ const getRefreshToken = (code) => {
 };
 
 const sendData = (data) =>
-    fetch(`${url}/users/` + store.getState().current_user._id + `/token`, {
+    fetch(`${url}/users/` + store.getState().current_user._id + `/tokens`, {
         method: 'POST',
         body: data,
         headers: {'content-type': 'application/json'}

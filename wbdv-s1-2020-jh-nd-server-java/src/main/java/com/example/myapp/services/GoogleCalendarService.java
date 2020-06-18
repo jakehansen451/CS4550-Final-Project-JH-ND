@@ -10,32 +10,29 @@ import com.google.api.services.calendar.Calendar;
 import com.google.api.services.calendar.model.*;
 import org.springframework.stereotype.Service;
 
-import java.io.IOException;
-import java.security.GeneralSecurityException;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
-import java.util.stream.Collectors;
 
 @Service
 public class GoogleCalendarService {
 
-    public List<Event> getEvents(String token) throws IOException, GeneralSecurityException {
-        Calendar calendar = getCalendar(token);
+    public List<Event> getEvents(String accessToken, String refreshToken, Long userId) throws Exception {
+        Calendar calendar = getCalendar(accessToken, refreshToken, userId);
         DateTime now = new DateTime(System.currentTimeMillis());
 
         return calendar
                 .events()
-                .list("jv3df56voifmh5loq939g81cog@group.calendar.google.com")
+                .list("primary")
                 .setTimeMin(now)
+                .setMaxResults(10)
                 .setOrderBy("startTime")
                 .setSingleEvents(true)
                 .execute()
                 .getItems();
     }
 
-    public List<TimePeriod> getFreeBusy(String token) throws IOException, GeneralSecurityException {
-        Calendar service = getCalendar(token);
+    public List<TimePeriod> getFreeBusy(String accessToken, String refreshToken, Long userId) throws Exception {
+        Calendar service = getCalendar(accessToken, refreshToken, userId);
 
 
         FreeBusyRequest request = new FreeBusyRequest();
@@ -55,7 +52,7 @@ public class GoogleCalendarService {
 
     }
 
-    private Calendar getCalendar(String token) throws GeneralSecurityException, IOException {
+    private Calendar getCalendar(String accessToken, String refreshToken, Long userId) throws Exception {
         final NetHttpTransport HTTP_TRANSPORT = GoogleNetHttpTransport.newTrustedTransport();
         final String APPLICATION_NAME = "TutorMe";
         final JsonFactory JSON_FACTORY = JacksonFactory.getDefaultInstance();
@@ -63,7 +60,7 @@ public class GoogleCalendarService {
         return new Calendar.Builder(
                 HTTP_TRANSPORT,
                 JSON_FACTORY,
-                OAuth2.getCredential(token))
+                OAuth2.authorize(accessToken, refreshToken, userId, HTTP_TRANSPORT, JSON_FACTORY))
                 .setApplicationName(APPLICATION_NAME)
                 .build();
     }
