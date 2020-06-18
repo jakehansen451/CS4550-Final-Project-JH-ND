@@ -18,12 +18,7 @@ import UserService from "../services/UserService";
 class TutorMeComponent extends React.Component {
   componentDidMount() {
     UserService.getSession()
-    .then(response => {
-      console.log('Logging in on refresh as:');
-      console.log(response);
-          response && this.props.login(response)
-        }
-    );
+    .then(response => response && this.props.login(response));
   }
 
   render() {
@@ -57,11 +52,11 @@ class TutorMeComponent extends React.Component {
                    component={ProfileComponent}
                    exact/>
             <Route path="/courses/"
-                   component={CourseBrowserComponent}
-                   exact/>
+                   exact
+                   component={CourseBrowserComponent}/>
             <Route path="/courses/:courseId"
-                   component={CourseDetailComponent}
-                   exact/>
+                   exact
+                   component={CourseDetailComponent}/>
           </div>
         </BrowserRouter>
     )

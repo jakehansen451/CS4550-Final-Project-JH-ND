@@ -44,15 +44,20 @@ public class CourseService {
     }
 
     public Course updateCourse(Long courseId, Course updatedCourse) {
-        updatedCourse.setId(courseId);
-        courseRepository.save(updatedCourse);
 
-        return updatedCourse;
+        // TODO: check if this is the best way to update
+        Course course = findCourseById(courseId);
+        course.setTitle(updatedCourse.getTitle());
+        courseRepository.save(course);
+
+
+        return course;
     }
 
     public List<Event> findEventsByCourseId(Long courseId) {
         return eventRepository.findEventsByCourseId(courseId);
     }
+
 
     public Course addStudentToCourse(Long courseId, Long studentId) throws Exception {
         Course course = courseRepository.findCourse(courseId);
@@ -115,5 +120,18 @@ public class CourseService {
         }
 
         return course.getTutors();
+    }
+
+    public List<Course> findCoursesTaughtByUser(Long userId) {
+        return courseRepository.findCoursesTaughtByUser(userId);
+    }
+
+    public List<Course> findCoursesTutoredByUser(Long userId) {
+        return userRepository.findCoursesTutoredByUser(userId);
+    }
+
+    public List<Course> findCoursesEnrolledByUser(Long userId) {
+        return userRepository.findCoursesEnrolledByUser(userId);
+
     }
 }

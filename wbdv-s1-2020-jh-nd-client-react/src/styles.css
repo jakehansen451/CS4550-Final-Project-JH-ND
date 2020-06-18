@@ -1,4 +1,79 @@
+:root {
+  --max-width: 1200px;
+  --screen-m: 920px;
+  --screen-s: 720px;
+  --screen-xs: 520px;
+  --screen-xxs: 320px;
+  --text-color: #212529;
+  --faded-lighter-green: rgba(210, 238, 172, 0.1);
+  --faded-light-green: rgba(210, 238, 172, 0.4);
+  --lightest-green: #aecb91;
+  --lighter-green: #9baf86;
+  --light-green: #6d7f5c;
+  --dark-green: #344126;
+  --darker-green: #181e13;
+  --link-green: #4ba050;
+  --white: #FFFFFF;
+  --lightest-grey: #dee2e6;
+  --very-light-grey: #cdccd1;
+  --lighter-grey: #9f9ea4;
+  --light-grey: #6b6d70;
+  --grey: #4d4d50;
+  --dark-grey: #35353b;
+  --darker-grey: #25242d;
+  --darkest-grey: #19191c;
+  --light-red: #fa6c68;
+  --red: #CD5C5C;
+  --dark-red: #8B0000;
+  --darker-red: #590000;
+}
+
 body {
   max-width: 1200px;
   padding: 2rem 3rem;
+}
+
+a {
+  color: var(--link-green)!important;
+}
+
+.wbdv-btn {
+  background-color: inherit;
+  border: none;
+  border-radius: 0.25rem;
+}
+
+.wbdv-link {
+  color: var(--link-green);
+}
+
+.wbdv-green-btn {
+  background-color: var(--lighter-green);
+  border: 1px solid var(--light-green);
+  color: var(--dark-green);
+}
+
+.wbdv-green-btn:hover {
+  background-color: var(--light-green);
+  border-color: var(--dark-green);
+  color: var(--darker-green);
+}
+
+.wbdv-red-btn {
+  background-color: var(--light-red);
+  border: 1px solid var(--red);
+  color: var(--dark-red);
+}
+
+.wbdv-red-btn:hover {
+  background-color: var(--red);
+  border-color: var(--dark-red);
+  color: var(--darker-red);
+}
+
+.wbdv-input {
+  border-radius: 0.25rem;
+  background-color: var(--faded-lighter-green);
+  border: 1px solid var(--light-green);
+  padding: 0 0.25rem;
 }

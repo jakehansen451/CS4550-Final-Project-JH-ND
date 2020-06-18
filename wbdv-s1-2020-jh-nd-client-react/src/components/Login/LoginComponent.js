@@ -4,6 +4,8 @@ import {isEmpty} from '../../utils/Utils';
 import {Link} from "react-router-dom";
 import UserService from "../../services/UserService";
 import * as Actions from "../../store/Actions";
+import '../../styles.css';
+import './LoginComponent.css';
 
 class LoginComponent extends React.Component {
   state = {
@@ -11,17 +13,31 @@ class LoginComponent extends React.Component {
     password: '',
   };
 
+  componentDidMount() {
+    UserService.getSession()
+    .then(response => {
+      if (!response) {
+        this.props.logout();
+      } else {
+        this.props.login(response);
+      }
+    });
+  }
+
   alreadyLoggedIn = () => {
     return (
-        <div>
+        <div className='wbdv-already-logged-in'>
           <h2>
             Already logged in.
           </h2>
-          <div>
+          <div className='wbdv-logged-in-links'>
             <Link to={`/profile/${this.props.current_user._id}`}>
               Profile
             </Link>
-            <button onClick={this.logout}>
+            <button
+                className={'wbdv-btn wbdv-link'}
+                onClick={this.logout}
+            >
               Log out
             </button>
           </div>
@@ -50,18 +66,28 @@ class LoginComponent extends React.Component {
 
   loginSection = () => {
     return (
-        <div>
+        <div className='wbdv-login'>
           <h2>Log in</h2>
           <div>
-            <label>Username:</label>
-            <input onChange={(e) => this.setState({username: e.target.value})}/>
+            <div className='wbdv-login-input-row'>
+              <label className='wbdv-login-input-label'>Username:</label>
+              <input
+                  className='wbdv-input wbdv-login-input'
+                  onChange={(e) => this.setState({username: e.target.value})}
+              />
+            </div>
+            <div className='wbdv-login-input-row'>
+              <label className='wbdv-login-input-label'>Password:</label>
+              <input
+                  className='wbdv-input wbdv-login-input'
+                  type={'password'}
+                  onChange={(e) => this.setState({password: e.target.value})}
+              />
+            </div>
           </div>
-          <div>
-            <label>Password:</label>
-            <input onChange={(e) => this.setState({password: e.target.value})}/>
-          </div>
-          <div>
+          <div className='wbdv-login-buttons'>
             <button
+                className='wbdv-btn wbdv-green-btn wbdv-login-button'
                 onClick={this.login}
             >
               Log in

@@ -1,0 +1,46 @@
+.wbdv-login {
+  max-width: 400px;
+  width: 100%;
+}
+
+.wbdv-already-logged-in {
+  width: fit-content;
+}
+
+.wbdv-logged-in-links {
+  padding: 0.25rem;
+  font-size: x-large;
+  width: 100%;
+  justify-content: space-between;
+  display: inline-flex;
+}
+
+.wbdv-login-button {
+  padding: 0.25rem 0.75rem;
+  flex-basis: 8rem;
+}
+
+.wbdv-login-input-row {
+  width: 100%;
+  display: inline-flex;
+  justify-content: space-between;
+  margin-bottom: 1rem;
+}
+
+.wbdv-login-input-label {
+  margin-bottom: 0;
+  min-width: 100px;
+  font-weight: 500;
+}
+
+.wbdv-login-input {
+  flex-basis: 15rem;
+}
+
+.wbdv-login-buttons {
+  width: 100%;
+  display: inline-flex;
+  justify-content: space-between;
+  align-items: baseline;
+  flex-wrap: wrap;
+}

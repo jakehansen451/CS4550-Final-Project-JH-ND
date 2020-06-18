@@ -62,19 +62,11 @@ const googleAuth = (googleAuth = {}, action) => {
 const currentUser = (currentUser = {}, action) => {
   switch (action.type) {
     case Actions.SET_USER:
-      console.log(action.user)
       return action.user;
     case Actions.UNSET_USER:
       return {};
     default:
       return currentUser;
-  }
-};
-
-const course = (course = [], action) => {
-  switch(action.type) {
-    default:
-      return course;
   }
 };
 
@@ -85,7 +77,6 @@ const rootReducer = (state = fakeState, action) => {
     selected_time_block: selectedTimeBlock(state.selected_time_block, action),
     googleAuth: googleAuth(state.googleAuth, action),
     current_user: currentUser(state.current_user, action),
-    courses: course(state.courses, action),
   }
 };
 

@@ -54,10 +54,29 @@ public class UserController {
         return 1;
     }
 
+
     @GetMapping("/api/users/tutors/{courseId}")
     public List<User> findTutorsByCourseId(@PathVariable("courseId") Long courseId) {
         return service.findTutorsByCourseId(courseId);
+
     }
+
+
+    @PutMapping("/api/users/{userId}")
+    public User updateUser(HttpSession session,
+                           @PathVariable("userId") Long userId, @RequestBody User updatedUser) {
+        session.setAttribute("currentUser", updatedUser);
+        return service.updateUser(userId, updatedUser);
+    }
+
+    @DeleteMapping("/api/users/{userId}")
+    public int deleteUserById(HttpSession session,
+                              @PathVariable("userId") Long userId) {
+        service.deleteUserById(userId);
+        session.invalidate();
+        return 1;
+    }
+
 
     @GetMapping("/api/users/students/{courseId}")
     public List<User> findStudentsByCourseId(@PathVariable("courseId") Long courseId) {

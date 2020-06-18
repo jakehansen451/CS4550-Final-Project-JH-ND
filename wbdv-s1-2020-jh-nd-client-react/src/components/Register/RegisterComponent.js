@@ -4,6 +4,8 @@ import {isEmpty} from '../../utils/Utils';
 import {Link} from "react-router-dom";
 import UserService from "../../services/UserService";
 import * as Actions from "../../store/Actions";
+import '../../styles.css';
+import './RegisterComponent.css';
 
 class RegisterComponent extends React.Component {
   state = {
@@ -16,17 +18,25 @@ class RegisterComponent extends React.Component {
     role: 'STUDENT',
   };
 
+  componentDidMount() {
+    UserService.getSession()
+    .then(response => response && this.props.login(response));
+  }
+
   alreadyLoggedIn = () => {
     return (
-        <div>
+        <div className='wbdv-already-logged-in'>
           <h2>
             Already logged in.
           </h2>
-          <div>
+          <div className='wbdv-logged-in-links'>
             <Link to={`/profile/${this.props.current_user._id}`}>
               Profile
             </Link>
-            <button onClick={this.logout}>
+            <button
+                className={'wbdv-btn wbdv-link'}
+                onClick={this.logout}
+            >
               Log out
             </button>
           </div>
@@ -55,53 +65,80 @@ class RegisterComponent extends React.Component {
       .then(newUser => {
         if (newUser.status === 500) {
           alert('Registration failed. Please try a different username.');
+        } else {
+          this.props.login(newUser);
+          this.props.history.push(`/profile/${newUser._id}`);
         }
-        this.props.login(newUser);
-        this.props.history.push(`/profile/${newUser._id}`);
       })
     }
   };
 
   registerSection = () => {
     return (
-        <div>
+        <div className='wbdv-register'>
           <h2>Register</h2>
-          <div>
-            <label>Username:</label>
-            <input onChange={(e) => this.setState({username: e.target.value})}/>
+          <div className='wbdv-register-input-row'>
+            <label className='wbdv-register-input-label'>Username:</label>
+            <input
+                className='wbdv-input wbdv-register-input'
+                onChange={(e) => this.setState({username: e.target.value})}
+            />
+          </div>
+          <div className='wbdv-register-input-row'>
+            <label className='wbdv-register-input-label'>Password:</label>
+            <input
+                className='wbdv-input wbdv-register-input'
+                type={'password'}
+                onChange={(e) => this.setState({password: e.target.value})}
+            />
           </div>
           <div>
-            <label>Password:</label>
-            <input onChange={(e) => this.setState({password: e.target.value})}/>
-          </div>
-          <div>
-            <div>
-              <label>Confirm password:</label>
-              <input onChange={(e) => this.setState({confirmPassword: e.target.value})}/>
+            <div className='wbdv-register-input-row'>
+              <label className='wbdv-register-input-label'>Confirm password:</label>
+              <input
+                  className='wbdv-input wbdv-register-input'
+                  type={'password'}
+                  onChange={(e) => this.setState({confirmPassword: e.target.value})}
+              />
             </div>
-            <div>
-              <label>First name:</label>
-              <input onChange={(e) => this.setState({firstName: e.target.value})}/>
+            <div className='wbdv-register-input-row'>
+              <label className='wbdv-register-input-label'>First name:</label>
+              <input
+                  className='wbdv-input wbdv-register-input'
+                  onChange={(e) => this.setState({firstName: e.target.value})}
+              />
             </div>
-            <div>
-              <label>Last name:</label>
-              <input onChange={(e) => this.setState({lastName: e.target.value})}/>
+            <div className='wbdv-register-input-row'>
+              <label className='wbdv-register-input-label'>Last name:</label>
+              <input
+                  className='wbdv-input wbdv-register-input'
+                  onChange={(e) => this.setState({lastName: e.target.value})}
+              />
             </div>
-            <div>
-              <label>Email:</label>
-              <input onChange={(e) => this.setState({email: e.target.value})}/>
+            <div className='wbdv-register-input-row'>
+              <label className='wbdv-register-input-label'>Email:</label>
+              <input
+                  className='wbdv-input wbdv-register-input'
+                  onChange={(e) => this.setState({email: e.target.value})}
+              />
             </div>
-            <div>
-              <div>Role:</div>
-              <select onChange={(e) => this.setState({role: e.target.value})}>
+            <div className='wbdv-register-input-row'>
+              <div className='wbdv-register-input-label'>Role:</div>
+              <select
+                  className='wbdv-input wbdv-register-input'
+                  onChange={(e) => this.setState({role: e.target.value})}
+              >
                 <option value={'STUDENT'}>Student</option>
                 <option value={'TUTOR'}>Tutor</option>
                 <option value={'ADMIN'}>Admin</option>
               </select>
             </div>
           </div>
-          <div>
-            <button onClick={this.register}>
+          <div className='wbdv-register-buttons'>
+            <button
+                className='wbdv-btn wbdv-green-btn wbdv-register-button'
+                onClick={this.register}
+            >
               Register
             </button>
             <Link to={'/login/'}>

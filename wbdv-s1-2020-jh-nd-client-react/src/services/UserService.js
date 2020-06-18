@@ -11,12 +11,15 @@ const updateUser = (userId, user) =>
     fetch(`${url}/users/${userId}`, {
       method: 'PUT',
       body: JSON.stringify(user),
-      headers: {'content-type': 'application/json'}
+      headers: {'content-type': 'application/json'},
+      credentials: 'include'
     }).then(response => response.json());
 
 const deleteUser = (userId) => {
-  return fetch(`${url}/users/${userId}`, {method: 'DELETE'})
-  .then(response => response.json());
+  return fetch(`${url}/users/${userId}`, {
+    method: 'DELETE',
+    credentials: 'include'
+  }).then(response => response.json());
 };
 
 const getUser = (userId) =>
@@ -71,6 +74,20 @@ const getSession = () =>
       else return response.json();
     });
 
+const getTutorsForCourse = (courseId) =>
+    fetch(`${url}/users/tutors/${courseId}/`)
+    .then(response => {
+      if (response.status === 404) return null;
+      else return response.json();
+    });
+
+const getStudentsForCourse = (courseId) =>
+    fetch(`${url}/users/students/${courseId}/`)
+    .then(response => {
+      if (response.status === 404) return null;
+      else return response.json();
+    });
+
 export default {
   createUser,
   updateUser,
@@ -81,4 +98,6 @@ export default {
   logout,
   register,
   getSession,
+  getTutorsForCourse,
+  getStudentsForCourse,
 }

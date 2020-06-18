@@ -3,8 +3,14 @@ import { connect } from 'react-redux'
 import * as Actions from '../../store/Actions'
 import { Link } from 'react-router-dom'
 import './SearchComponent.css'
+import UserService from "../../services/UserService";
 
 class SearchComponent extends React.Component {
+  componentDidMount() {
+    UserService.getSession()
+    .then(response => response && this.props.setUser(response));
+  }
+
   admin = this.props.users.filter((user) => user.role === 'ADMIN');
   tutors = this.props.users.filter((user) => user.role === 'TUTOR');
   students = this.props.users.filter((user) => user.role === 'STUDENT');
@@ -78,6 +84,8 @@ const mapStateToProps = (state) => ({
 const mapDispatchToProps = (dispatch) => ({
   selectUser: (user) => dispatch(Actions.selectUser(user)),
   deselectUser: (user) => dispatch(Actions.deselectUser(user)),
+  setUser: (user) => dispatch(Actions.setUser(user)),
+
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(SearchComponent);
