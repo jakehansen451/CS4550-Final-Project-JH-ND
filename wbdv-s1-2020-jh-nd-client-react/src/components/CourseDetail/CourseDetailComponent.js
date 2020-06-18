@@ -6,6 +6,7 @@ import {isEmpty} from "../../utils/Utils";
 import UserService from "../../services/UserService";
 import EditCourseComponent from './EditCourse/EditCourseComponent';
 import * as Actions from '../../store/Actions';
+import NavigatorComponent from "../Navigator/NavigatorComponent";
 
 class CourseDetailComponent extends React.Component {
   state = {
@@ -101,6 +102,8 @@ class CourseDetailComponent extends React.Component {
   render() {
     return (
         <div>
+          <NavigatorComponent
+              currentPage={this.props.history.location.pathname}/>
           {!isEmpty(this.state.course) &&
           <div>
             <h2>{this.state.course.title}</h2>

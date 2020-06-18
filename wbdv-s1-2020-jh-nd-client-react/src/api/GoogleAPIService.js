@@ -1,12 +1,11 @@
 import {gapi} from 'gapi-script';
 import React from "react";
-
 import store from '../store/Store';
+import {localApiUrl} from "../config";
 
 const SCOPE = 'https://www.googleapis.com/auth/calendar';
 const CLIENT_ID = '46098970829-859lp0f58tvg2o77h1g8iclvgpflf17v.apps.googleusercontent.com';
 let API_KEY = "AIzaSyBNECVLm6gneH9sx6OT1DZLzqsFEhuCNCA";
-
 
 
 const handleClientLoad = () => {
@@ -66,7 +65,7 @@ const getRefreshToken = (code) => {
 };
 
 const sendData = (data) =>
-    fetch(`${url}/users/` + store.getState().current_user._id + `/tokens`, {
+    fetch(`${localApiUrl}/users/` + store.getState().current_user._id + `/tokens`, {
         method: 'POST',
         body: data,
         headers: {'content-type': 'application/json'}

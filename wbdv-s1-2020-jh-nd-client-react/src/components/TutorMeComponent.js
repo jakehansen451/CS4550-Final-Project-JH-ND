@@ -33,7 +33,7 @@ class TutorMeComponent extends React.Component {
             <Route path="/"
                    exact
                    component={HomeComponent}/>
-            <Route path="/search/"
+            <Route path="/search/:courseId"
                    exact
                    component={SearchComponent}/>
             <Route path="/results/"

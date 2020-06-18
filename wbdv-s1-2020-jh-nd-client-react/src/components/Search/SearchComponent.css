@@ -30,8 +30,8 @@
 }
 
 .wbdv-selected-user {
-  background-color: #5487ff;
-  border-color: #4169e1;
+  background-color: var(--lighter-green);
+  border-color: var(--light-green);
 }
 
 .wbdv-search-btn-chunk {
