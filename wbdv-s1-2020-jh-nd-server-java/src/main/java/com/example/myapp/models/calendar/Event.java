@@ -39,4 +39,15 @@ public class Event {
     @ManyToOne
     @JoinColumn(name="courses_events", nullable=false)
     private Course course;
+
+
+    @PreRemove
+    private void removeGroupsFromUsers() {
+        for (User u : participants) {
+            u.getParticipantInEvents().remove(this);
+        }
+
+        course.getEvents().remove(this);
+        organizer.getOrganizerInEvents().remove(this);
+    }
 }

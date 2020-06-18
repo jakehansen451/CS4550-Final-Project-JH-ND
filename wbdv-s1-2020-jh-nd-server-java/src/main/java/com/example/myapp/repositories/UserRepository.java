@@ -20,4 +20,5 @@ public interface UserRepository
 
   @Query("SELECT user FROM User user")
   List<User> findAllUsers();
+
 }
