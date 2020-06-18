@@ -60,22 +60,28 @@ class LoginComponent extends React.Component {
 
   loginSection = () => {
     return (
-        <div>
+        <div className='wbdv-login'>
           <h2>Log in</h2>
           <div>
-            <label>Username:</label>
-            <input onChange={(e) => this.setState({username: e.target.value})}/>
+            <div className='wbdv-login-input-row'>
+              <label className='wbdv-login-input-label'>Username:</label>
+              <input
+                  className='wbdv-input wbdv-login-input'
+                  onChange={(e) => this.setState({username: e.target.value})}
+              />
+            </div>
+            <div className='wbdv-login-input-row'>
+              <label className='wbdv-login-input-label'>Password:</label>
+              <input
+                  className='wbdv-input wbdv-login-input'
+                  type={'password'}
+                  onChange={(e) => this.setState({password: e.target.value})}
+              />
+            </div>
           </div>
-          <div>
-            <label>Password:</label>
-            <input
-                type={'password'}
-                onChange={(e) => this.setState({password: e.target.value})}
-            />
-          </div>
-          <div>
+          <div className='wbdv-login-buttons'>
             <button
-                className='wbdv-btn wbdv-login-button'
+                className='wbdv-btn wbdv-green-btn wbdv-login-button'
                 onClick={this.login}
             >
               Log in

@@ -5,13 +5,13 @@
   --screen-xs: 520px;
   --screen-xxs: 320px;
   --text-color: #212529;
-  --faded-light-blue: rgba(170, 196, 215, 0.5);
-  --lightest-blue: #aac4d7;
-  --lighter-blue: #88a7c1;
-  --light-blue: #6897ac;
-  --dark-blue: #496b81;
-  --darker-blue: #425a6b;
-  --link-color: #007BFF;
+  --faded-light-green: rgba(210, 238, 172, 0.1);
+  --lightest-green: #aecb91;
+  --lighter-green: #9baf86;
+  --light-green: #6d7f5c;
+  --dark-green: #344126;
+  --darker-green: #181e13;
+  --link-green: #4ba050;
   --white: #FFFFFF;
   --lightest-grey: #dee2e6;
   --very-light-grey: #cdccd1;
@@ -32,11 +32,46 @@ body {
   padding: 2rem 3rem;
 }
 
+a {
+  color: var(--link-green)!important;
+}
+
 .wbdv-btn {
   background-color: inherit;
   border: none;
 }
 
 .wbdv-link {
-  color: var(--link-color);
+  color: var(--link-green);
+}
+
+.wbdv-green-btn {
+  background-color: var(--lighter-green);
+  border-color: var(--green);
+  color: var(--dark-green);
+}
+
+.wbdv-green-btn:hover {
+  background-color: var(--green);
+  border-color: var(--dark-green);
+  color: var(--darker-green);
+}
+
+.wbdv-red-btn {
+  background-color: var(--light-red);
+  border-color: var(--red);
+  color: var(--dark-red);
+}
+
+.wbdv-red-btn:hover {
+  background-color: var(--red);
+  border-color: var(--dark-red);
+  color: var(--darker-red);
+}
+
+.wbdv-input {
+  border-radius: 0.25rem;
+  background-color: var(--faded-light-green);
+  border: 1px solid var(--light-green);
+  padding: 0 0.25rem;
 }
