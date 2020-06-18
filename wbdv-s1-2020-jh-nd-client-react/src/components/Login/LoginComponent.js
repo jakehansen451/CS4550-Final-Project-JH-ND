@@ -4,6 +4,8 @@ import {isEmpty} from '../../utils/Utils';
 import {Link} from "react-router-dom";
 import UserService from "../../services/UserService";
 import * as Actions from "../../store/Actions";
+import '../../styles.css';
+import './LoginComponent.css';
 
 class LoginComponent extends React.Component {
   state = {
@@ -18,15 +20,15 @@ class LoginComponent extends React.Component {
 
   alreadyLoggedIn = () => {
     return (
-        <div>
+        <div className='wbdv-already-logged-in'>
           <h2>
             Already logged in.
           </h2>
-          <div>
+          <div className='wbdv-logged-in-links'>
             <Link to={`/profile/${this.props.current_user._id}`}>
               Profile
             </Link>
-            <button onClick={this.logout}>
+            <button className={'wbdv-btn wbdv-link'} onClick={this.logout}>
               Log out
             </button>
           </div>
@@ -67,6 +69,7 @@ class LoginComponent extends React.Component {
           </div>
           <div>
             <button
+                className='wbdv-btn wbdv-login-button'
                 onClick={this.login}
             >
               Log in

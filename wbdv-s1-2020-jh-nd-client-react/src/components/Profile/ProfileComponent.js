@@ -39,15 +39,15 @@ class ProfileComponent extends React.Component {
 
       if (this.state.user.role === 'ADMIN') {
         CourseService.findCoursesUserTeaches(this.state.userId)
-        .then(r => console.log(r));
+        .then(courses => this.setState({coursesTaught: courses}));
       } else if (this.state.user.role === 'TUTOR') {
         CourseService.findCoursesUserTutors(this.state.userId)
-        .then(r => console.log(r));
+        .then(courses => this.setState({coursesTutored: courses}));
         CourseService.findCoursesUserIsEnrolled(this.state.userId)
-        .then(r => console.log(r));
+        .then(courses => this.setState({coursesEnrolled: courses}));
       } else if (this.state.user.role === 'STUDENT') {
         CourseService.findCoursesUserIsEnrolled(this.state.userId)
-        .then(r => console.log(r));
+        .then(courses => this.setState({coursesEnrolled: courses}));
       }
     }
   }
@@ -69,14 +69,14 @@ class ProfileComponent extends React.Component {
               === 'TUTOR') &&
           <div>
             <div>User is enrolled in:</div>
-            {this.state.user.roleData.coursesEnrolled.map(
+            {this.state.coursesEnrolled.map(
                 this.courseRow)}
           </div>}
           {(this.state.user.role === 'ADMIN' || this.state.user.role
               === 'TUTOR') &&
           <div>
             <div>User is course staff for:</div>
-            {this.state.user.roleData.coursesTaught.map(this.courseRow)}
+            {this.state.coursesTaught.map(this.courseRow)}
           </div>}
         </div>
     )
@@ -109,7 +109,9 @@ class ProfileComponent extends React.Component {
                     <div>{this.state.user.email}</div>
                   </div>
                 </div>
-
+                <div>
+                  {this.renderCourseLists()}
+                </div>
               </div>
               {this.state.user._id === this.props.current_user._id
               && this.editProfileSection()}
@@ -120,7 +122,6 @@ class ProfileComponent extends React.Component {
                   event)}>Sign out
               </button>
             </div>
-
             :
             <h2>
               User not found.

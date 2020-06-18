@@ -1,0 +1,19 @@
+.wbdv-already-logged-in {
+  width: fit-content;
+}
+
+.wbdv-logged-in-links {
+  padding: 0.25rem;
+  font-size: x-large;
+  width: 100%;
+  justify-content: space-between;
+  display: inline-flex;
+}
+
+.wbdv-login-button {
+  background-color: var(--lighter-blue);
+  border: 1px solid var(--light-blue);
+  color: var(--darker-blue);
+  border-radius: 0.25rem;
+  padding: 0.25rem 0.75rem;
+}
