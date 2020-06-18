@@ -4,15 +4,16 @@ package com.example.myapp.controllers;
 import com.example.myapp.models.calendar.Event;
 import com.example.myapp.models.people.User;
 import com.example.myapp.services.EventService;
+import com.example.myapp.services.GoogleCalendarService;
+import com.example.myapp.services.UserService;
+import com.google.api.services.calendar.model.TimePeriod;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RestController;
-import com.example.myapp.services.GoogleCalendarService;
-import com.example.myapp.services.UserService;
-import com.google.api.services.calendar.model.TimePeriod;
+
 
 import java.util.ArrayList;
 import java.util.List;

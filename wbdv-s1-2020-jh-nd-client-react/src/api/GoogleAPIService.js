@@ -1,10 +1,7 @@
 import {gapi} from 'gapi-script';
 import React from "react";
 
-
 import store from '../store/Store';
-import {localApiUrl as url} from "../config";
-
 
 const SCOPE = 'https://www.googleapis.com/auth/calendar';
 const CLIENT_ID = '46098970829-859lp0f58tvg2o77h1g8iclvgpflf17v.apps.googleusercontent.com';
@@ -77,8 +74,6 @@ const sendData = (data) =>
 
 const isSignedIn = () => {
     return gapi.auth2.getAuthInstance().isSignedIn.get();
-
-
 };
 
 export default {

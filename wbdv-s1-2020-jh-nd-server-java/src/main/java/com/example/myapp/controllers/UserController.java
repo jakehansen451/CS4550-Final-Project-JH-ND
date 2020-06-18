@@ -1,7 +1,6 @@
 package com.example.myapp.controllers;
 
 import com.example.myapp.models.people.User;
-import com.example.myapp.services.GoogleCalendarService;
 import com.example.myapp.services.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
