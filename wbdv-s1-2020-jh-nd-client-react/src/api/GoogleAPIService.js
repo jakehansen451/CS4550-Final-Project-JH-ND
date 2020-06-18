@@ -1,16 +1,14 @@
 import {gapi} from 'gapi-script';
-import UserService from "../services/UserService";
 import React from "react";
-import {connect} from "react-redux";
-import * as Actions from "../store/Actions";
+
 
 import store from '../store/Store';
+import {localApiUrl as url} from "../config";
 
 
 const SCOPE = 'https://www.googleapis.com/auth/calendar';
 const CLIENT_ID = '46098970829-859lp0f58tvg2o77h1g8iclvgpflf17v.apps.googleusercontent.com';
 let API_KEY = "AIzaSyBNECVLm6gneH9sx6OT1DZLzqsFEhuCNCA";
-let calendarId = "5op33saotih66kdu8inudbuca4@group.calendar.google.com"; // TutorMe calendar's id
 
 
 const handleClientLoad = () => {
@@ -33,40 +31,58 @@ const initClient = () => {
         'discoveryDocs': [discoveryUrl],
         'scope': SCOPE
     }).then(() => {
-        // Listen for sign-in state changes.
-        gapi.auth2.getAuthInstance().isSignedIn.listen(updateSigninStatus);
-
-        // Handle the initial sign-in state.
-        updateSigninStatus();
-
-    }, function (error) {
+        console.log("Initialization of gapi complete")
+    }, (error) => {
         console.log(JSON.stringify(error, null, 2));
     });
 };
 
-const updateSigninStatus = () => {
-    if (gapi.auth2.getAuthInstance().isSignedIn.get()) {
-        let accessToken = gapi.auth2.getAuthInstance().currentUser.je.uc.access_token;
-        let user = store.getState().current_user;
-        if (user.accessToken === null) {
-            UserService.updateUser(user._id, {...user, "accessToken": accessToken}).then(r => console.log(r))
-        }
-    } else {
-        handleAuthClick()
-    }
-};
-
 const handleAuthClick = (event) => {
-    gapi.auth2.getAuthInstance().signIn();
-
+    gapi.auth2.getAuthInstance().grantOfflineAccess()
+        .then(r => getRefreshToken(r.code))
 };
 
 const handleSignoutClick = (event) => {
     gapi.auth2.getAuthInstance().signOut();
+
+};
+
+const getRefreshToken = (code) => {
+    let url = "https://accounts.google.com/o/oauth2/token";
+
+    let xhr = new XMLHttpRequest();
+    xhr.open('POST',
+        url + '?grant_type=authorization_code&client_id='
+        + CLIENT_ID + '&client_secret=0sN5dhbDPgF7ePLlZFvNWBKL&code='
+        + code + '&redirect_uri=http://localhost:3000');
+
+    xhr.onreadystatechange = (e) => {
+        if (xhr.readyState === 4) {
+            console.log(xhr.response);
+            sendData(xhr.response).then(r => console.log(r))
+        }
+    };
+
+    xhr.send(null);
+
+};
+
+const sendData = (data) =>
+    fetch(`${url}/users/` + store.getState().current_user._id + `/token`, {
+        method: 'POST',
+        body: data,
+        headers: {'content-type': 'application/json'}
+    }).then(response => console.log(response.body));
+
+const isSignedIn = () => {
+    return gapi.auth2.getAuthInstance().isSignedIn.get();
+
+
 };
 
 export default {
     handleSignoutClick,
     handleAuthClick,
-    handleClientLoad
+    handleClientLoad,
+    isSignedIn
 }

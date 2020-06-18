@@ -10,6 +10,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.Set;
 
 
 @RestController
@@ -40,6 +41,7 @@ public class CourseController {
     public Course createCourse(@RequestBody Course newCourse) {
         return courseService.createCourse(newCourse);
     }
+
 
     @PutMapping("/api/courses/{courseId}")
     public Course updateCourse(@PathVariable("courseId") Long courseId, @RequestBody Course updatedCourse) {
@@ -73,5 +75,12 @@ public class CourseController {
         userService.updateUser(user.getId(), tutor);
 
         return course;
+    }
+
+    @PostMapping("/api/courses/{courseId}/events/")
+    public Event addEventToCourse(
+            @PathVariable("courseId") Long courseId,
+            @RequestBody Event event) throws Exception {
+        return courseService.addEventToCourse(courseId, event);
     }
 }

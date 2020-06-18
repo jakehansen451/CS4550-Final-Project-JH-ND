@@ -30,11 +30,12 @@ public class User {
     private String password;
     private String email;
     private String accessToken;
+    private String refreshToken;
 
     @Enumerated(EnumType.ORDINAL)
     private Role role;
 
-    @ManyToMany
+    @ManyToMany(fetch = FetchType.EAGER, cascade = CascadeType.PERSIST)
     @JsonIgnore
     @ToString.Exclude
     @EqualsAndHashCode.Exclude
@@ -44,7 +45,7 @@ public class User {
             inverseJoinColumns = @JoinColumn(name = "courses_id"))
     private Set<Course> tutorInCourses;
 
-    @ManyToMany
+    @ManyToMany(fetch = FetchType.EAGER, cascade = CascadeType.PERSIST)
     @JsonIgnore
     @ToString.Exclude
     @EqualsAndHashCode.Exclude
@@ -60,7 +61,7 @@ public class User {
     @EqualsAndHashCode.Exclude
     private Set<Course> adminInCourses;
 
-    @ManyToMany
+    @ManyToMany(fetch = FetchType.EAGER, cascade = CascadeType.PERSIST)
     @JsonIgnore
     @ToString.Exclude
     @EqualsAndHashCode.Exclude

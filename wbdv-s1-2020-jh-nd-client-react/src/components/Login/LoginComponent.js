@@ -4,6 +4,7 @@ import {isEmpty} from '../../utils/Utils';
 import {Link} from "react-router-dom";
 import UserService from "../../services/UserService";
 import * as Actions from "../../store/Actions";
+import GoogleAPIService from "../../api/GoogleAPIService";
 
 class LoginComponent extends React.Component {
   state = {
@@ -29,8 +30,14 @@ class LoginComponent extends React.Component {
     );
   };
 
-  logout = () => UserService.logout()
-  .then(response => this.props.logout());
+  logout = () => {
+      UserService.logout()
+          .then(response => this.props.logout());
+      if(GoogleAPIService.isSignedIn()) {
+          GoogleAPIService.handleSignoutClick();
+      }
+  };
+
 
   login = () => UserService.login({
     username: this.state.username,
