@@ -12,6 +12,7 @@ import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Service
 public class GoogleCalendarService {
@@ -31,25 +32,41 @@ public class GoogleCalendarService {
                 .getItems();
     }
 
-    public List<TimePeriod> getFreeBusy(String accessToken, String refreshToken, Long userId) throws Exception {
-        Calendar service = getCalendar(accessToken, refreshToken, userId);
+    public List<com.example.myapp.models.calendar.TimePeriod> getFreeBusy(String accessToken, String refreshToken, Long userId, String start, String end) {
+        try {
+            Calendar service = getCalendar(accessToken, refreshToken, userId);
+            FreeBusyRequest request = new FreeBusyRequest();
+            java.util.Calendar calendar = java.util.Calendar.getInstance();
+            DateTime now = new DateTime(calendar.getTime());
+            DateTime startDateTime = new DateTime(start);
+            if (startDateTime.getValue() < now.getValue()) {
+                startDateTime = now;
+            }
+            request.setTimeMin(startDateTime);
+            request.setTimeMax(new DateTime(end));
 
+            // Build request items
+            List<FreeBusyRequestItem> requestItems = new ArrayList<>();
+            FreeBusyRequestItem item = new FreeBusyRequestItem();
+            item.setId("primary");
+            requestItems.add(item);
+            request.setItems(requestItems);
 
-        FreeBusyRequest request = new FreeBusyRequest();
-        request.setTimeMin(new DateTime("2020-06-17T04:10:11.711Z"));
-        request.setTimeMax(new DateTime("2020-06-24T04:10:11.711Z"));
+            FreeBusyResponse response = service.freebusy().query(request).execute();
+            return response.getCalendars().get("primary").getBusy().stream().map(timePeriod -> {
+                String startString = timePeriod.getStart().toString();
+                String endSting = timePeriod.getEnd().toString();
+                Long startLong = timePeriod.getStart().getValue();
+                Long endLong = timePeriod.getEnd().getValue();
 
-        // Build request items
-        List<FreeBusyRequestItem> requestItems = new ArrayList<>();
-        FreeBusyRequestItem item = new FreeBusyRequestItem();
-        item.setId("primary");
-        requestItems.add(item);
-        request.setItems(requestItems);
+                return new com.example.myapp.models.calendar.TimePeriod(startString, endSting, startLong, endLong);
+            }).collect(Collectors.toList());
 
-        FreeBusyResponse response = service.freebusy().query(request).execute();
-        return response.getCalendars().get("primary").getBusy();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
 
-
+        return new ArrayList<>();
     }
 
     private Calendar getCalendar(String accessToken, String refreshToken, Long userId) throws Exception {
@@ -64,4 +81,6 @@ public class GoogleCalendarService {
                 .setApplicationName(APPLICATION_NAME)
                 .build();
     }
+
+
 }
