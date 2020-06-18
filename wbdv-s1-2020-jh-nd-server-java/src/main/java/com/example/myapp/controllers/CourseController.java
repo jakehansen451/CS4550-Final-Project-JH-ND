@@ -110,6 +110,21 @@ public class CourseController {
     return course;
   }
 
+  @GetMapping("/api/courses/{userId}/admin")
+  public List<Course> findCoursesTaughtByUser(@PathVariable("userId") Long userId) {
+    return courseService.findCoursesTaughtByUser(userId);
+  }
+
+  @GetMapping("/api/courses/{userId}/tutor")
+  public List<Course> findCoursesTutoredByUser(@PathVariable("userId") Long userId) {
+    return courseService.findCoursesTutoredByUser(userId);
+  }
+
+  @GetMapping("/api/courses/{userId}/student")
+  public List<Course> findCoursesEnrolledByUser(@PathVariable("userId") Long userId) {
+    return courseService.findCoursesEnrolledByUser(userId);
+  }
+
   @ResponseStatus(code = HttpStatus.NOT_FOUND, reason = "Not found")
   private class NotFoundException extends RuntimeException {
 

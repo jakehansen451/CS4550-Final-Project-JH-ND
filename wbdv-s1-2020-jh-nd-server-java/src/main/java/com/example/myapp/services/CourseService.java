@@ -5,6 +5,7 @@ import com.example.myapp.models.calendar.Event;
 import com.example.myapp.models.course.Course;
 import com.example.myapp.repositories.CourseRepository;
 import com.example.myapp.repositories.EventRepository;
+import com.example.myapp.repositories.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -18,6 +19,9 @@ public class CourseService {
 
     @Autowired
     private EventRepository eventRepository;
+
+    @Autowired
+    private UserRepository userRepository;
 
 
     public Course createCourse(Course newCourse) {
@@ -48,5 +52,17 @@ public class CourseService {
 
     public List<Event> findEventsByCourseId(Long courseId) {
         return eventRepository.findEventsByCourseId(courseId);
+    }
+
+    public List<Course> findCoursesTaughtByUser(Long userId) {
+        return courseRepository.findCoursesTaughtByUser(userId);
+    }
+
+    public List<Course> findCoursesTutoredByUser(Long userId) {
+        return userRepository.findCoursesTutoredByUser(userId);
+    }
+
+    public List<Course> findCoursesEnrolledByUser(Long userId) {
+        return userRepository.findCoursesEnrolledByUser(userId);
     }
 }

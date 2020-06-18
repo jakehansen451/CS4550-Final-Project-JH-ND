@@ -73,6 +73,18 @@ const removeStudent = (courseId, user) =>
       }
     }).then(response => response.json());
 
+const findCoursesUserTeaches = (userId) =>
+    fetch(`${url}/courses/${userId}/admin`)
+    .then(response => response.json());
+
+const findCoursesUserTutors = (userId) =>
+    fetch(`${url}/courses/${userId}/tutor`)
+    .then(response => response.json());
+
+const findCoursesUserIsEnrolled = (userId) =>
+    fetch(`${url}/courses/${userId}/student`)
+    .then(response => response.json());
+
 export default {
   createCourse,
   updateCourse,
@@ -83,5 +95,8 @@ export default {
   addTutor,
   removeTutor,
   addStudent,
-  removeStudent
+  removeStudent,
+  findCoursesUserTeaches,
+  findCoursesUserTutors,
+  findCoursesUserIsEnrolled
 }

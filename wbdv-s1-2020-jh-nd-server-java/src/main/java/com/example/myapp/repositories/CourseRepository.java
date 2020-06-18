@@ -18,4 +18,7 @@ public interface CourseRepository extends CrudRepository<Course, Long> {
 
     @Query("SELECT course.students FROM Course course WHERE course.id=:course_id")
     List<User> findStudentsByCourseId(@Param("course_id") Long courseId);
+
+    @Query("SELECT course from Course course where course.admin.id=:user_id")
+    List<Course> findCoursesTaughtByUser(@Param("user_id")Long userId);
 }

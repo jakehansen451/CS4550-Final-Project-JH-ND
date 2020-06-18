@@ -6,12 +6,16 @@ import {isEmpty} from "../../utils/Utils";
 import * as Actions from '../../store/Actions';
 import UserService from "../../services/UserService";
 import GoogleAPIService from "../../api/GoogleAPIService";
+import CourseService from "../../services/CourseService";
 
 class ProfileComponent extends React.Component {
 
   state = {
     userId: this.props.match.params.userId,
-    user: {}
+    user: {},
+    coursesTaught: [],
+    coursesTutored: [],
+    coursesEnrolled: []
   };
 
   componentDidMount() {
@@ -24,9 +28,27 @@ class ProfileComponent extends React.Component {
   }
 
   componentDidUpdate(prevProps, prevState, snapshot) {
-    if (this.props.current_user._id === this.state.user._id
-        && this.props.current_user !== this.state.user) {
-      this.setState({user: this.props.current_user});
+    if (this.props.current_user && this.state.user
+        && !isEmpty(this.props.current_user)
+        && !isEmpty(this.state.user)) {
+
+      if (this.props.current_user._id === this.state.user._id
+          && this.props.current_user !== this.state.user) {
+        this.setState({user: this.props.current_user});
+      }
+
+      if (this.state.user.role === 'ADMIN') {
+        CourseService.findCoursesUserTeaches(this.state.userId)
+        .then(r => console.log(r));
+      } else if (this.state.user.role === 'TUTOR') {
+        CourseService.findCoursesUserTutors(this.state.userId)
+        .then(r => console.log(r));
+        CourseService.findCoursesUserIsEnrolled(this.state.userId)
+        .then(r => console.log(r));
+      } else if (this.state.user.role === 'STUDENT') {
+        CourseService.findCoursesUserIsEnrolled(this.state.userId)
+        .then(r => console.log(r));
+      }
     }
   }
 
