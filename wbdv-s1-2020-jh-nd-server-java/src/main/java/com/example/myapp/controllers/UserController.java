@@ -3,24 +3,19 @@ package com.example.myapp.controllers;
 import com.example.myapp.models.people.User;
 import com.example.myapp.services.GoogleCalendarService;
 import com.example.myapp.services.UserService;
-import com.google.api.services.calendar.model.Event;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpSession;
-import java.io.IOException;
-import java.security.GeneralSecurityException;
-import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 
 @RestController
 @CrossOrigin(
     origins = "http://localhost:3000",
     allowCredentials = "true")
 public class UserController {
-  @Autowired
-  private GoogleCalendarService googleCalendarService;
 
   @Autowired
   UserService service;
@@ -44,7 +39,7 @@ public class UserController {
 
   @PostMapping("/api/profile")
   public User profile(HttpSession session) {
-    User currentUser = (User)session.getAttribute("currentUser");
+    User currentUser = (User) session.getAttribute("currentUser");
     if (currentUser == null) {
       throw new NotFoundException();
     }
@@ -53,6 +48,26 @@ public class UserController {
 
   @PostMapping("/api/logout")
   public int logout(HttpSession session) {
+    session.invalidate();
+    return 1;
+  }
+
+  @PostMapping("/api/users")
+  public User createUser(@RequestBody User newUser) {
+    return service.createUser(newUser);
+  }
+
+  @PutMapping("/api/users/{userId}")
+  public User updateUser(HttpSession session, @PathVariable("userId") Long userId,
+      @RequestBody User updatedUser) {
+    session.setAttribute("currentUser", updatedUser);
+    return service.updateUser(userId, updatedUser);
+  }
+
+  @DeleteMapping("/api/users/{userId}")
+  public int deleteUserById(HttpSession session,
+      @PathVariable("userId") Long userId) {
+    service.deleteUserById(userId);
     session.invalidate();
     return 1;
   }
@@ -87,41 +102,14 @@ public class UserController {
     return user;
   }
 
-  @PostMapping("/api/users")
-  public User createUser(@RequestBody User newUser) {
-    return service.createUser(newUser);
-  }
-
-  @PutMapping("/api/users/{userId}")
-  public User updateUser(HttpSession session,
-      @PathVariable("userId") Long userId, @RequestBody User updatedUser) {
-    session.setAttribute("currentUser", updatedUser);
-    return service.updateUser(userId, updatedUser);
-  }
-
-  @DeleteMapping("/api/users/{userId}")
-  public int deleteUserById(HttpSession session,
+  @PostMapping("/api/users/{userId}/tokens")
+  public User addAuthorizationTokensToUser(@RequestBody Map<String, String> body,
       @PathVariable("userId") Long userId) {
-     service.deleteUserById(userId);
-     session.invalidate();
-     return 1;
-  }
-
-
-  // NOTE: this is a google events, not inner events!
-  @GetMapping("/api/users/{userId}/events")
-  public List<Event> getEvents(@PathVariable("userId") Long userId) {
-    String token = service.findUserById(userId).getAccessToken();
-    // TODO: check if token is null
-    List<Event> eventList = new ArrayList<>();
-    try {
-      eventList = googleCalendarService.getEvents(token);
-    } catch (IOException | GeneralSecurityException e) {
-      e.printStackTrace();
-    }
-    return eventList;
+    return service.addTokensToUser(body, userId);
   }
 
   @ResponseStatus(code = HttpStatus.NOT_FOUND, reason = "Not found")
-  private class NotFoundException extends RuntimeException {}
+  private class NotFoundException extends RuntimeException {
+
+  }
 }

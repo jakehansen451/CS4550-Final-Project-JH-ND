@@ -5,7 +5,6 @@ import com.example.myapp.repositories.EventRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-
 import java.util.List;
 
 @Service
@@ -18,6 +17,6 @@ public class EventService {
     }
 
     public List<Event> getAllEvents() {
-        return (List<Event>)eventRepository.findAll();
+        return (List<Event>) eventRepository.findAll();
     }
 }

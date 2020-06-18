@@ -33,13 +33,13 @@ public class Course {
     }
 
 
-    @ManyToMany(mappedBy = "studentInCourses")
+    @ManyToMany(mappedBy = "studentInCourses", fetch = FetchType.EAGER, cascade = CascadeType.PERSIST)
     @JsonIgnore
     @ToString.Exclude
     @EqualsAndHashCode.Exclude
     private Set<User> students = new HashSet<>();
 
-    @ManyToMany(mappedBy = "tutorInCourses")
+    @ManyToMany(mappedBy = "tutorInCourses", fetch = FetchType.EAGER, cascade = CascadeType.PERSIST)
     @JsonIgnore
     @ToString.Exclude
     @EqualsAndHashCode.Exclude
@@ -68,5 +68,6 @@ public class Course {
 
         admin.getAdminInCourses().remove(this);
     }
+
 
 }

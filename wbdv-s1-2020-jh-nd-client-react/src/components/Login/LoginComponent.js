@@ -45,8 +45,11 @@ class LoginComponent extends React.Component {
     );
   };
 
-  logout = () => UserService.logout()
-  .then(response => this.props.logout());
+  logout = () => {
+      UserService.logout()
+          .then(response => this.props.logout());
+  };
+
 
   login = () => UserService.login({
     username: this.state.username,

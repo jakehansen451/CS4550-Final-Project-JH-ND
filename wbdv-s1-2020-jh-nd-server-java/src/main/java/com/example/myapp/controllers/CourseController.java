@@ -67,11 +67,11 @@ public class CourseController {
     return 1;
   }
 
+
   @PostMapping("/api/courses/{courseId}/students")
   public Course addStudent(@PathVariable("courseId") Long courseId, @RequestBody User user) {
     User student = userService.findUserById(user.getId());
     Course course = courseService.findCourseById(courseId);
-
     student.getStudentInCourses().add(course);
     userService.updateUser(user.getId(), student);
 
@@ -85,9 +85,9 @@ public class CourseController {
 
     student.getStudentInCourses().remove(course);
     userService.updateUser(user.getId(), student);
-
     return course;
   }
+
 
   @PostMapping("/api/courses/{courseId}/tutors")
   public Course addTutor(@PathVariable("courseId") Long courseId, @RequestBody User user) {
@@ -129,5 +129,12 @@ public class CourseController {
   @ResponseStatus(code = HttpStatus.NOT_FOUND, reason = "Not found")
   private class NotFoundException extends RuntimeException {
 
+  }
+
+  @PostMapping("/api/courses/{courseId}/events/")
+  public Event addEventToCourse(
+      @PathVariable("courseId") Long courseId,
+      @RequestBody Event event) throws Exception {
+    return courseService.addEventToCourse(courseId, event);
   }
 }
