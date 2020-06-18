@@ -34,7 +34,10 @@ class LoginComponent extends React.Component {
             <Link to={`/profile/${this.props.current_user._id}`}>
               Profile
             </Link>
-            <button className={'wbdv-btn wbdv-link'} onClick={this.logout}>
+            <button
+                className={'wbdv-btn wbdv-link'}
+                onClick={this.logout}
+            >
               Log out
             </button>
           </div>

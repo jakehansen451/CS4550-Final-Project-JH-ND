@@ -1,4 +1,4 @@
-.wbdv-login {
+.wbdv-register {
   max-width: 400px;
   width: 100%;
 }
@@ -15,33 +15,43 @@
   display: inline-flex;
 }
 
-.wbdv-login-button {
-  border-radius: 0.25rem;
-  padding: 0.25rem 0.75rem;
-  flex-basis: 8rem;
-}
-
-.wbdv-login-input-row {
+.wbdv-register-input-row {
   width: 100%;
   display: inline-flex;
   justify-content: space-between;
   margin-bottom: 1rem;
 }
 
-.wbdv-login-input-label {
+.wbdv-register-input-label {
   margin-bottom: 0;
-  min-width: 100px;
+  min-width: 150px;
   font-weight: 400;
 }
 
-.wbdv-login-input {
+.wbdv-register-input {
   flex-basis: 15rem;
 }
 
-.wbdv-login-buttons {
+.wbdv-register-buttons {
   width: 100%;
   display: inline-flex;
   justify-content: space-between;
   align-items: baseline;
-  flex-wrap: wrap;
+}
+
+.wbdv-register-button {
+  border-radius: 0.25rem;
+  padding: 0.25rem 0.75rem;
+  flex-basis: 8rem;
+}
+
+@media screen and (max-width: 485px) {
+  .wbdv-register-button {
+    flex-basis: 15rem;
+  }
+
+  .wbdv-register-buttons,
+  .wbdv-register-input-row {
+    flex-wrap: wrap;
+  }
 }
