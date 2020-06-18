@@ -16,8 +16,10 @@ const updateUser = (userId, user) =>
     }).then(response => response.json());
 
 const deleteUser = (userId) => {
-  return fetch(`${url}/users/${userId}`, {method: 'DELETE'})
-  .then(response => response.json());
+  return fetch(`${url}/users/${userId}`, {
+    method: 'DELETE',
+    credentials: 'include'
+  }).then(response => response.json());
 };
 
 const getUser = (userId) =>

@@ -19,8 +19,6 @@ public class EventsController {
     @Autowired
     private EventService eventService;
 
-
-
     @DeleteMapping("/api/events/{eventId}")
     public int deleteEventById(@PathVariable("eventId") Long eventId) {
         eventService.deleteEventById(eventId);

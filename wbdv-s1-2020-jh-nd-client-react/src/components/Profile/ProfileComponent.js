@@ -37,17 +37,19 @@ class ProfileComponent extends React.Component {
         this.setState({user: this.props.current_user});
       }
 
-      if (this.state.user.role === 'ADMIN') {
-        CourseService.findCoursesUserTeaches(this.state.userId)
-        .then(courses => this.setState({coursesTaught: courses}));
-      } else if (this.state.user.role === 'TUTOR') {
-        CourseService.findCoursesUserTutors(this.state.userId)
-        .then(courses => this.setState({coursesTutored: courses}));
-        CourseService.findCoursesUserIsEnrolled(this.state.userId)
-        .then(courses => this.setState({coursesEnrolled: courses}));
-      } else if (this.state.user.role === 'STUDENT') {
-        CourseService.findCoursesUserIsEnrolled(this.state.userId)
-        .then(courses => this.setState({coursesEnrolled: courses}));
+      if (this.props !== prevProps) {
+        if (this.state.user.role === 'ADMIN') {
+          CourseService.findCoursesUserTeaches(this.state.userId)
+          .then(courses => this.setState({coursesTaught: courses}));
+        } else if (this.state.user.role === 'TUTOR') {
+          CourseService.findCoursesUserTutors(this.state.userId)
+          .then(courses => this.setState({coursesTutored: courses}));
+          CourseService.findCoursesUserIsEnrolled(this.state.userId)
+          .then(courses => this.setState({coursesEnrolled: courses}));
+        } else if (this.state.user.role === 'STUDENT') {
+          CourseService.findCoursesUserIsEnrolled(this.state.userId)
+          .then(courses => this.setState({coursesEnrolled: courses}));
+        }
       }
     }
   }
@@ -86,7 +88,8 @@ class ProfileComponent extends React.Component {
     UserService.deleteUser(this.state.userId)
     .then(response => {
           console.log(response);
-
+          this.props.logout();
+          this.props.history.push('/login/');
         }
     )};
 
@@ -145,6 +148,7 @@ const mapStateToProps = (state) => ({
 
 const mapDispatchToProps = (dispatch) => ({
   setUser: (user) => dispatch(Actions.setUser(user)),
+  logout: () => dispatch(Actions.deselectUser()),
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(ProfileComponent);

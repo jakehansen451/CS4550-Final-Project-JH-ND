@@ -100,8 +100,10 @@ public class UserController {
   }
 
   @DeleteMapping("/api/users/{userId}")
-  public int deleteUserById(@PathVariable("userId") Long userId) {
+  public int deleteUserById(HttpSession session,
+      @PathVariable("userId") Long userId) {
      service.deleteUserById(userId);
+     session.invalidate();
      return 1;
   }
 

@@ -15,7 +15,13 @@ class LoginComponent extends React.Component {
 
   componentDidMount() {
     UserService.getSession()
-    .then(response => response && this.props.login(response));
+    .then(response => {
+      if (!response) {
+        this.props.logout();
+      } else {
+        this.props.login(response);
+      }
+    });
   }
 
   alreadyLoggedIn = () => {
