@@ -82,7 +82,13 @@ class ProfileComponent extends React.Component {
     )
   };
 
-  editProfileSection = () => <EditProfileComponent/>;
+  deleteUser = () => {
+    UserService.deleteUser(this.state.userId)
+    .then(response => {
+          console.log(response);
+
+        }
+    )};
 
   render() {
     return (
@@ -113,8 +119,10 @@ class ProfileComponent extends React.Component {
                   {this.renderCourseLists()}
                 </div>
               </div>
-              {this.state.user._id === this.props.current_user._id
-              && this.editProfileSection()}
+              {this.state.user._id === this.props.current_user._id &&
+              <EditProfileComponent
+                  deleteUser={this.deleteUser}
+              />}
               <button onClick={(event) => GoogleAPIService.handleAuthClick(
                   event)}>Authorize
               </button>

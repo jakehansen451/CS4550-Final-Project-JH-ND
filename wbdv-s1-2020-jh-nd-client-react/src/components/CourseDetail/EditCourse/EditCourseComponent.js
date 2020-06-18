@@ -4,6 +4,7 @@ import CourseService from "../../../services/CourseService";
 
 class EditCourseComponent extends React.Component {
   state = {
+    courseId: this.props.courseId,
     courseName: '',
     tutors: [],
     students: [],
@@ -36,7 +37,9 @@ class EditCourseComponent extends React.Component {
             <button onClick={this.updateCourse}>
               Update Course
             </button>
-            <button>
+            <button
+                onClick={this.props.deleteCourse}
+            >
               Delete Course
             </button>
           </div>

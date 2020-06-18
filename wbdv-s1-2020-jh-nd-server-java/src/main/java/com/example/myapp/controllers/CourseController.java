@@ -62,8 +62,9 @@ public class CourseController {
   }
 
   @DeleteMapping("/api/courses/{courseId}")
-  public void deleteCourseById(@PathVariable("courseId") Long courseId) {
+  public int deleteCourseById(@PathVariable("courseId") Long courseId) {
     courseService.deleteCourseById(courseId);
+    return 1;
   }
 
   @PostMapping("/api/courses/{courseId}/students")

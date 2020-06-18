@@ -13,7 +13,7 @@ import java.util.List;
 import java.util.Set;
 
 @Entity
-@Table(name="courses")
+@Table(name = "courses")
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
@@ -46,14 +46,27 @@ public class Course {
     private Set<User> tutors;
 
     @ManyToOne
-    @JoinColumn(name="users_id", nullable=false)
+    @JoinColumn(name = "users_id", nullable = false)
     @EqualsAndHashCode.Exclude
     private User admin;
 
-    @OneToMany(mappedBy="course")
+    @OneToMany(mappedBy = "course")
     @JsonIgnore
     @ToString.Exclude
     @EqualsAndHashCode.Exclude
     private List<Event> events;
+
+    @PreRemove
+    private void removeGroupsFromUsers() {
+        for (User u : students) {
+            u.getStudentInCourses().remove(this);
+        }
+
+        for (User u : tutors) {
+            u.getTutorInCourses().remove(this);
+        }
+
+        admin.getAdminInCourses().remove(this);
+    }
 
 }

@@ -90,6 +90,14 @@ class CourseDetailComponent extends React.Component {
         <div>`${event.startTime} to ${event.endTime}</div>
       </Link>;
 
+  deleteCourse = () => {
+    CourseService.deleteCourse(this.state.courseId)
+    .then(response => {
+      console.log(response);
+      this.props.history.push('/courses/');
+    });
+  };
+
   render() {
     return (
         <div>
@@ -109,6 +117,7 @@ class CourseDetailComponent extends React.Component {
             <EditCourseComponent
                 course={this.state.course}
                 courseUpdated={(course) => this.setState({course})}
+                deleteCourse={this.deleteCourse}
             />}
             {this.canEnrollTutor() &&
             <div>
@@ -165,16 +174,16 @@ class CourseDetailComponent extends React.Component {
                     <div>{this.state.students.map(this.renderUserRow)}</div>}
               </div>
             </div>
+            <div>
+              <h6>Office Hours</h6>
+              {this.state.events.length === 0 ?
+                  <div>This course has no scheduled events.</div>
+                  :
+                  <div>
+                    {this.events.map(this.renderEventRow)}
+                  </div>}
+            </div>
           </div>}
-          <div>
-            <h6>Office Hours</h6>
-            {this.state.events.length === 0 ?
-                <div>This course has no scheduled events.</div>
-                :
-                <div>
-                  {this.events.map(this.renderEventRow)}
-                </div>}
-          </div>
         </div>
     )
   }

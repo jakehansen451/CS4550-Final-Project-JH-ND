@@ -85,7 +85,9 @@ class EditProfileComponent extends React.Component {
             <button onClick={this.updateProfile}>
               Update Profile
             </button>
-            <button>
+            <button
+                onClick={this.props.deleteUser}
+            >
               Delete Profile
             </button>
           </div>

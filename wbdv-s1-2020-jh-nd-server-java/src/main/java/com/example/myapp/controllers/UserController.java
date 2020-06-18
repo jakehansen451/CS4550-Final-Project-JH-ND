@@ -1,13 +1,17 @@
 package com.example.myapp.controllers;
 
 import com.example.myapp.models.people.User;
+import com.example.myapp.services.GoogleCalendarService;
 import com.example.myapp.services.UserService;
-import javassist.NotFoundException;
+import com.google.api.services.calendar.model.Event;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpSession;
+import java.io.IOException;
+import java.security.GeneralSecurityException;
+import java.util.ArrayList;
 import java.util.List;
 
 @RestController
@@ -15,6 +19,9 @@ import java.util.List;
     origins = "http://localhost:3000",
     allowCredentials = "true")
 public class UserController {
+  @Autowired
+  private GoogleCalendarService googleCalendarService;
+
   @Autowired
   UserService service;
 
@@ -93,8 +100,24 @@ public class UserController {
   }
 
   @DeleteMapping("/api/users/{userId}")
-  public void deleteUserById(@PathVariable("userId") Long userId) {
+  public int deleteUserById(@PathVariable("userId") Long userId) {
      service.deleteUserById(userId);
+     return 1;
+  }
+
+
+  // NOTE: this is a google events, not inner events!
+  @GetMapping("/api/users/{userId}/events")
+  public List<Event> getEvents(@PathVariable("userId") Long userId) {
+    String token = service.findUserById(userId).getAccessToken();
+    // TODO: check if token is null
+    List<Event> eventList = new ArrayList<>();
+    try {
+      eventList = googleCalendarService.getEvents(token);
+    } catch (IOException | GeneralSecurityException e) {
+      e.printStackTrace();
+    }
+    return eventList;
   }
 
   @ResponseStatus(code = HttpStatus.NOT_FOUND, reason = "Not found")

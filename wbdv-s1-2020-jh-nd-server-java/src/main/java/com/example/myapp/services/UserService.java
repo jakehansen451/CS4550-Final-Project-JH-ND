@@ -39,7 +39,6 @@ public class UserService {
   }
 
   public void deleteUserById(Long userId) {
-    // TODO: fix deleting
     repository.deleteById(userId);
   }
 
