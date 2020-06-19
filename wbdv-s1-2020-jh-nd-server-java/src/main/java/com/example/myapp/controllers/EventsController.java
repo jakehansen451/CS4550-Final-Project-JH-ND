@@ -94,4 +94,14 @@ public class EventsController {
 
         return events;
     }
+
+    @PostMapping("/api/google-events")
+    public com.google.api.services.calendar.model.Event addEvent(@RequestParam("title") String title,
+                                                                 @RequestParam("start") String start,
+                                                                 @RequestParam("end") String end,
+                                                                 @RequestParam("attendeesIds") List<Long> attendeesIds,
+                                                                 @RequestParam("organizerId") Long organizerId) throws Exception {
+
+        return googleCalendarService.addEvent(title, start, end, attendeesIds, organizerId);
+    }
 }
