@@ -6,6 +6,8 @@ import * as Utils from '../../utils/Utils'
 import WeekCalendar from 'react-week-calendar';
 import 'react-week-calendar/dist/style.css';
 import {isEmpty} from "../../utils/Utils";
+import EventService from "../../services/EventService";
+import moment from 'moment';
 
 import './ResultsComponent.css'
 import UserService from "../../services/UserService";
@@ -14,30 +16,78 @@ const days = ['Sunday', 'Monday', 'Tuesday', 'Wedensday', 'Thursday', 'Friday',
   'Saturday'];
 
 const fake_time_blocks = [
-  {date: '2020-05-29', start: '14:30:00.000', end: '15:30:00.000'},
-  {date: '2020-05-29', start: '17:15:00.000', end: '18:15:00.000'},
-  {date: '2020-05-30', start: '10:00:00.000', end: '12:45:00.000'},
-  {date: '2020-05-30', start: '16:00:00.000', end: '19:00:00.000'},
-  {date: '2020-05-31', start: '08:30:00.000', end: '18:30:00.000'},
+  {start: '2020-06-19T14:30:00.000Z', end: '2020-06-19T15:30:00.000Z'},
+  {start: '2020-06-19T17:15:00.000Z', end: '2020-06-19T18:15:00.000Z'},
+  {start: '2020-06-20T10:00:00.000Z', end: '2020-06-20T12:45:00.000Z'},
+  {start: '2020-06-20T16:00:00.000Z', end: '2020-06-20T19:00:00.000Z'},
+  {start: '2020-06-21T08:30:00.000Z', end: '2020-06-21T18:30:00.000Z'},
+  {start: '2020-06-22T06:00:00.000Z', end: '2020-06-26T14:30:00.000Z'}
 ];
 
 class ResultsComponent extends React.Component {
+  splitAtMidnight = (datetimeArray) => {
+    let inputArr = [...datetimeArray];
+    const outputArray = [];
+    const midnight = new Date();
+    midnight.setDate(midnight.getDate() + 1);
+    midnight.setHours(0, 0, 0, 0);
+    let midnightStr = midnight.toISOString();
+    const beforeMidnight = new Date();
+    beforeMidnight.setHours(23, 59, 59, 999);
+    let beforeMidnightStr = beforeMidnight.toISOString();
+    for (let i = 0; i < 7; i++) {
+      for (const datetime of inputArr) {
+        const startDT = new Date(datetime.start);
+        const endDT = new Date(datetime.end);
+        if (midnight - startDT > 0 && endDT - midnight >= 0) {
+          outputArray.push({start: datetime.start, end: beforeMidnightStr});
+          inputArr = inputArr.filter(d => d !== datetime);
+          inputArr.push({start: midnightStr, end: datetime.end});
+        } else if (midnight - endDT > 0) {
+          outputArray.push(datetime);
+          inputArr = inputArr.filter(d => d !== datetime);
+        }
+      }
+      midnight.setDate(midnight.getDate() + 1);
+      midnightStr = midnight.toISOString();
+      beforeMidnight.setDate(beforeMidnight.getDate() + 1);
+      beforeMidnightStr = beforeMidnight.toISOString();
+    }
+    return outputArray;
+  };
+
   state = {
     courseId: this.props.match.params.courseId,
     userIds: this.props.match.params.userIds.split(','),
-    free_time_blocks: fake_time_blocks,
+    free_time_blocks: [],//this.splitAtMidnight(fake_time_blocks),
+    display: 'list',
+    hostOptions: [],
   };
 
   componentDidMount() {
-    console.log(this.state);
     const now = new Date();
     const weekLater = new Date();
     weekLater.setDate(now.getDate() + 7);
-    UserService.getFreeTimesForUsers(
+    EventService.getFreeTimesForUsers(
         this.state.userIds.join(','),
         now.toISOString(),
         weekLater.toISOString()
-    ).then(r => console.log(r));
+    ).then(r => {
+      console.log(r);
+      this.setState({
+        free_time_blocks: this.splitAtMidnight(
+            r.map(dt => ({start: dt.startString, end: dt.endString})))
+      })
+    });
+
+    UserService.getTutorsForCourse(this.state.courseId)
+    .then(tutors => {
+      this.setState({
+        hostOptions: [...this.props.selected_users
+        .filter(user => user.role === 'ADMIN'),
+          ...tutors]
+      })
+    })
   }
 
   componentDidUpdate() {
@@ -46,13 +96,9 @@ class ResultsComponent extends React.Component {
     }
   }
 
-  recomposeISO = (date, time) => `${date}T${time}Z`;
-
   renderFreeTimeBlock = (timeSlot, index) => {
-    const start_datetime = new Date(
-        this.recomposeISO(timeSlot.date, timeSlot.start));
-    const end_datetime = new Date(
-        this.recomposeISO(timeSlot.date, timeSlot.end));
+    const start_datetime = new Date(timeSlot.start);
+    const end_datetime = new Date(timeSlot.end);
     return (
         <div
             className={this.props.selected_time_block === timeSlot
@@ -74,14 +120,20 @@ class ResultsComponent extends React.Component {
     )
   };
 
+  generateHostOption = (option, index) =>
+      <option
+          key={index}
+          value={option._id}
+      >
+        {`${option.lastName}, ${option.firstName}`}
+      </option>;
+
   renderUser = (user) =>
       <div className='wbdv-user-row' key={user._id}>
         {user.lastName.concat(', ', user.firstName)}
       </div>;
 
   render() {
-    console.log(this.state);
-    console.log(this.props);
     return (
         <div className='wbdv-results'>
           <div className='wbdv-results-page-title-bar'>
@@ -94,13 +146,24 @@ class ResultsComponent extends React.Component {
                     className='wbdv-edit-participants-button'>
                 <h6>Edit Participants</h6>
               </Link>
+              <h5>Select Host</h5>
+              <select className='wbdv-input'>
+                {this.state.hostOptions.map(this.generateHostOption)}
+              </select>
               <div className='wbdv-scroll-column'>
                 {this.props.selected_users.map(
                     (admin) => this.renderUser(admin))}
               </div>
             </div>
+            {this.state.display === 'list' &&
             <div className='wbdv-time-list'>
               <h5>Choose from available times</h5>
+              <button
+                  className='wbdv-btn wbdv-green-btn'
+                  onClick={() => this.setState({display: 'calendar'})}
+              >
+                Switch to calendar view
+              </button>
               <div className='wbdv-time-slot-row'>
                 <div className='wbdv-time-slot-day'>Day</div>
                 <div className='wbdv-time-slot-start'>Start</div>
@@ -112,14 +175,29 @@ class ResultsComponent extends React.Component {
                     ? <h4>Select</h4>
                     : <Link to='/details/'><h4>Select</h4></Link>}
               </div>
-            </div>
+            </div>}
+            {this.state.display === 'calendar' &&
+            <div className='wbdv-calendar'>
+              <div className='wbdv-calendar-title-bar'>
+                <div className='wbdv-calendar-title'>Select a time</div>
+                <button
+                    className='wbdv-btn wbdv-green-btn'
+                    onClick={() => this.setState({display: 'list'})}
+                >
+                  Switch to list view
+                </button>
+              </div>
+              <WeekCalendar
+                  selectedIntervals={this.state.free_time_blocks.map(t =>
+                      ({start: moment(t.start), end: moment(t.end)}))}
+                  scaleUnit={60}
+                  useModal={false}
+                  onEventClick={(something) => console.log(something)}
+                  onIntervalSelect={(interval) => console.log(interval)}
+              />
+            </div>}
           </div>
-          <div className='wbdv-calendar'>
-            <WeekCalendar
-                onEventClick={(something) => console.log(something)}
-                onIntervalSelect={(interval) => console.log(interval)}
-            />
-          </div>
+
         </div>
     )
   }

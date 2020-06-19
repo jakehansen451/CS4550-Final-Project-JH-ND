@@ -1,4 +1,4 @@
-import {localUrl as url} from '../config';
+import {localApiUrl as url} from '../config';
 
 const createEvent = (event) =>
     fetch(`${url}/events/`, {
@@ -27,10 +27,21 @@ const getAllEvents = () =>
     fetch(`${url}/events/`)
     .then(response => response.json());
 
+const getFreeTimesForUsers = (userIdsString, startTime, endTime) => {
+  console.log(userIdsString);
+  console.log(startTime);
+  console.log(endTime);
+  const urlString = `${url}/free/users/${userIdsString}?start=${startTime}&end=${endTime}`;
+  console.log(urlString);
+  return fetch(urlString)
+  .then(response => response.json());
+};
+
 export default {
   createEvent,
   updateEvent,
   deleteEvent,
   getEvent,
-  getAllEvents
-}
+  getAllEvents,
+  getFreeTimesForUsers,
+};

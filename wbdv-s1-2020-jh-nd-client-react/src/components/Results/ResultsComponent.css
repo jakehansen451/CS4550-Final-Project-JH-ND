@@ -1,5 +1,4 @@
 .wbdv-results {
-  max-width: 600px;
 }
 
 .wbdv-results-page-title-bar {
@@ -12,7 +11,6 @@
 .wbdv-time-select-body {
   display: inline-flex;
   width: 100%;
-  justify-content: space-between;
 }
 
 .wbdv-time-list {
@@ -52,16 +50,17 @@
   text-align: right;
 }
 .wbdv-selected-time {
-  background-color: #5487ff;
+  background-color: var(--lighter-green);
 }
 
 .wbdv-calendar {
   flex-shrink: 0;
-  height: 500px;
+  height: fit-content;
   background-color: #eeeeee;
   border: 1px solid #dddddd;
   text-align: center;
   margin-right: 1rem;
+  overflow: auto;
 }
 
 .wbdv-user-column {
@@ -70,6 +69,7 @@
   justify-content: left;
   padding-right: 1rem;
   width: 16rem;
+  min-width: 16rem;
 }
 
 .wbdv-user-column:last-child {
@@ -79,6 +79,18 @@
 .wbdv-select-time-btn {
   margin: 0.5rem;
   text-align: center;
+}
+
+.wbdv-calendar-title {
+  margin-bottom: 0;
+  font-weight: 600;
+  font-size: larger;
+  margin-right: 1rem;
+}
+
+.wbdv-calendar-title-bar {
+  display: inline-flex;
+  padding: 0.5rem 1rem;
 }
 
 @media screen and (max-width: 500px) {

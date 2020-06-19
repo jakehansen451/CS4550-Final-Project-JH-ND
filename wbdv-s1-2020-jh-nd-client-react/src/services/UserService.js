@@ -1,4 +1,4 @@
-import {localUrl as url} from '../config';
+import {localApiUrl as url} from '../config';
 
 const createUser = (user) =>
     fetch(`${url}/users/`, {
@@ -103,16 +103,6 @@ const getStudentsForCourse = (courseId) =>
       }
     });
 
-const getFreeTimesForUsers = (userIdsString, startTime, endTime) => {
-  console.log(userIdsString);
-  console.log(startTime);
-  console.log(endTime);
-  const urlString = `${url}/free/users/${userIdsString}?start=${startTime}&end=${endTime}`;
-  console.log(urlString);
-  return fetch(urlString)
-    .then(response => response.json());
-};
-
 export default {
   createUser,
   updateUser,
@@ -125,5 +115,4 @@ export default {
   getSession,
   getTutorsForCourse,
   getStudentsForCourse,
-  getFreeTimesForUsers,
 };
