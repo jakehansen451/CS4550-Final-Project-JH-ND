@@ -9,11 +9,12 @@ import LoginComponent from "./Login/LoginComponent";
 import RegisterComponent from './Register/RegisterComponent';
 import ProfileComponent from "./Profile/ProfileComponent";
 import CourseBrowserComponent from "./CourseBrowser/CourseBrowserComponent";
+import UserService from "../services/UserService";
+import EventComponent from "./Event/EventComponent";
+import CourseDetailComponent from "./CourseDetail/CourseDetailComponent";
 import {Redirect} from "react-router-dom";
 import * as Actions from '../store/Actions';
 import '../styles.css';
-import CourseDetailComponent from "./CourseDetail/CourseDetailComponent";
-import UserService from "../services/UserService";
 
 class TutorMeComponent extends React.Component {
   componentDidMount() {
@@ -37,10 +38,10 @@ class TutorMeComponent extends React.Component {
             <Route path="/search/:courseId"
                    exact
                    component={SearchComponent}/>
-            <Route path="/results/:courseId/:userIds"
+            <Route path="/results/:courseId/:userIds/"
                    exact
                    component={ResultsComponent}/>
-            <Route path="/details/:courseId/:userIds/:startTime/:endTime"
+            <Route path="/details/:courseId/:userIds/:startTime/:endTime/"
                    exact
                    component={DetailsComponent}/>
             <Route path="/login/"
@@ -49,15 +50,19 @@ class TutorMeComponent extends React.Component {
             <Route path="/register/"
                    exact
                    component={RegisterComponent}/>
-            <Route path="/profile/:userId"
+            <Route path="/profile/:userId/"
                    component={ProfileComponent}
                    exact/>
             <Route path="/courses/"
                    exact
                    component={CourseBrowserComponent}/>
-            <Route path="/courses/:courseId"
+            <Route path="/courses/:courseId/"
                    exact
                    component={CourseDetailComponent}/>
+            <Route path="/events/:eventId/"
+                   exact
+                   component={EventComponent}/>
+
           </div>
         </BrowserRouter>
     )
