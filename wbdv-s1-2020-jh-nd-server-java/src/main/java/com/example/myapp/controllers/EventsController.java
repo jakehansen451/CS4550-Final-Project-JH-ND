@@ -66,6 +66,10 @@ public class EventsController {
             String accessToken = user.getAccessToken();
             String refreshToken = user.getRefreshToken();
 
+            if (accessToken == null || refreshToken == null) {
+                return events;
+            }
+
             List<TimePeriod> busyTime = googleCalendarService.getFreeBusy(accessToken, refreshToken, id, start, end);
             events.addAll(busyTime);
         }
