@@ -25,33 +25,55 @@ const fake_time_blocks = [
 ];
 
 class ResultsComponent extends React.Component {
-  splitAtMidnight = (datetimeArray) => {
+  parseTimeBlocks = (datetimeArray) => {
     let inputArr = [...datetimeArray];
+    console.log(datetimeArray);
     const outputArray = [];
     const midnight = new Date();
     midnight.setDate(midnight.getDate() + 1);
     midnight.setHours(0, 0, 0, 0);
     let midnightStr = midnight.toISOString();
-    const beforeMidnight = new Date();
-    beforeMidnight.setHours(23, 59, 59, 999);
-    let beforeMidnightStr = beforeMidnight.toISOString();
+    //const beforeMidnight = new Date();
+    //beforeMidnight.setHours(23, 59, 59, 999);
+    //let beforeMidnightStr = beforeMidnight.toISOString();
     for (let i = 0; i < 7; i++) {
       for (const datetime of inputArr) {
         const startDT = new Date(datetime.start);
         const endDT = new Date(datetime.end);
-        if (midnight - startDT > 0 && endDT - midnight >= 0) {
-          outputArray.push({start: datetime.start, end: beforeMidnightStr});
+        if (endDT - startDT < 30 * 60 * 1000) {
+          console.log('Event is less than 30 minutes, cutting it out')
+          console.log(inputArr.length);
+          inputArr = inputArr.filter(d => d !== datetime);
+          console.log(inputArr.length);
+        } else if (midnightStr - startDT <  30 * 60 * 1000) {
+          console.log('Event is less than 30 before midnight, cutting it out and adding new event tomorrow')
+          console.log(inputArr.length);
+          inputArr = inputArr.filter(d => d !== datetime);
+          console.log(inputArr.length);
+          inputArr.push({start: midnightStr, end: datetime.end});
+          console.log(inputArr.length);
+        } else if (midnight - startDT > 0 && endDT - midnight >= 0) {
+          //outputArray.push({start: datetime.start, end: beforeMidnightStr});
+          outputArray.push({start: datetime.start, end: midnightStr});
           inputArr = inputArr.filter(d => d !== datetime);
           inputArr.push({start: midnightStr, end: datetime.end});
+          console.log('Added time from clause 3:');
+          //console.log({start: datetime.start, end: beforeMidnightStr});
+          outputArray.push({start: datetime.start, end: midnightStr});
         } else if (midnight - endDT > 0) {
           outputArray.push(datetime);
+          console.log('Filtering in clause 4')
+          console.log(inputArr.length)
           inputArr = inputArr.filter(d => d !== datetime);
+          console.log(inputArr.length)
+          console.log('Added time from clause 4:');
+          console.log(datetime);
         }
       }
       midnight.setDate(midnight.getDate() + 1);
       midnightStr = midnight.toISOString();
-      beforeMidnight.setDate(beforeMidnight.getDate() + 1);
-      beforeMidnightStr = beforeMidnight.toISOString();
+      //beforeMidnight.setDate(beforeMidnight.getDate() + 1);
+      //beforeMidnightStr = beforeMidnight.toISOString();
     }
     return outputArray;
   };
@@ -59,9 +81,8 @@ class ResultsComponent extends React.Component {
   state = {
     courseId: this.props.match.params.courseId,
     userIds: this.props.match.params.userIds.split(','),
-    free_time_blocks: [],//this.splitAtMidnight(fake_time_blocks),
+    free_time_blocks: [],//this.parseTimeBlocks(fake_time_blocks),
     display: 'list',
-    hostOptions: [],
   };
 
   componentDidMount() {
@@ -73,21 +94,11 @@ class ResultsComponent extends React.Component {
         now.toISOString(),
         weekLater.toISOString()
     ).then(r => {
-      console.log(r);
       this.setState({
-        free_time_blocks: this.splitAtMidnight(
+        free_time_blocks: this.parseTimeBlocks(
             r.map(dt => ({start: dt.startString, end: dt.endString})))
       })
     });
-
-    UserService.getTutorsForCourse(this.state.courseId)
-    .then(tutors => {
-      this.setState({
-        hostOptions: [...this.props.selected_users
-        .filter(user => user.role === 'ADMIN'),
-          ...tutors]
-      })
-    })
   }
 
   componentDidUpdate() {
@@ -120,18 +131,15 @@ class ResultsComponent extends React.Component {
     )
   };
 
-  generateHostOption = (option, index) =>
-      <option
-          key={index}
-          value={option._id}
-      >
-        {`${option.lastName}, ${option.firstName}`}
-      </option>;
-
   renderUser = (user) =>
       <div className='wbdv-user-row' key={user._id}>
         {user.lastName.concat(', ', user.firstName)}
       </div>;
+
+  generateDetailsUrl = () => `/details/${this.state.courseId}/`.concat(
+      `${this.props.selected_users.map(user => user._id).join(',')}/`,
+      `${this.props.selected_time_block.start}/`,
+      `${this.props.selected_time_block.end}`);
 
   render() {
     return (
@@ -146,10 +154,6 @@ class ResultsComponent extends React.Component {
                     className='wbdv-edit-participants-button'>
                 <h6>Edit Participants</h6>
               </Link>
-              <h5>Select Host</h5>
-              <select className='wbdv-input'>
-                {this.state.hostOptions.map(this.generateHostOption)}
-              </select>
               <div className='wbdv-scroll-column'>
                 {this.props.selected_users.map(
                     (admin) => this.renderUser(admin))}
@@ -173,7 +177,9 @@ class ResultsComponent extends React.Component {
               <div className='wbdv-select-time-btn'>
                 {Utils.isEmpty(this.props.selected_time_block)
                     ? <h4>Select</h4>
-                    : <Link to='/details/'><h4>Select</h4></Link>}
+                    : <Link to={this.generateDetailsUrl()}>
+                      <h4>Select</h4>
+                    </Link>}
               </div>
             </div>}
             {this.state.display === 'calendar' &&

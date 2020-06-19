@@ -48,29 +48,30 @@ class RegisterComponent extends React.Component {
   .then(response => this.props.logout());
 
   register = () => {
-    if (this.state.username
-        && this.state.password
-        && this.state.email
-        && this.state.firstName
-        && this.state.lastName
-        && this.state.password === this.state.confirmPassword) {
-      UserService.register({
-        username: this.state.username,
-        password: this.state.password,
-        firstName: this.state.firstName,
-        lastName: this.state.lastName,
-        email: this.state.email,
-        role: this.state.role,
-      })
-      .then(newUser => {
-        if (newUser.status === 500) {
-          alert('Registration failed. Please try a different username.');
-        } else {
-          this.props.login(newUser);
-          this.props.history.push(`/profile/${newUser._id}`);
-        }
-      })
-    }
+    if (this.state.password === this.state.confirmPassword) {
+      if (this.state.username
+          && this.state.password
+          && this.state.email
+          && this.state.firstName
+          && this.state.lastName) {
+        UserService.register({
+          username: this.state.username,
+          password: this.state.password,
+          firstName: this.state.firstName,
+          lastName: this.state.lastName,
+          email: this.state.email,
+          role: this.state.role,
+        })
+        .then(newUser => {
+          if (!newUser._id) {
+            alert('Registration failed. Please try a different username.');
+          } else {
+            this.props.login(newUser);
+            this.props.history.push(`/profile/${newUser._id}`);
+          }
+        })
+      } else alert('Please fill out all form fields');
+    } else alert('Passwords must match');
   };
 
   registerSection = () => {

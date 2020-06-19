@@ -1,6 +1,7 @@
 import {gapi} from 'gapi-script';
 import React from "react";
-import {herokuApiUrl as url} from '../config';
+import {localApiUrl as apiUrl} from '../config';
+import {localUrl as url} from '../config';
 
 
 import store from '../store/Store';
@@ -53,7 +54,7 @@ const getRefreshToken = (code) => {
     xhr.open('POST',
         url + '?grant_type=authorization_code&client_id='
         + CLIENT_ID + '&client_secret=0sN5dhbDPgF7ePLlZFvNWBKL&code='
-        + code + '&redirect_uri=https://tutor-me-final-project.herokuapp.com');
+        + code + `&redirect_uri=${url}`);
 
     xhr.onreadystatechange = (e) => {
         if (xhr.readyState === 4) {
@@ -67,7 +68,7 @@ const getRefreshToken = (code) => {
 };
 
 const sendData = (data) =>
-    fetch(`${url}/users/` + store.getState().current_user._id + `/tokens`, {
+    fetch(`${apiUrl}/users/` + store.getState().current_user._id + `/tokens`, {
         method: 'POST',
         body: data,
         headers: {'content-type': 'application/json'}

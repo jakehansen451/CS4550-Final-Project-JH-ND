@@ -1,48 +1,13 @@
 import {herokuApiUrl as url} from '../config';
 
-const createEvent = (event) => {
-    let eventDemo = {
-        "title": "New from Front End",
-        "start": "2020-06-20T16:04:19.398Z",
-        "end": "2020-06-20T18:04:19.398Z",
-        "participants": [],
-        "organizer": {
-            "username": "admin",
-            "firstName": "Ad",
-            "lastName": "Min",
-            "password": "admin",
-            "email": "admin@school.edu",
-            "accessToken": "ya29.a0AfH6SMCww1G1AnxpKYNedtpOGJyBu5dnx5H5iSmRqFzxUVVRqCfcgz17LD_5XIRRe71aPrtNaMAvTrW0YfukxQ8jiBteM_pQKDYNQjU5fZ_BtzL-vmASAZYVFPV-UuXwl2F9WB2dUBQORsKJDC11AtG0lPmqni3YqdA",
-            "refreshToken": "1//0dnnC6N4dEQqRCgYIARAAGA0SNwF-L9IrOajrj1Xfq4hOqIJDV097p8zma9J-N9sj4canDoV5tS0RhKlAWbn6H4VkdTOFey_yjfc",
-            "role": "ADMIN",
-            "_id": 21
-        },
-        "course" : {
-            "title": "CS3800",
-            "abbreviation": null,
-            "number": null,
-            "admin": {
-                "username": "admin",
-                "firstName": "Ad",
-                "lastName": "Min",
-                "password": "admin",
-                "email": "admin@school.edu",
-                "accessToken": "ya29.a0AfH6SMCww1G1AnxpKYNedtpOGJyBu5dnx5H5iSmRqFzxUVVRqCfcgz17LD_5XIRRe71aPrtNaMAvTrW0YfukxQ8jiBteM_pQKDYNQjU5fZ_BtzL-vmASAZYVFPV-UuXwl2F9WB2dUBQORsKJDC11AtG0lPmqni3YqdA",
-                "refreshToken": "1//0dnnC6N4dEQqRCgYIARAAGA0SNwF-L9IrOajrj1Xfq4hOqIJDV097p8zma9J-N9sj4canDoV5tS0RhKlAWbn6H4VkdTOFey_yjfc",
-                "role": "ADMIN",
-                "_id": 21
-            },
-            "_id": 21
-        }
-    };
-
-    fetch(`${url}/events/`, {
-        method: 'POST',
-        body: JSON.stringify(eventDemo),
-        headers: {'content-type': 'application/json'}
-    }).then(response => response.json()).then(json => console.log(json));
-};
-
+const createEvent = (start, end, title, courseId, hostId, userIds) =>
+  fetch(`${url}/events/v2`
+  .concat(`?start=${start}`, `&end=${end}`, `&title=${title}`,
+      `&courseId=${courseId}`, `&organizerId=${hostId}`,
+      `&attendeesIds=${userIds}`), {
+    method: 'POST',
+    headers: {'content-type': 'application/json'}
+  }).then(response => response.json());
 
 const updateEvent = (eventId, event) =>
     fetch(`${url}/events/${eventId}`, {

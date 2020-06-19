@@ -7,3 +7,15 @@
   justify-content: space-between;
   width: 100%;
 }
+
+.wbdv-schedule-meeting-btn {
+  color: var(--link-green);
+}
+
+.wbdv-schedule-meeting-btn:hover {
+  text-decoration: underline var(--link-green);
+}
+
+.wbdv-schedule-meeting-btn:focus {
+  outline: none;
+}

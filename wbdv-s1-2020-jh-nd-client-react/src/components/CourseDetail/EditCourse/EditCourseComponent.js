@@ -13,16 +13,18 @@ class EditCourseComponent extends React.Component {
   };
 
   updateCourse = () => {
-    if (this.state.courseName !== this.props.course) {
-      CourseService.updateCourse(this.props.course._id,
-          {
-            title: this.state.courseName,
-            adminId: this.props.current_user._id,
-          })
-      .then(updatedCourse => {
-        this.props.courseUpdated(updatedCourse)
-      });
-    }
+    if (this.state.courseName) {
+      if (this.state.courseName !== this.props.course) {
+        CourseService.updateCourse(this.props.course._id,
+            {
+              title: this.state.courseName,
+              adminId: this.props.current_user._id,
+            })
+        .then(updatedCourse => {
+          this.props.courseUpdated(updatedCourse)
+        });
+      }
+    } else alert('Course name cannot be empty')
   };
 
   render() {

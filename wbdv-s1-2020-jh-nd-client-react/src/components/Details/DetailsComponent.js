@@ -1,55 +1,97 @@
 import React from 'react'
 import {connect} from 'react-redux'
-import {Link} from 'react-router-dom'
 import * as Actions from "../../store/Actions";
 import * as DateUtils from '../../utils/DateUtils'
-import googleService from "../../api/GoogleAPIService";
 import {isEmpty} from "../../utils/Utils";
-
-import './DetailsComponent.css'
+import UserService from "../../services/UserService";
+import CourseService from "../../services/CourseService";
 import EventService from "../../services/EventService";
 
+import './DetailsComponent.css'
+
 class DetailsComponent extends React.Component {
+  state = {
+    courseId: this.props.match.params.courseId,
+    title: '',
+    users: [],
+    hostOptions: [],
+    hostId: '',
+    start: this.props.match.params.startTime,
+    end: this.props.match.params.endTime,
+  };
+
   componentDidUpdate() {
     if (isEmpty(this.props.current_user)) {
       console.log(this.props);
       this.props.history.push('/');
     }
+
+    if (this.state.users.length === 0 && this.props.selected_users.length > 0) {
+      for (const user of this.props.selected_users) {
+        UserService.getUser(user._id)
+        .then(u => {
+              if (!this.state.users.find(t => t._id === u._id)) {
+                this.setState({users: [...this.state.users, u]});
+                if (u.role === 'ADMIN' || u.role === 'TUTOR') {
+                  this.setState({hostOptions: [...this.state.hostOptions, u]});
+                  !this.state.hostId && this.setState({hostId: u._id});
+                }
+              }
+            }
+        )
+      }
+    }
   }
 
-  createUserOption = (user) => {
+  renderHostOption = (user, index) => {
     return (
-        <option value={user._id}>
+        <option value={user._id} key={index}>
           {`${user.lastName}, ${user.firstName}`}
         </option>
     )
   };
 
-  addMeeting = () => {
-    let date = this.props.selected_time_block.date;
-    let startDateTime = new Date(
-        date + " " + this.props.selected_time_block.start
-        + " UTC").toISOString();
-    let endDateTime = new Date(
-        date + " " + this.props.selected_time_block.end + " UTC").toISOString();
+  createEvent = () => {
+    if (this.state.title) {
 
-    EventService.createEvent();
+      EventService.createEvent(
+          this.state.start,
+          this.state.end,
+          this.state.title,
+          this.state.courseId,
+          this.state.hostId,
+          this.state.users.map(u => u._id).join(',')
+      ).then(event => this.props.history.push(`/events/${event._id}`));
+
+
+    } else {
+      alert('Event title cannot be empty');
+    }
   };
 
   render() {
-    const time_block = this.props.selected_time_block;
-    const date = time_block.date;
-    const start = time_block.start;
-    const end = time_block.end;
-    const startLocal = DateUtils.localFromUTCDateTime(date, start, 'en-GB');
-    const endLocal = DateUtils.localFromUTCDateTime(date, end, 'en-GB');
+    const startDate = new Date(this.state.start);
+    const splitArr = startDate.toLocaleDateString().split('/');
+    const date = [splitArr[2], splitArr[0].padStart(2, '0'),
+      splitArr[1].padStart(2, '0')].join('-');
+
+    const startLocal = startDate.toLocaleTimeString('en-GB');
+    const endLocal = new Date(this.state.end).toLocaleTimeString('en-GB');
 
     return (
         <div>
-          <h1>Details</h1>
+          <h1>Event Details</h1>
           <div>
             <div>
               <form className='wbdv-details-form'>
+                <div className='wbdv-details-form-row'>
+                  <h6>Title:</h6>
+                  <input
+                      type='text'
+                      value={this.state.title}
+                      onChange={(e) => this.setState({title: e.target.value})}
+                  />
+                </div>
                 <div className='wbdv-details-form-row'>
                   <h6>Date:</h6>
                   <input
@@ -88,24 +130,16 @@ class DetailsComponent extends React.Component {
                 <div className='wbdv-details-form-row'>
                   <h6>Host:</h6>
                   <select>
-                    {this.props.selected_users.map(this.createUserOption)}
-                  </select>
-                </div>
-                <div className='wbdv-details-form-row'>
-                  <h6>Type:</h6>
-                  <select>
-                    <option value='PUBLIC'>
-                      Public - anyone can join
-                    </option>
-                    <option value='PRIVATE'>
-                      Private - only invitees can join
-                    </option>
+                    {this.state.hostOptions.map(this.renderHostOption)}
                   </select>
                 </div>
               </form>
-              <Link onClick={this.addMeeting} to='/'>
+              <button
+                  className='wbdv-btn wbdv-schedule-meeting-btn'
+                  onClick={this.createEvent}
+              >
                 <h4>Schedule Meeting</h4>
-              </Link>
+              </button>
             </div>
           </div>
         </div>
