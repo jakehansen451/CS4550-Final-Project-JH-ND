@@ -53,9 +53,7 @@ public class GoogleCalendarService {
 
     public int deleteEvent(User organizer, String eventId) {
         if (eventId == null) {
-            // todo: fix after all events get the id
             return 1;
-
         } else {
             try {
                 Calendar calendar = getCalendar(organizer.getAccessToken(), organizer.getRefreshToken(), organizer.getId());
