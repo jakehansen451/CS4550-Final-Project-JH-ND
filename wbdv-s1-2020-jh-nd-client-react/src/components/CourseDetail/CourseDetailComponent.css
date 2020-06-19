@@ -59,3 +59,34 @@
   border-radius: 0.25rem;
   margin-bottom: 0.5rem;
 }
+
+.wbdv-event-create-input {
+  flex-basis: 12rem
+}
+
+.wbdv-event-detail-two-column {
+  display: inline-flex;
+  width: 100%;
+}
+
+.wbdv-invitees-column {
+  margin-left: 1rem;
+}
+
+@media screen and (max-width: 460px) {
+  .wbdv-details-form-row {
+    flex-direction: column;
+  }
+
+  .wbdv-event-create-input {
+    flex-basis: 0;
+  }
+
+  .wbdv-event-detail-two-column {
+    flex-direction: column;
+  }
+
+  .wbdv-invitees-column {
+    margin: 1rem 0;
+  }
+}

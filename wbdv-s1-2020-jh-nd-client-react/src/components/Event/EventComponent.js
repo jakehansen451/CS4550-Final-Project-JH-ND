@@ -1,5 +1,4 @@
 import React from 'react';
-import {isEmpty} from "../../utils/Utils";
 import EventService from "../../services/EventService";
 
 class EventComponent extends React.Component {
@@ -10,15 +9,10 @@ class EventComponent extends React.Component {
 
   componentDidMount() {
     EventService.getEvent(this.state.eventId)
-    .then(event => {
-      console.log(event);
-      this.setState({event})
-    })
+    .then(event => this.setState({event}))
   }
 
   render() {
-    console.log(this.props);
-    console.log(this.state);
     return (
         <div>
           <h2>{this.state.event.title}</h2>

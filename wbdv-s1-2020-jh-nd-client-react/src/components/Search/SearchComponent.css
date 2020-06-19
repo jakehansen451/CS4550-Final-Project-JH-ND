@@ -1,7 +1,11 @@
+.wbdv-search {
+  width: 770px;
+}
+
 .wbdv-three-column-container {
   display: inline-flex;
   width: 100%;
-  justify-content: space-between;
+  flex-wrap: wrap;
 }
 
 .wbdv-user-column {
@@ -54,4 +58,24 @@
 
 .wbdv-disabled-btn:hover {
   color: darkgray;
+}
+
+@media screen and (max-width: 864px) {
+  .wbdv-search {
+    max-width: 520px;
+  }
+}
+
+@media screen and (max-width: 584px) {
+  .wbdv-search {
+    max-width: 230px;
+  }
+
+  .wbdv-user-column:nth-child(1) {
+    padding: 0;
+  }
+
+  .wbdv-user-column:nth-child(2) {
+    padding: 0;
+  }
 }

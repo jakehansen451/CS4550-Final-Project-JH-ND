@@ -33,7 +33,6 @@ class SearchComponent extends React.Component {
 
   componentDidUpdate() {
     if (isEmpty(this.props.current_user)) {
-      console.log(this.props);
       this.props.history.push('/');
     }
   }
@@ -81,7 +80,7 @@ class SearchComponent extends React.Component {
 
   render() {
     return (
-        <div>
+        <div className='wbdv-search'>
           <h1>Search</h1>
           <div className='wbdv-three-column-container'>
             <div className='wbdv-user-column'>
