@@ -4,6 +4,7 @@ import {Link} from "react-router-dom";
 import UserService from "../services/UserService";
 import * as Actions from "../store/Actions";
 import {isEmpty} from "../utils/Utils";
+import NavigatorComponent from "./Navigator/NavigatorComponent";
 
 class HomeComponent extends React.Component {
   componentDidMount() {
@@ -13,7 +14,7 @@ class HomeComponent extends React.Component {
 
   render() {
     return (
-        <div>
+        <NavigatorComponent>
           <div className="list-group">
             <Link className="list-group-item" to='/login/'>
               Login or register
@@ -28,7 +29,7 @@ class HomeComponent extends React.Component {
               Browse courses
             </Link>
           </div>
-        </div>
+        </NavigatorComponent>
     )
   }
 }
