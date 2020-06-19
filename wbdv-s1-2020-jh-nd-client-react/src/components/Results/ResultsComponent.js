@@ -117,14 +117,12 @@ class ResultsComponent extends React.Component {
         {user.lastName.concat(', ', user.firstName)}
       </div>;
 
-  generateDetailsUrl = () => `/details/`.concat(
+  generateDetailsUrl = () => `/details/${this.state.courseId}/`.concat(
       `${this.props.selected_users.map(user => user._id).join(',')}/`,
       `${this.props.selected_time_block.start}/`,
       `${this.props.selected_time_block.end}`);
 
   render() {
-    console.log(this.props);
-    console.log(this.state);
     return (
         <div className='wbdv-results'>
           <div className='wbdv-results-page-title-bar'>
