@@ -90,17 +90,6 @@ class DetailsComponent extends React.Component {
                     {this.props.selected_users.map(this.createUserOption)}
                   </select>
                 </div>
-                <div className='wbdv-details-form-row'>
-                  <h6>Type:</h6>
-                  <select>
-                    <option value='PUBLIC'>
-                      Public - anyone can join
-                    </option>
-                    <option value='PRIVATE'>
-                      Private - only invitees can join
-                    </option>
-                  </select>
-                </div>
               </form>
               <Link onClick={this.addMeeting} to='/'>
                 <h4>Schedule Meeting</h4>

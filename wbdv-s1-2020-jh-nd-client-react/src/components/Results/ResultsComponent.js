@@ -25,7 +25,7 @@ const fake_time_blocks = [
 ];
 
 class ResultsComponent extends React.Component {
-  splitAtMidnight = (datetimeArray) => {
+  parseTimeBlocks = (datetimeArray) => {
     let inputArr = [...datetimeArray];
     const outputArray = [];
     const midnight = new Date();
@@ -39,7 +39,9 @@ class ResultsComponent extends React.Component {
       for (const datetime of inputArr) {
         const startDT = new Date(datetime.start);
         const endDT = new Date(datetime.end);
-        if (midnight - startDT > 0 && endDT - midnight >= 0) {
+        if (endDT - startDT < 30 * 60 * 1000) {
+          inputArr = inputArr.filter(d => d !== datetime);
+        } else if (midnight - startDT > 0 && endDT - midnight >= 0) {
           outputArray.push({start: datetime.start, end: beforeMidnightStr});
           inputArr = inputArr.filter(d => d !== datetime);
           inputArr.push({start: midnightStr, end: datetime.end});
@@ -59,9 +61,10 @@ class ResultsComponent extends React.Component {
   state = {
     courseId: this.props.match.params.courseId,
     userIds: this.props.match.params.userIds.split(','),
-    free_time_blocks: [],//this.splitAtMidnight(fake_time_blocks),
+    free_time_blocks: [],//this.parseTimeBlocks(fake_time_blocks),
     display: 'list',
     hostOptions: [],
+    hostId: '',
   };
 
   componentDidMount() {
@@ -75,7 +78,7 @@ class ResultsComponent extends React.Component {
     ).then(r => {
       console.log(r);
       this.setState({
-        free_time_blocks: this.splitAtMidnight(
+        free_time_blocks: this.parseTimeBlocks(
             r.map(dt => ({start: dt.startString, end: dt.endString})))
       })
     });
@@ -85,7 +88,10 @@ class ResultsComponent extends React.Component {
       this.setState({
         hostOptions: [...this.props.selected_users
         .filter(user => user.role === 'ADMIN'),
-          ...tutors]
+          ...tutors.filter(u => this.props.selected_users.includes(u))],
+        hostId: this.props.selected_users.length > 0 ?
+        this.props.selected_users
+        .find(user => user.role === 'ADMIN')._id : ''
       })
     })
   }
@@ -133,7 +139,14 @@ class ResultsComponent extends React.Component {
         {user.lastName.concat(', ', user.firstName)}
       </div>;
 
+  generateDetailsUrl = () => `/details/${this.state.hostId}/`
+  .concat(`${this.props.selected_users.map(user => user._id).join(',')}/`,
+      `${this.props.selected_time_block.start}/`,
+      `${this.props.selected_time_block.end}`);
+
   render() {
+    console.log(this.props);
+    console.log(this.state);
     return (
         <div className='wbdv-results'>
           <div className='wbdv-results-page-title-bar'>
@@ -147,7 +160,10 @@ class ResultsComponent extends React.Component {
                 <h6>Edit Participants</h6>
               </Link>
               <h5>Select Host</h5>
-              <select className='wbdv-input'>
+              <select
+                  className='wbdv-input'
+                  onChange={(e) => this.setState({hostId: e.target.value})}
+              >
                 {this.state.hostOptions.map(this.generateHostOption)}
               </select>
               <div className='wbdv-scroll-column'>
@@ -173,7 +189,9 @@ class ResultsComponent extends React.Component {
               <div className='wbdv-select-time-btn'>
                 {Utils.isEmpty(this.props.selected_time_block)
                     ? <h4>Select</h4>
-                    : <Link to='/details/'><h4>Select</h4></Link>}
+                    : <Link to={this.generateDetailsUrl()}>
+                      <h4>Select</h4>
+                    </Link>}
               </div>
             </div>}
             {this.state.display === 'calendar' &&
