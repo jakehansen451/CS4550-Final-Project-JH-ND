@@ -4,6 +4,7 @@ package com.example.myapp.controllers;
 import com.example.myapp.models.calendar.Event;
 import com.example.myapp.models.calendar.TimePeriod;
 import com.example.myapp.models.people.User;
+import com.example.myapp.services.CourseService;
 import com.example.myapp.services.EventService;
 import com.example.myapp.services.GoogleCalendarService;
 import com.example.myapp.services.UserService;
@@ -12,6 +13,7 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 
 @RestController
@@ -22,10 +24,13 @@ public class EventsController {
     private EventService eventService;
 
     @Autowired
-    private UserService userService;
+    private CourseService courseService;
 
     @Autowired
-    GoogleCalendarService googleCalendarService;
+    private GoogleCalendarService googleCalendarService;
+
+    @Autowired
+    private UserService userService;
 
     @DeleteMapping("/api/events/{eventId}")
     public int deleteEventById(@PathVariable("eventId") Long eventId) {
@@ -39,13 +44,26 @@ public class EventsController {
     }
 
     @PostMapping("/api/events/")
-    public Event createNewEvent(@RequestBody Event newEvent) throws Exception {
+    public Event createNewEvent(@RequestBody Event newEvent) {
         return eventService.createNewEvent(newEvent);
     }
 
-    @PutMapping("api/events/{eventId}")
-    public Event updateEvent(@PathVariable("eventId") Long eventId, @RequestBody Event updatedEvent) throws Exception {
-        return eventService.updateEvent(eventId, updatedEvent);
+    @PostMapping("/api/events/v2")
+    public Event createNewEventV2(@RequestParam("start") String start,
+                                  @RequestParam("end") String end,
+                                  @RequestParam("title") String title,
+                                  @RequestParam("courseId") Long courseId,
+                                  @RequestParam("organizerId") Long organizerId,
+                                  @RequestParam("attendeesIds") List<Long> attendeesIds) {
+
+        Event newEvent = new Event();
+        newEvent.setStart(start);
+        newEvent.setEnd(end);
+        newEvent.setTitle(title);
+        newEvent.setCourse(courseService.findCourseById(courseId));
+        newEvent.setOrganizer(userService.findUserById(organizerId));
+        newEvent.setParticipants(attendeesIds.stream().map(id -> userService.findUserById(id)).collect(Collectors.toSet()));
+        return eventService.createNewEvent(newEvent);
     }
 
 
@@ -98,16 +116,4 @@ public class EventsController {
 
         return events;
     }
-
-    @PostMapping("/api/google-events")
-    public com.google.api.services.calendar.model.Event addEvent(@RequestParam("title") String title,
-                                                                 @RequestParam("start") String start,
-                                                                 @RequestParam("end") String end,
-                                                                 @RequestParam("attendeesIds") List<Long> attendeesIds,
-                                                                 @RequestParam("organizerId") Long organizerId) throws Exception {
-
-        return googleCalendarService.addEvent(title, start, end, attendeesIds, organizerId);
-    }
-
-
 }

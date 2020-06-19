@@ -13,6 +13,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -37,20 +38,18 @@ public class GoogleCalendarService {
                 .getItems();
     }
 
-    public Event updateEvent(String title, String start, String end, List<Long> attendeesIds, User organizer, String eventId) throws Exception {
-        Event event = createEventFrom(title, start, end, attendeesIds);
-        Calendar calendar = getCalendar(organizer.getAccessToken(), organizer.getRefreshToken(), organizer.getId());
-
-        return calendar.events().update("primary", eventId, event).execute();
-    }
 
 
-    public Event addEvent(String title, String start, String end, List<Long> attendeesIds, Long organizerId) throws Exception {
+    public Event addEvent(String title, String start, String end, List<Long> attendeesIds, Long organizerId) {
         Event event = createEventFrom(title, start, end, attendeesIds);
         User organizer = userService.findUserById(organizerId);
-        Calendar calendar = getCalendar(organizer.getAccessToken(), organizer.getRefreshToken(), organizerId);
+        try {
+            Calendar calendar = getCalendar(organizer.getAccessToken(), organizer.getRefreshToken(), organizerId);
+            return calendar.events().insert("primary", event).execute();
+        } catch (Exception e) {
+            return createEventFrom(e.getMessage(), java.util.Calendar.getInstance().getTime().toString(), java.util.Calendar.getInstance().getTime().toString(), new ArrayList<>());
+        }
 
-        return calendar.events().insert("primary", event).execute();
     }
 
     private Event createEventFrom(String title, String start, String end, List<Long> attendeesIds) {
