@@ -7,6 +7,7 @@ import googleService from "../../api/GoogleAPIService";
 import {isEmpty} from "../../utils/Utils";
 
 import './DetailsComponent.css'
+import EventService from "../../services/EventService";
 
 class DetailsComponent extends React.Component {
   componentDidUpdate() {
@@ -32,7 +33,7 @@ class DetailsComponent extends React.Component {
     let endDateTime = new Date(
         date + " " + this.props.selected_time_block.end + " UTC").toISOString();
 
-    googleService.addEvent(startDateTime, endDateTime, [], "Demo title");
+    EventService.createEvent();
   };
 
   render() {

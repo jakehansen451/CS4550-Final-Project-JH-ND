@@ -37,7 +37,23 @@ public class GoogleCalendarService {
                 .getItems();
     }
 
+    public Event updateEvent(String title, String start, String end, List<Long> attendeesIds, User organizer, String eventId) throws Exception {
+        Event event = createEventFrom(title, start, end, attendeesIds);
+        Calendar calendar = getCalendar(organizer.getAccessToken(), organizer.getRefreshToken(), organizer.getId());
+
+        return calendar.events().update("primary", eventId, event).execute();
+    }
+
+
     public Event addEvent(String title, String start, String end, List<Long> attendeesIds, Long organizerId) throws Exception {
+        Event event = createEventFrom(title, start, end, attendeesIds);
+        User organizer = userService.findUserById(organizerId);
+        Calendar calendar = getCalendar(organizer.getAccessToken(), organizer.getRefreshToken(), organizerId);
+
+        return calendar.events().insert("primary", event).execute();
+    }
+
+    private Event createEventFrom(String title, String start, String end, List<Long> attendeesIds) {
         Event event = new Event();
         event.setSummary(title);
         DateTime startDateTime = new DateTime(start);
@@ -51,15 +67,8 @@ public class GoogleCalendarService {
         event.setAttendees(
                 attendeesIds.stream()
                         .map(id -> new EventAttendee().setEmail(userService.findUserById(id).getEmail())).collect(Collectors.toList()));
-
-        User organizer = userService.findUserById(organizerId);
-        Calendar calendar = getCalendar(organizer.getAccessToken(), organizer.getRefreshToken(), organizerId);
-
-        event = calendar.events().insert("primary", event).execute();
-
         return event;
     }
-
 
 
     public List<com.example.myapp.models.calendar.TimePeriod> getFreeBusy(String accessToken, String refreshToken, Long userId, String start, String end) {

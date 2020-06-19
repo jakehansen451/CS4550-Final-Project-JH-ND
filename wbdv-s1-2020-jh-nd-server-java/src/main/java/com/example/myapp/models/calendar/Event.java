@@ -26,6 +26,8 @@ public class Event {
     private String start;
     private String end;
 
+    private String googleEventId;
+
     @ManyToMany(mappedBy = "participantInEvents")
     @JsonIgnore
     @ToString.Exclude
