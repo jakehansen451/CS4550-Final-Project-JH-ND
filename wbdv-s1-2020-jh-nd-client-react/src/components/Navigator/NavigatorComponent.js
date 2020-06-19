@@ -9,10 +9,19 @@ class NavigatorComponent extends React.Component {
   render() {
     return (
         <div className='wbdv-navigator'>
+          {this.props.currentPage === '/' && isEmpty(this.props.current_user)
+          &&
+              <span>
+                <Link className='wbdv-navigator-link' to={`/login`}> Login </Link>
+                <Link className='wbdv-navigator-link' to={`/register`}> Register </Link>
+              </span>
+         }
+
           {this.props.currentPage !== '/' &&
           <Link className='wbdv-navigator-link' to={'/'}>
             Home
           </Link>}
+
           {(!isEmpty(this.props.current_user) &&
               !this.props.currentPage.startsWith('/profile/')) &&
           <Link className='wbdv-navigator-link'

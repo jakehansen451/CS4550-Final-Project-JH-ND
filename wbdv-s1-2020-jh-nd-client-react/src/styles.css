@@ -27,10 +27,15 @@
   --dark-red: #8B0000;
   --darker-red: #590000;
 }
+html, body {
+  height: 100%;
+}
+
 
 body {
   padding: 2rem 3rem;
   max-width: 1200px;
+
 }
 
 a {
