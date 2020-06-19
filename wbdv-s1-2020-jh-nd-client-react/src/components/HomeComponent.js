@@ -5,7 +5,6 @@ import UserService from "../services/UserService";
 import * as Actions from "../store/Actions";
 import {isEmpty} from "../utils/Utils";
 import NavigatorComponent from "./Navigator/NavigatorComponent";
-import "../styles.css";
 import "./HomeComponent.css";
 
 class HomeComponent extends React.Component {
@@ -27,23 +26,10 @@ class HomeComponent extends React.Component {
         <div>
           <div className="content">
             <NavigatorComponent  currentPage={this.props.history.location.pathname}>
-              <div className="list-group">
-                <Link className="list-group-item" to='/login/'>
-                  Login or register
-                </Link>
-                {!isEmpty(this.props.current_user) &&
-                <Link className='list-group-item'
-                      to={`/profile/${this.props.current_user._id}/`}
-                >
-                  Profile
-                </Link>}
-                <Link className='list-group-item' to='/courses/'>
-                  Browse courses
-                </Link>
-              </div>
+
             </NavigatorComponent>
 
-            <div className="jumbotron jumbotron-fluid">
+            <div className="jumbotron">
               <div className="container">
                 <h1 className="display-4">Welcome{isEmpty(this.props.current_user) ? null : ` back, ${this.props.current_user.firstName}!`}</h1>
 
