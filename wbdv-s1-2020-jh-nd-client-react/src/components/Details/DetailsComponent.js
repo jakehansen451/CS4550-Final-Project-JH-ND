@@ -53,19 +53,20 @@ class DetailsComponent extends React.Component {
 
   createEvent = () => {
     if (this.state.title) {
-      const payload = {
-        title: this.state.title,
-        start: this.state.start,
-        end: this.state.end,
-        participants: this.state.users,
-        organizer: this.state.users.find(u => u._id === this.state.hostId),
-      };
 
-      CourseService.getCourse(this.state.courseId)
-      .then(course => payload.course = course);
+      EventService.createEvent(
+          this.state.start,
+          this.state.end,
+          this.state.title,
+          this.state.courseId,
+          this.state.hostId,
+          this.state.users.map(u => u._id).join(',')
+      ).then(event => this.props.history.push(`/events/${event._id}`));
 
-      console.log(payload);
-    } else alert('Event title cannot be empty');
+
+    } else {
+      alert('Event title cannot be empty');
+    }
   };
 
   render() {

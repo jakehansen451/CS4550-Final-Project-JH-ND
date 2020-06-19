@@ -27,33 +27,53 @@ const fake_time_blocks = [
 class ResultsComponent extends React.Component {
   parseTimeBlocks = (datetimeArray) => {
     let inputArr = [...datetimeArray];
+    console.log(datetimeArray);
     const outputArray = [];
     const midnight = new Date();
     midnight.setDate(midnight.getDate() + 1);
     midnight.setHours(0, 0, 0, 0);
     let midnightStr = midnight.toISOString();
-    const beforeMidnight = new Date();
-    beforeMidnight.setHours(23, 59, 59, 999);
-    let beforeMidnightStr = beforeMidnight.toISOString();
+    //const beforeMidnight = new Date();
+    //beforeMidnight.setHours(23, 59, 59, 999);
+    //let beforeMidnightStr = beforeMidnight.toISOString();
     for (let i = 0; i < 7; i++) {
       for (const datetime of inputArr) {
         const startDT = new Date(datetime.start);
         const endDT = new Date(datetime.end);
         if (endDT - startDT < 30 * 60 * 1000) {
+          console.log('Event is less than 30 minutes, cutting it out')
+          console.log(inputArr.length);
           inputArr = inputArr.filter(d => d !== datetime);
+          console.log(inputArr.length);
+        } else if (midnightStr - startDT <  30 * 60 * 1000) {
+          console.log('Event is less than 30 before midnight, cutting it out and adding new event tomorrow')
+          console.log(inputArr.length);
+          inputArr = inputArr.filter(d => d !== datetime);
+          console.log(inputArr.length);
+          inputArr.push({start: midnightStr, end: datetime.end});
+          console.log(inputArr.length);
         } else if (midnight - startDT > 0 && endDT - midnight >= 0) {
-          outputArray.push({start: datetime.start, end: beforeMidnightStr});
+          //outputArray.push({start: datetime.start, end: beforeMidnightStr});
+          outputArray.push({start: datetime.start, end: midnightStr});
           inputArr = inputArr.filter(d => d !== datetime);
           inputArr.push({start: midnightStr, end: datetime.end});
+          console.log('Added time from clause 3:');
+          //console.log({start: datetime.start, end: beforeMidnightStr});
+          outputArray.push({start: datetime.start, end: midnightStr});
         } else if (midnight - endDT > 0) {
           outputArray.push(datetime);
+          console.log('Filtering in clause 4')
+          console.log(inputArr.length)
           inputArr = inputArr.filter(d => d !== datetime);
+          console.log(inputArr.length)
+          console.log('Added time from clause 4:');
+          console.log(datetime);
         }
       }
       midnight.setDate(midnight.getDate() + 1);
       midnightStr = midnight.toISOString();
-      beforeMidnight.setDate(beforeMidnight.getDate() + 1);
-      beforeMidnightStr = beforeMidnight.toISOString();
+      //beforeMidnight.setDate(beforeMidnight.getDate() + 1);
+      //beforeMidnightStr = beforeMidnight.toISOString();
     }
     return outputArray;
   };
@@ -74,7 +94,6 @@ class ResultsComponent extends React.Component {
         now.toISOString(),
         weekLater.toISOString()
     ).then(r => {
-      console.log(r);
       this.setState({
         free_time_blocks: this.parseTimeBlocks(
             r.map(dt => ({start: dt.startString, end: dt.endString})))
