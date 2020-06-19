@@ -4,6 +4,8 @@ import * as Actions from '../../../store/Actions';
 import UserService from "../../../services/UserService";
 import '../../../styles.css';
 import './EditProfileComponent.css';
+import GoogleAPIService from "../../../api/GoogleAPIService";
+import {isEmpty} from "../../../utils/Utils";
 
 class EditProfileComponent extends React.Component {
   state = {
@@ -37,6 +39,8 @@ class EditProfileComponent extends React.Component {
   };
 
   render() {
+    const tokenExists = !isEmpty(this.props.current_user)
+        && this.props.current_user.refreshToken;
     return (
         <div className='wbdv-edit-profile'>
           <br/>
@@ -103,13 +107,30 @@ class EditProfileComponent extends React.Component {
           </div>
           <div className='wbdv-edit-profile-buttons'>
             <button
-                className='wbdv-btn wbdv-green-btn wbdv-edit-profile-button'
+                className='wbdv-btn wbdv-green-btn wbdv-edit-profile-btn'
                 onClick={this.updateProfile}
             >
               Update Profile
             </button>
             <button
-                className='wbdv-btn wbdv-red-btn wbdv-edit-profile-button'
+                className='wbdv-btn wbdv-green-btn wbdv-edit-profile-btn'
+                onClick={this.props.logout}
+            >
+              Log out
+            </button>
+            <button
+                className={tokenExists
+                    ? 'wbdv-btn wbdv-green-btn wbdv-edit-profile-btn wbdv-edit-btn-disabled'
+                    : 'wbdv-btn wbdv-green-btn wbdv-edit-profile-btn'
+                }
+                onClick={(event) => !tokenExists &&
+                  GoogleAPIService.handleAuthClick(event)
+                }
+            >
+              Authorize
+            </button>
+            <button
+                className='wbdv-btn wbdv-red-btn wbdv-edit-profile-btn'
                 onClick={this.props.deleteUser}
             >
               Delete Profile

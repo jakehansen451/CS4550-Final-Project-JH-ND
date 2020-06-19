@@ -1,0 +1,45 @@
+.wbdv-edit-course {
+  max-width: inherit;
+}
+
+.wbdv-edit-course-row {
+  width: 100%;
+  display: inline-flex;
+  justify-content: space-between;
+  margin-bottom: 0.5rem;
+}
+
+.wbdv-edit-course-label {
+  font-weight: 500;
+  margin-bottom: 0;
+}
+
+.wbdv-edit-course-buttons {
+  width: 100%;
+  display: inline-flex;
+  justify-content: space-between;
+}
+
+.wbdv-edit-course-btn {
+  flex-basis: 10rem;
+}
+
+@media screen and (max-width: 520px) {
+  .wbdv-edit-course-row {
+    flex-wrap: wrap;
+  }
+
+  .wbdv-edit-course-label {
+    margin-right: 1rem;
+  }
+
+  .wbdv-edit-course-buttons {
+    flex-direction: column;
+  }
+
+  .wbdv-edit-course-btn {
+    width: 10rem;
+    flex-basis: 0;
+    margin-bottom: 0.5rem;
+  }
+}

@@ -1,0 +1,12 @@
+.wbdv-navigator {
+  max-width: inherit;
+  width: 100%;
+  border-bottom: 1px solid var(--light-grey);
+  margin-bottom: 1rem;
+}
+
+.wbdv-navigator-link {
+  font-size: x-large;
+  font-weight: 500;
+  margin-right: 1rem;
+}

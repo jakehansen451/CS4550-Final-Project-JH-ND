@@ -6,6 +6,7 @@ import * as Actions from '../../store/Actions';
 import UserService from "../../services/UserService";
 import '../../styles.css';
 import './CourseBrowserComponent.css';
+import NavigatorComponent from "../Navigator/NavigatorComponent";
 
 class CourseBrowserComponent extends React.Component {
   state = {
@@ -26,7 +27,9 @@ class CourseBrowserComponent extends React.Component {
         <div key={index} className='wbdv-course-table-row'>
           <div className='wbdv-course-row-contents'>
             <Link to={`/courses/${course._id}`}>{course.title}</Link>
-            <div>{`${course.admin.lastName}, ${course.admin.firstName}`}</div>
+            <Link to={`/profile/${course.admin._id}`}>
+              {`${course.admin.lastName}, ${course.admin.firstName}`}
+            </Link>
           </div>
         </div>
     )
@@ -43,6 +46,8 @@ class CourseBrowserComponent extends React.Component {
   render() {
     return (
         <div className='wbdv-course-browser'>
+          <NavigatorComponent
+              currentPage={this.props.history.location.pathname}/>
           <h2>Browse Courses</h2>
           {this.props.current_user.role === 'ADMIN' &&
           <div className='wbdv-add-course-block'>

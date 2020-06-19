@@ -1,4 +1,4 @@
-import { localApiUrl as url } from '../config';
+import {herokuApiUrl as url} from '../config';
 
 const createEvent = (event) =>
     fetch(`${url}/events/`, {

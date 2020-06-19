@@ -19,8 +19,26 @@
   flex-basis: 15rem;
 }
 
-.wbdv-edit-profile-button {
+.wbdv-edit-profile-btn {
   flex-basis: 10rem;
+  margin-bottom: 0.5rem;
+}
+
+.wbdv-edit-btn-disabled {
+  background-color: var(--light-grey);
+  border-color: var(--dark-grey);
+  color: var(--dark-grey);
+}
+
+.wbdv-edit-btn-disabled:focus {
+  outline: none;
+}
+
+.wbdv-edit-btn-disabled:hover {
+  background-color: var(--light-grey);
+  border-color: var(--dark-grey);
+  color: var(--dark-grey);
+  cursor: default;
 }
 
 .wbdv-edit-profile-buttons {
@@ -30,6 +48,7 @@
   align-items: baseline;
   flex-wrap: wrap;
 }
+
 
 @media screen and (max-width: 500px) {
   .wbdv-edit-profile-input-row {

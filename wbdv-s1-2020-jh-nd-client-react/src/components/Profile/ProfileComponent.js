@@ -9,6 +9,7 @@ import GoogleAPIService from "../../api/GoogleAPIService";
 import CourseService from "../../services/CourseService";
 import '../../styles.css';
 import './ProfileComponent.css';
+import NavigatorComponent from "../Navigator/NavigatorComponent";
 
 class ProfileComponent extends React.Component {
 
@@ -108,68 +109,82 @@ class ProfileComponent extends React.Component {
     )
   };
 
+  logout = () => {
+    UserService.logout()
+    .then(r => {
+      this.props.unsetUser();
+      this.props.history.push('/login/');
+    })
+  };
+
   render() {
     return (
-        (this.state.user && !isEmpty(this.state.user))
-            ?
-            <div className='wbdv-profile'>
-              <h2>Profile</h2>
+        <div className='wbdv-profile'>
+          <NavigatorComponent
+              currentPage={this.props.history.location.pathname}/>
+          {(this.state.user && !isEmpty(this.state.user))
+              ?
               <div>
-                <div className='wbdv-profile-two-column'>
-                  <div className='wbdv-info-column'>
-                    <div className='wbdv-profile-row'>
-                      <div className='wbdv-info-column-label'>
-                        Username:
+                <h2>Profile</h2>
+                <div>
+                  <div className='wbdv-profile-two-column'>
+                    <div className='wbdv-info-column'>
+                      <div className='wbdv-profile-row'>
+                        <div className='wbdv-info-column-label'>
+                          Username:
+                        </div>
+                        <div className='wbdv-info-column-value'>
+                          {this.state.user.username}
+                        </div>
                       </div>
-                      <div className='wbdv-info-column-value'>
-                        {this.state.user.username}
+                      {this.state.user._id === this.props.current_user._id &&
+                      <div className='wbdv-profile-row'>
+                        <div className='wbdv-info-column-label'>
+                          Password:
+                        </div>
+                        <div className='wbdv-info-column-value'>
+                          {this.state.user.password}
+                        </div>
+                      </div>}
+                      <div className='wbdv-profile-row'>
+                        <div className='wbdv-info-column-label'>
+                          Name:
+                        </div>
+                        <div className='wbdv-info-column-value'>
+                          {`${this.state.user.lastName}, ${this.state.user.firstName}`}
+                        </div>
+                      </div>
+                      <div className='wbdv-profile-row'>
+                        <div className='wbdv-info-column-label'>
+                          Role:
+                        </div>
+                        <div className='wbdv-info-column-value'>
+                          {this.state.user.role}
+                        </div>
+                      </div>
+                      <div className='wbdv-profile-row'>
+                        <div className='wbdv-info-column-label'>Email:</div>
+                        <div className='wbdv-info-column-value'>
+                          {this.state.user.email}
+                        </div>
                       </div>
                     </div>
-                    <div className='wbdv-profile-row'>
-                      <div className='wbdv-info-column-label'>
-                        Name:
-                      </div>
-                      <div className='wbdv-info-column-value'>
-                        {`${this.state.user.lastName}, ${this.state.user.firstName}`}
-                      </div>
-                    </div>
-                    <div className='wbdv-profile-row'>
-                      <div className='wbdv-info-column-label'>
-                        Role:
-                      </div>
-                      <div className='wbdv-info-column-value'>
-                        {this.state.user.role}
-                      </div>
-                    </div>
-                    <div className='wbdv-profile-row'>
-                      <div className='wbdv-info-column-label'>Email:</div>
-                      <div className='wbdv-info-column-value'>
-                        {this.state.user.email}
-                      </div>
+                    <div className='wbdv-course-list-column'>
+                      {this.renderCourseLists()}
                     </div>
                   </div>
-                  <div className='wbdv-course-list-column'>
-                    {this.renderCourseLists()}
-                  </div>
+                  {this.state.user._id === this.props.current_user._id &&
+                  <EditProfileComponent
+                      deleteUser={this.deleteUser}
+                      logout={this.logout}
+                  />}
                 </div>
-                {this.state.user._id === this.props.current_user._id &&
-                <EditProfileComponent
-                    deleteUser={this.deleteUser}
-                />}
               </div>
-              <div>
-                <button onClick={(event) => GoogleAPIService.handleAuthClick(
-                    event)}>Authorize
-                </button>
-                <button onClick={(event) => GoogleAPIService.handleSignoutClick(
-                    event)}>Sign out
-                </button>
-              </div>
-            </div>
-            :
-            <h2>
-              User not found.
-            </h2>
+              :
+              <h2>
+                User not found.
+              </h2>}
+        </div>
 
     )
   }
@@ -181,6 +196,7 @@ const mapStateToProps = (state) => ({
 
 const mapDispatchToProps = (dispatch) => ({
   setUser: (user) => dispatch(Actions.setUser(user)),
+  unsetUser: () => dispatch(Actions.unsetUser()),
   logout: () => dispatch(Actions.deselectUser()),
 });
 

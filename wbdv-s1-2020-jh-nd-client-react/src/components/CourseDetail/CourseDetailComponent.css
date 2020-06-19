@@ -1,0 +1,56 @@
+.wbdv-course-detail {
+  max-width: 500px;
+}
+
+.wbdv-admin-row {
+  width: 100%;
+  display: inline-flex;
+}
+
+.wbdv-taught-by {
+  font-weight: 500;
+  margin-left: 1rem;
+}
+
+.wbdv-enroll-unenroll-row {
+  width: 100%;
+  display: inline-flex;
+  margin-bottom: 2rem;
+}
+
+.wbdv-enroll-section-btn {
+  width: 10rem;
+}
+
+.wbdv-enroll-btn {
+  margin-right: 1rem;
+}
+
+.wbdv-course-two-column {
+  width: 100%;
+  display: inline-flex;
+  margin-bottom: 1rem;
+}
+
+.wbdv-student-column {
+  width: 50%;
+  margin-right: 1rem;
+}
+
+.wbdv-tutor-column {
+  width: 50%;
+  margin-left: 1rem;
+}
+
+.wbdv-student-list {
+  flex-direction: column;
+}
+
+.wbdv-detail-user-row {
+
+}
+
+.wbdv-schedule-events-btn {
+  margin-bottom: 0.5rem;
+  width: 10rem;
+}

@@ -6,14 +6,23 @@ import './SearchComponent.css'
 import UserService from "../../services/UserService";
 
 class SearchComponent extends React.Component {
+  state={
+    courseId: this.props.match.params.courseId,
+    admin: [],
+    tutors: [],
+    students: [],
+  };
+
   componentDidMount() {
     UserService.getSession()
     .then(response => response && this.props.setUser(response));
-  }
 
-  admin = this.props.users.filter((user) => user.role === 'ADMIN');
-  tutors = this.props.users.filter((user) => user.role === 'TUTOR');
-  students = this.props.users.filter((user) => user.role === 'STUDENT');
+    UserService.getTutorsForCourse(this.state.courseId)
+    .then(tutors => this.setState({tutors}));
+
+    UserService.getStudentsForCourse(this.state.courseId)
+    .then(students => this.setState({students}));
+  }
 
   renderUser = (user) => {
     const userSelected = this.props.selected_users.includes(user);
@@ -41,19 +50,19 @@ class SearchComponent extends React.Component {
           <div className='wbdv-user-column'>
             <h4>Course Administrators</h4>
             <div className='wbdv-scroll-column'>
-              {this.admin.map((admin) => this.renderUser(admin))}
+              {this.state.admin.map((admin) => this.renderUser(admin))}
             </div>
           </div>
           <div className='wbdv-user-column'>
             <h4>Tutors</h4>
             <div className='wbdv-scroll-column'>
-              {this.tutors.map((tutor) => this.renderUser(tutor))}
+              {this.state.tutors.map((tutor) => this.renderUser(tutor))}
             </div>
           </div>
           <div className='wbdv-user-column'>
             <h4>Students</h4>
             <div className='wbdv-scroll-column'>
-              {this.students.map((student) => this.renderUser(student))}
+              {this.state.students.map((student) => this.renderUser(student))}
             </div>
           </div>
         </div>
@@ -79,6 +88,7 @@ class SearchComponent extends React.Component {
 const mapStateToProps = (state) => ({
   users: state.users,
   selected_users: state.selected_users,
+  current_user: state.current_user,
 });
 
 const mapDispatchToProps = (dispatch) => ({
