@@ -6,6 +6,7 @@ import UserService from "../../services/UserService";
 import * as Actions from "../../store/Actions";
 import '../../styles.css';
 import './RegisterComponent.css';
+import NavigatorComponent from "../Navigator/NavigatorComponent";
 
 class RegisterComponent extends React.Component {
   state = {
@@ -77,7 +78,9 @@ class RegisterComponent extends React.Component {
   registerSection = () => {
     return (
         <div className='wbdv-register'>
+          <NavigatorComponent currentPage={this.props.history.location.pathname}/>
           <h2>Register</h2>
+
           <div className='wbdv-register-input-row'>
             <label className='wbdv-register-input-label'>Username:</label>
             <input

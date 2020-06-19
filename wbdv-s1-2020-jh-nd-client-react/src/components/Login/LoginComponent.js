@@ -6,6 +6,7 @@ import UserService from "../../services/UserService";
 import * as Actions from "../../store/Actions";
 import '../../styles.css';
 import './LoginComponent.css';
+import NavigatorComponent from "../Navigator/NavigatorComponent";
 
 class LoginComponent extends React.Component {
   state = {
@@ -67,6 +68,7 @@ class LoginComponent extends React.Component {
   loginSection = () => {
     return (
         <div className='wbdv-login'>
+          <NavigatorComponent currentPage={this.props.history.location.pathname}/>
           <h2>Log in</h2>
           <div>
             <div className='wbdv-login-input-row'>

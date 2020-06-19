@@ -25,9 +25,7 @@ class HomeComponent extends React.Component {
     return (
         <div>
           <div className="content">
-            <NavigatorComponent  currentPage={this.props.history.location.pathname}>
-
-            </NavigatorComponent>
+            <NavigatorComponent currentPage={this.props.history.location.pathname}/>
 
             <div className="jumbotron">
               <div className="container">

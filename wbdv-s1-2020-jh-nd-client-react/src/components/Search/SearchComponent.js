@@ -6,6 +6,7 @@ import './SearchComponent.css'
 import UserService from "../../services/UserService";
 import CourseService from "../../services/CourseService";
 import {isEmpty} from "../../utils/Utils";
+import NavigatorComponent from "../Navigator/NavigatorComponent";
 
 class SearchComponent extends React.Component {
   state = {
@@ -81,6 +82,7 @@ class SearchComponent extends React.Component {
   render() {
     return (
         <div className='wbdv-search'>
+          <NavigatorComponent currentPage={this.props.history.location.pathname}/>
           <h1>Search</h1>
           <div className='wbdv-three-column-container'>
             <div className='wbdv-user-column'>

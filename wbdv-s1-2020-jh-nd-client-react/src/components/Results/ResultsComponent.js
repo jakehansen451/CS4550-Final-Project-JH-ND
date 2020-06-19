@@ -10,6 +10,8 @@ import EventService from "../../services/EventService";
 import moment from 'moment';
 
 import './ResultsComponent.css'
+import NavigatorComponent from "../Navigator/NavigatorComponent";
+
 
 const days = ['Sunday', 'Monday', 'Tuesday', 'Wedensday', 'Thursday', 'Friday',
   'Saturday'];
@@ -140,6 +142,7 @@ class ResultsComponent extends React.Component {
   render() {
     return (
         <div className='wbdv-results'>
+          <NavigatorComponent currentPage={this.props.history.location.pathname}/>
           <div className='wbdv-results-page-title-bar'>
             <h1>Results</h1>
           </div>

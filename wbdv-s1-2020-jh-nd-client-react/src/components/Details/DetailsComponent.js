@@ -8,6 +8,7 @@ import EventService from "../../services/EventService";
 import {Link} from "react-router-dom";
 import '../../styles.css';
 import './DetailsComponent.css';
+import NavigatorComponent from "../Navigator/NavigatorComponent";
 
 class DetailsComponent extends React.Component {
   state = {
@@ -92,6 +93,7 @@ class DetailsComponent extends React.Component {
 
     return (
         <div>
+          <NavigatorComponent currentPage={this.props.history.location.pathname}/>
           <h1>Event Details</h1>
           <div>
             <div className='wbdv-event-detail-two-column'>
