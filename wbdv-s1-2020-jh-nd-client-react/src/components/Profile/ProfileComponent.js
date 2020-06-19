@@ -102,7 +102,6 @@ class ProfileComponent extends React.Component {
   deleteUser = () => {
     UserService.deleteUser(this.state.userId)
     .then(response => {
-          console.log(response);
           this.props.logout();
           this.props.history.push('/login/');
         }

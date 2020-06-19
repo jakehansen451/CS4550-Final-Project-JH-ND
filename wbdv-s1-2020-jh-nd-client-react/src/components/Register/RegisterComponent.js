@@ -118,6 +118,7 @@ class RegisterComponent extends React.Component {
             <div className='wbdv-register-input-row'>
               <label className='wbdv-register-input-label'>Email:</label>
               <input
+                  type='email'
                   className='wbdv-input wbdv-register-input'
                   onChange={(e) => this.setState({email: e.target.value})}
               />

@@ -29,7 +29,8 @@ class TutorMeComponent extends React.Component {
                 path="/:url*"
                 exact
                 strict
-                render={props => <Redirect to={`${props.location.pathname}/`}/>}/>
+                render={props => <Redirect
+                    to={`${props.location.pathname}/`}/>}/>
             <Route path="/"
                    exact
                    component={HomeComponent}/>

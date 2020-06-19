@@ -20,7 +20,6 @@ class EditCourseComponent extends React.Component {
             adminId: this.props.current_user._id,
           })
       .then(updatedCourse => {
-        console.log(updatedCourse);
         this.props.courseUpdated(updatedCourse)
       });
     }

@@ -89,25 +89,27 @@ class CourseDetailComponent extends React.Component {
             s => s._id !== this.props.current_user._id)
       }));
 
-  renderEventRow = (event, index) =>
-      <div className='wbdv-render-event-row'>
-        <Link key={index} to={`/events/${event._id}`}>
-          <div>{event.title}</div>
-          <div>{`${event.startTime} to ${event.endTime}`}</div>
-        </Link>
-      </div>;
+  renderEventRow = (event, index) => {
+    const start = new Date(event.start);
+    const end = new Date(event.end);
+
+    return (
+        <div key={index} className='wbdv-render-event-row'>
+          <Link to={`/events/${event._id}`}>{event.title}</Link>
+          <div>{start.toLocaleDateString()}</div>
+          <div>{`${start.toLocaleTimeString()} to ${end.toLocaleTimeString()}`}</div>
+        </div>
+    )
+  };
 
   deleteCourse = () => {
     CourseService.deleteCourse(this.state.courseId)
     .then(response => {
-      console.log(response);
       this.props.history.push('/courses/');
     });
   };
 
   render() {
-    console.log(this.state);
-    console.log(this.props);
     return (
         <div className='wbdv-course-detail'>
           <NavigatorComponent

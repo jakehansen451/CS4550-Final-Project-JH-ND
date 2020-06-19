@@ -46,11 +46,16 @@
   flex-direction: column;
 }
 
-.wbdv-detail-user-row {
-
-}
-
 .wbdv-schedule-events-btn {
   margin-bottom: 0.5rem;
   width: 10rem;
+}
+
+.wbdv-render-event-row {
+  width: fit-content;
+  padding: 0.25rem 0.5rem;
+  background-color: var(--lightest-grey);
+  border: 1px solid var(--lighter-grey);
+  border-radius: 0.25rem;
+  margin-bottom: 0.5rem;
 }

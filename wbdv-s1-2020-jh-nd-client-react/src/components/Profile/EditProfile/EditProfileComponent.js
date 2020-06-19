@@ -50,6 +50,7 @@ class EditProfileComponent extends React.Component {
               Password:
             </label>
             <input
+                type={'password'}
                 className='wbdv-input wbdv-edit-profile-input'
                 onChange={(e) => this.setState({password: e.target.value})}
             />
@@ -60,6 +61,7 @@ class EditProfileComponent extends React.Component {
                 Confirm password:
               </label>
               <input
+                  type={'password'}
                   className='wbdv-input wbdv-edit-profile-input'
                   onChange={(e) => this.setState(
                       {confirmPassword: e.target.value})}
