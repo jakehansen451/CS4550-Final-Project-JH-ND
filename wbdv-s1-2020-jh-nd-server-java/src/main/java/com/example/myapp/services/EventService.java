@@ -18,22 +18,25 @@ public class EventService {
     @Autowired
     private GoogleCalendarService googleCalendarService;
 
-    @Autowired
-    private UserService userService;
 
     public int deleteEventById(Long eventId) {
         Optional<Event> maybeEvent = eventRepository.findById(eventId);
 
         if (maybeEvent.isPresent()) {
             Event event = maybeEvent.get();
-            User user = event.getOrganizer();
-            eventRepository.deleteById(eventId);
-            return 1;
+
+            int deletingAtGoogleStatus = googleCalendarService.deleteEvent(event.getOrganizer(), event.getGoogleEventId());
+
+            if (deletingAtGoogleStatus == 1) {
+                eventRepository.deleteById(eventId);
+                return 1;
+            } else {
+                return 0;
+            }
         }
 
         return 0;
     }
-
 
 
     public List<Event> getAllEvents() {

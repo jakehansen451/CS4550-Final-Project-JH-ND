@@ -35,8 +35,7 @@ public class EventsController {
     @DeleteMapping("/api/events/{eventId}")
     public int deleteEventById(@PathVariable("eventId") Long eventId) {
 
-        eventService.deleteEventById(eventId);
-        return 1;
+        return eventService.deleteEventById(eventId);
     }
 
     @GetMapping("/api/events/{eventId}")

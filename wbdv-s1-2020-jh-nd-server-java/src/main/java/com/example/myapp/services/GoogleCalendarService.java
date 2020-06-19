@@ -52,14 +52,21 @@ public class GoogleCalendarService {
     }
 
     public int deleteEvent(User organizer, String eventId) {
-        try {
-            Calendar calendar = getCalendar(organizer.getAccessToken(), organizer.getRefreshToken(), organizer.getId());
-            calendar.events().delete("primary", eventId).execute();
+        if (eventId == null) {
+            // todo: fix after all events get the id
             return 1;
-        } catch (Exception e) {
-            return 0;
-        }
 
+        } else {
+            try {
+                Calendar calendar = getCalendar(organizer.getAccessToken(), organizer.getRefreshToken(), organizer.getId());
+                calendar.events().delete("primary", eventId).execute();
+                return 1;
+            } catch (com.google.api.client.googleapis.json.GoogleJsonResponseException e) {
+                return 1;
+            } catch (Exception e) {
+                return 0;
+            }
+        }
     }
 
     private Event createEventFrom(String title, String start, String end, List<Long> attendeesIds) {
