@@ -3,52 +3,70 @@ import {connect} from 'react-redux'
 import {Link} from 'react-router-dom'
 import * as Actions from "../../store/Actions";
 import * as DateUtils from '../../utils/DateUtils'
-import googleService from "../../api/GoogleAPIService";
 import {isEmpty} from "../../utils/Utils";
 
 import './DetailsComponent.css'
+import UserService from "../../services/UserService";
 
 class DetailsComponent extends React.Component {
+  state = {
+    title: '',
+    users: [],
+    hostOptions: [],
+    hostId: '',
+    start: this.props.match.params.startTime,
+    end: this.props.match.params.endTime,
+  };
+
   componentDidUpdate() {
     if (isEmpty(this.props.current_user)) {
       console.log(this.props);
       this.props.history.push('/');
     }
+
+    if (this.props.selected_users.length > 0) {
+      this.setState({
+        hostOptions: this.props.selected_users.filter(u =>
+            u.role === 'ADMIN' || u.role === 'TUTOR')
+      })
+    }
   }
 
-  createUserOption = (user) => {
+  renderHostOption = (user, index) => {
     return (
-        <option value={user._id}>
+        <option value={user._id} key={index}>
           {`${user.lastName}, ${user.firstName}`}
         </option>
     )
   };
 
-  addMeeting = () => {
-    let date = this.props.selected_time_block.date;
-    let startDateTime = new Date(
-        date + " " + this.props.selected_time_block.start
-        + " UTC").toISOString();
-    let endDateTime = new Date(
-        date + " " + this.props.selected_time_block.end + " UTC").toISOString();
-
-    googleService.addEvent(startDateTime, endDateTime, [], "Demo title");
-  };
-
   render() {
-    const time_block = this.props.selected_time_block;
-    const date = time_block.date;
-    const start = time_block.start;
-    const end = time_block.end;
-    const startLocal = DateUtils.localFromUTCDateTime(date, start, 'en-GB');
-    const endLocal = DateUtils.localFromUTCDateTime(date, end, 'en-GB');
+    console.log(this.props);
+    console.log(this.state);
+
+    const startDate = new Date(this.state.start);
+    const splitArr = startDate.toLocaleDateString().split('/');
+    const date = [splitArr[2], splitArr[0].padStart(2, '0'),
+      splitArr[1].padStart(2, '0')].join('-');
+    console.log(date);
+
+    const startLocal = startDate.toLocaleTimeString('en-GB');
+    const endLocal = new Date(this.state.end).toLocaleTimeString('en-GB');
 
     return (
         <div>
-          <h1>Details</h1>
+          <h1>Event Details</h1>
           <div>
             <div>
               <form className='wbdv-details-form'>
+                <div className='wbdv-details-form-row'>
+                  <h6>Title:</h6>
+                  <input
+                      type='text'
+                      value={this.state.title}
+                      onChange={(e) => this.setState({title: e.target.value})}
+                  />
+                </div>
                 <div className='wbdv-details-form-row'>
                   <h6>Date:</h6>
                   <input
@@ -87,11 +105,11 @@ class DetailsComponent extends React.Component {
                 <div className='wbdv-details-form-row'>
                   <h6>Host:</h6>
                   <select>
-                    {this.props.selected_users.map(this.createUserOption)}
+                    {this.state.hostOptions.map(this.renderHostOption)}
                   </select>
                 </div>
               </form>
-              <Link onClick={this.addMeeting} to='/'>
+              <Link to='/'>
                 <h4>Schedule Meeting</h4>
               </Link>
             </div>
@@ -112,3 +130,13 @@ const mapDispatchToProps = (dispatch) => ({
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(DetailsComponent);
+
+/*
+<h5>Select Host</h5>
+              <select
+                  className='wbdv-input'
+                  onChange={(e) => this.setState({hostId: e.target.value})}
+              >
+                {this.state.hostOptions.map(this.generateHostOption)}
+              </select>
+ */

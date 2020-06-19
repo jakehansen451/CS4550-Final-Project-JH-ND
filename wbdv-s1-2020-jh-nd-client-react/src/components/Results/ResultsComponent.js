@@ -63,8 +63,6 @@ class ResultsComponent extends React.Component {
     userIds: this.props.match.params.userIds.split(','),
     free_time_blocks: [],//this.parseTimeBlocks(fake_time_blocks),
     display: 'list',
-    hostOptions: [],
-    hostId: '',
   };
 
   componentDidMount() {
@@ -82,18 +80,6 @@ class ResultsComponent extends React.Component {
             r.map(dt => ({start: dt.startString, end: dt.endString})))
       })
     });
-
-    UserService.getTutorsForCourse(this.state.courseId)
-    .then(tutors => {
-      this.setState({
-        hostOptions: [...this.props.selected_users
-        .filter(user => user.role === 'ADMIN'),
-          ...tutors.filter(u => this.props.selected_users.includes(u))],
-        hostId: this.props.selected_users.length > 0 ?
-        this.props.selected_users
-        .find(user => user.role === 'ADMIN')._id : ''
-      })
-    })
   }
 
   componentDidUpdate() {
@@ -126,21 +112,13 @@ class ResultsComponent extends React.Component {
     )
   };
 
-  generateHostOption = (option, index) =>
-      <option
-          key={index}
-          value={option._id}
-      >
-        {`${option.lastName}, ${option.firstName}`}
-      </option>;
-
   renderUser = (user) =>
       <div className='wbdv-user-row' key={user._id}>
         {user.lastName.concat(', ', user.firstName)}
       </div>;
 
-  generateDetailsUrl = () => `/details/${this.state.hostId}/`
-  .concat(`${this.props.selected_users.map(user => user._id).join(',')}/`,
+  generateDetailsUrl = () => `/details/`.concat(
+      `${this.props.selected_users.map(user => user._id).join(',')}/`,
       `${this.props.selected_time_block.start}/`,
       `${this.props.selected_time_block.end}`);
 
@@ -159,13 +137,6 @@ class ResultsComponent extends React.Component {
                     className='wbdv-edit-participants-button'>
                 <h6>Edit Participants</h6>
               </Link>
-              <h5>Select Host</h5>
-              <select
-                  className='wbdv-input'
-                  onChange={(e) => this.setState({hostId: e.target.value})}
-              >
-                {this.state.hostOptions.map(this.generateHostOption)}
-              </select>
               <div className='wbdv-scroll-column'>
                 {this.props.selected_users.map(
                     (admin) => this.renderUser(admin))}
