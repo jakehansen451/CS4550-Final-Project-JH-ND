@@ -1,6 +1,7 @@
 package com.example.myapp.services;
 
 import com.example.myapp.api.OAuth2;
+import com.example.myapp.models.people.User;
 import com.google.api.client.googleapis.javanet.GoogleNetHttpTransport;
 import com.google.api.client.http.javanet.NetHttpTransport;
 import com.google.api.client.json.JsonFactory;
@@ -8,13 +9,18 @@ import com.google.api.client.json.jackson2.JacksonFactory;
 import com.google.api.client.util.DateTime;
 import com.google.api.services.calendar.Calendar;
 import com.google.api.services.calendar.model.*;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Service
 public class GoogleCalendarService {
+
+    @Autowired
+    UserService userService;
 
     public List<Event> getEvents(String accessToken, String refreshToken, Long userId) throws Exception {
         Calendar calendar = getCalendar(accessToken, refreshToken, userId);
@@ -31,25 +37,66 @@ public class GoogleCalendarService {
                 .getItems();
     }
 
-    public List<TimePeriod> getFreeBusy(String accessToken, String refreshToken, Long userId) throws Exception {
-        Calendar service = getCalendar(accessToken, refreshToken, userId);
+    public Event addEvent(String title, String start, String end, List<Long> attendeesIds, Long organizerId) throws Exception {
+        Event event = new Event();
+        event.setSummary(title);
+        DateTime startDateTime = new DateTime(start);
+        EventDateTime eventStart = new EventDateTime().setDateTime(startDateTime);
+        event.setStart(eventStart);
+
+        DateTime endDateTime = new DateTime(end);
+        EventDateTime eventEnd = new EventDateTime().setDateTime(endDateTime);
+        event.setEnd(eventEnd);
+
+        event.setAttendees(
+                attendeesIds.stream()
+                        .map(id -> new EventAttendee().setEmail(userService.findUserById(id).getEmail())).collect(Collectors.toList()));
+
+        User organizer = userService.findUserById(organizerId);
+        Calendar calendar = getCalendar(organizer.getAccessToken(), organizer.getRefreshToken(), organizerId);
+
+        event = calendar.events().insert("primary", event).execute();
+
+        return event;
+    }
 
 
-        FreeBusyRequest request = new FreeBusyRequest();
-        request.setTimeMin(new DateTime("2020-06-17T04:10:11.711Z"));
-        request.setTimeMax(new DateTime("2020-06-24T04:10:11.711Z"));
 
-        // Build request items
-        List<FreeBusyRequestItem> requestItems = new ArrayList<>();
-        FreeBusyRequestItem item = new FreeBusyRequestItem();
-        item.setId("primary");
-        requestItems.add(item);
-        request.setItems(requestItems);
+    public List<com.example.myapp.models.calendar.TimePeriod> getFreeBusy(String accessToken, String refreshToken, Long userId, String start, String end) {
+        try {
+            Calendar service = getCalendar(accessToken, refreshToken, userId);
+            FreeBusyRequest request = new FreeBusyRequest();
+            java.util.Calendar calendar = java.util.Calendar.getInstance();
+            DateTime now = new DateTime(calendar.getTime());
+            DateTime startDateTime = new DateTime(start);
+            if (startDateTime.getValue() < now.getValue()) {
+                startDateTime = now;
+            }
+            request.setTimeMin(startDateTime);
+            request.setTimeMax(new DateTime(end));
 
-        FreeBusyResponse response = service.freebusy().query(request).execute();
-        return response.getCalendars().get("primary").getBusy();
+            // Build request items
+            List<FreeBusyRequestItem> requestItems = new ArrayList<>();
+            FreeBusyRequestItem item = new FreeBusyRequestItem();
+            item.setId("primary");
+            requestItems.add(item);
+            request.setItems(requestItems);
 
+            FreeBusyResponse response = service.freebusy().query(request).execute();
+            return response.getCalendars().get("primary").getBusy().stream().map(timePeriod -> {
+                String startString = timePeriod.getStart().toString();
+                String endSting = timePeriod.getEnd().toString();
+                Long startLong = timePeriod.getStart().getValue();
+                Long endLong = timePeriod.getEnd().getValue();
 
+                return new com.example.myapp.models.calendar.TimePeriod(startString, endSting, startLong, endLong);
+            }).collect(Collectors.toList());
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+        return new ArrayList<>();
     }
 
     private Calendar getCalendar(String accessToken, String refreshToken, Long userId) throws Exception {
@@ -64,4 +111,6 @@ public class GoogleCalendarService {
                 .setApplicationName(APPLICATION_NAME)
                 .build();
     }
+
+
 }

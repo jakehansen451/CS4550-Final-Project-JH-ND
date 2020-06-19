@@ -22,11 +22,9 @@ public class Event {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @JsonProperty("_id")
     private Long id;
-
     private String title;
-    private String date;
-    private String startTime;
-    private String endTime;
+    private String start;
+    private String end;
 
     @ManyToMany(mappedBy = "participantInEvents")
     @JsonIgnore
@@ -52,4 +50,6 @@ public class Event {
         course.getEvents().remove(this);
         organizer.getOrganizerInEvents().remove(this);
     }
+
+
 }

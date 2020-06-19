@@ -19,4 +19,13 @@ public class EventService {
     public List<Event> getAllEvents() {
         return (List<Event>) eventRepository.findAll();
     }
+
+    public Event createNewEvent(Event newEvent) {
+        return eventRepository.save(newEvent);
+    }
+
+    public Event updateEvent(Long eventId, Event updatedEvent) {
+        updatedEvent.setId(eventId);
+        return eventRepository.save(updatedEvent);
+    }
 }
