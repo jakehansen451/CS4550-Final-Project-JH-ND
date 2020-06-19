@@ -38,6 +38,17 @@ public class EventsController {
         return eventService.getAllEvents();
     }
 
+    @PostMapping("/api/events")
+    public Event createNewEvent(@RequestBody Event newEvent) {
+        return eventService.createNewEvent(newEvent);
+    }
+
+    @PutMapping("api/events/{eventId}")
+    public Event updateEvent(@PathVariable("eventId") Long eventId, @RequestBody Event updatedEvent) {
+        return eventService.updateEvent(eventId, updatedEvent);
+    }
+
+
     @RequestMapping(value = "/api/busy/users/{ids}", method = RequestMethod.GET)
     public List<TimePeriod> getBusyForUsers(
             @PathVariable("ids") List<Long> ids,
@@ -71,7 +82,7 @@ public class EventsController {
         return TimePeriod.findFreeTimes(events, start, end);
     }
 
-    @GetMapping("/api/events/users/{ids}")
+    @GetMapping("/api/google-events/users/{ids}")
     public List<List<com.google.api.services.calendar.model.Event>> getEventsForUsers(@PathVariable("ids") List<Long> ids) throws Exception {
         List<List<com.google.api.services.calendar.model.Event>> events = new ArrayList<>();
         for (Long id : ids) {

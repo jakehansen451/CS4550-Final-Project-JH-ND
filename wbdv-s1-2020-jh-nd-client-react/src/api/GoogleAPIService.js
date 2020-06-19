@@ -53,7 +53,7 @@ const getRefreshToken = (code) => {
     xhr.open('POST',
         url + '?grant_type=authorization_code&client_id='
         + CLIENT_ID + '&client_secret=0sN5dhbDPgF7ePLlZFvNWBKL&code='
-        + code + '&redirect_uri=http://localhost:3000');
+        + code + '&redirect_uri=https://tutor-me-final-project.herokuapp.com');
 
     xhr.onreadystatechange = (e) => {
         if (xhr.readyState === 4) {

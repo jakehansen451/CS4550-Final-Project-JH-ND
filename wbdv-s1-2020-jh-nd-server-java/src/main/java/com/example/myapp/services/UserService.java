@@ -1,5 +1,6 @@
 package com.example.myapp.services;
 
+import com.example.myapp.models.calendar.Event;
 import com.example.myapp.models.people.User;
 import com.example.myapp.repositories.CourseRepository;
 import com.example.myapp.repositories.UserRepository;
@@ -57,5 +58,9 @@ public class UserService {
         user.setRefreshToken(body.get("refresh_token"));
         user.setAccessToken(body.get("access_token"));
         return this.updateUser(userId, user);
+    }
+
+    public List<Event> getEventsOrganizedByUser(Long id) {
+        return repository.getEventsOrganizedByUser(id);
     }
 }
