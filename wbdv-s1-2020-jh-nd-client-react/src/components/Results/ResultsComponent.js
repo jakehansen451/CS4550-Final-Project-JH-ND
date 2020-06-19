@@ -10,70 +10,48 @@ import EventService from "../../services/EventService";
 import moment from 'moment';
 
 import './ResultsComponent.css'
-import UserService from "../../services/UserService";
 
 const days = ['Sunday', 'Monday', 'Tuesday', 'Wedensday', 'Thursday', 'Friday',
   'Saturday'];
 
-const fake_time_blocks = [
-  {start: '2020-06-19T14:30:00.000Z', end: '2020-06-19T15:30:00.000Z'},
-  {start: '2020-06-19T17:15:00.000Z', end: '2020-06-19T18:15:00.000Z'},
-  {start: '2020-06-20T10:00:00.000Z', end: '2020-06-20T12:45:00.000Z'},
-  {start: '2020-06-20T16:00:00.000Z', end: '2020-06-20T19:00:00.000Z'},
-  {start: '2020-06-21T08:30:00.000Z', end: '2020-06-21T18:30:00.000Z'},
-  {start: '2020-06-22T06:00:00.000Z', end: '2020-06-26T14:30:00.000Z'}
-];
-
 class ResultsComponent extends React.Component {
   parseTimeBlocks = (datetimeArray) => {
     let inputArr = [...datetimeArray];
-    console.log(datetimeArray);
     const outputArray = [];
+
     const midnight = new Date();
     midnight.setDate(midnight.getDate() + 1);
     midnight.setHours(0, 0, 0, 0);
     let midnightStr = midnight.toISOString();
-    //const beforeMidnight = new Date();
-    //beforeMidnight.setHours(23, 59, 59, 999);
-    //let beforeMidnightStr = beforeMidnight.toISOString();
+
     for (let i = 0; i < 7; i++) {
       for (const datetime of inputArr) {
         const startDT = new Date(datetime.start);
         const endDT = new Date(datetime.end);
+
         if (endDT - startDT < 30 * 60 * 1000) {
-          console.log('Event is less than 30 minutes, cutting it out')
-          console.log(inputArr.length);
           inputArr = inputArr.filter(d => d !== datetime);
-          console.log(inputArr.length);
-        } else if (midnightStr - startDT <  30 * 60 * 1000) {
-          console.log('Event is less than 30 before midnight, cutting it out and adding new event tomorrow')
-          console.log(inputArr.length);
+        }
+
+        else if (midnightStr - startDT < 30 * 60 * 1000) {
           inputArr = inputArr.filter(d => d !== datetime);
-          console.log(inputArr.length);
           inputArr.push({start: midnightStr, end: datetime.end});
-          console.log(inputArr.length);
-        } else if (midnight - startDT > 0 && endDT - midnight >= 0) {
-          //outputArray.push({start: datetime.start, end: beforeMidnightStr});
+        }
+
+        else if (midnight - startDT > 0 && endDT - midnight >= 0) {
           outputArray.push({start: datetime.start, end: midnightStr});
           inputArr = inputArr.filter(d => d !== datetime);
           inputArr.push({start: midnightStr, end: datetime.end});
-          console.log('Added time from clause 3:');
-          //console.log({start: datetime.start, end: beforeMidnightStr});
-          outputArray.push({start: datetime.start, end: midnightStr});
-        } else if (midnight - endDT > 0) {
+        }
+
+        else if (midnight - endDT > 0) {
           outputArray.push(datetime);
-          console.log('Filtering in clause 4')
-          console.log(inputArr.length)
           inputArr = inputArr.filter(d => d !== datetime);
-          console.log(inputArr.length)
-          console.log('Added time from clause 4:');
-          console.log(datetime);
         }
       }
+
       midnight.setDate(midnight.getDate() + 1);
       midnightStr = midnight.toISOString();
-      //beforeMidnight.setDate(beforeMidnight.getDate() + 1);
-      //beforeMidnightStr = beforeMidnight.toISOString();
     }
     return outputArray;
   };
@@ -81,7 +59,7 @@ class ResultsComponent extends React.Component {
   state = {
     courseId: this.props.match.params.courseId,
     userIds: this.props.match.params.userIds.split(','),
-    free_time_blocks: [],//this.parseTimeBlocks(fake_time_blocks),
+    free_time_blocks: [],
     display: 'list',
   };
 
@@ -136,10 +114,14 @@ class ResultsComponent extends React.Component {
         {user.lastName.concat(', ', user.firstName)}
       </div>;
 
-  generateDetailsUrl = () => `/details/${this.state.courseId}/`.concat(
+  sendInterval = (interval) => this.props.history.push(
+      this.generateDetailsUrl(interval.start.toISOString(),
+          interval.end.toISOString()));
+
+  generateDetailsUrl = (start,
+      end) => `/details/${this.state.courseId}/`.concat(
       `${this.props.selected_users.map(user => user._id).join(',')}/`,
-      `${this.props.selected_time_block.start}/`,
-      `${this.props.selected_time_block.end}`);
+      `${start}/`, `${end}`);
 
   render() {
     return (
@@ -177,7 +159,10 @@ class ResultsComponent extends React.Component {
               <div className='wbdv-select-time-btn'>
                 {Utils.isEmpty(this.props.selected_time_block)
                     ? <h4>Select</h4>
-                    : <Link to={this.generateDetailsUrl()}>
+                    : <Link to={this.generateDetailsUrl(
+                        this.props.selected_time_block.start,
+                        this.props.selected_time_block.end
+                    )}>
                       <h4>Select</h4>
                     </Link>}
               </div>
@@ -194,12 +179,22 @@ class ResultsComponent extends React.Component {
                 </button>
               </div>
               <WeekCalendar
-                  selectedIntervals={this.state.free_time_blocks.map(t =>
-                      ({start: moment(t.start), end: moment(t.end)}))}
+                  selectedIntervals={this.state.free_time_blocks.map(t => {
+                    const endDate = new Date(t.end);
+                    if (endDate.toLocaleTimeString() === '12:00:00 AM') {
+                      const newEnd = new Date(endDate - 1);
+                      return {
+                        start: moment(t.start),
+                        end: moment(newEnd)
+                      }
+                    } else {
+                      return {start: moment(t.start), end: moment(t.end)}
+                    }
+                  })}
                   scaleUnit={60}
                   useModal={false}
-                  onEventClick={(something) => console.log(something)}
-                  onIntervalSelect={(interval) => console.log(interval)}
+                  onIntervalSelect={(intervals) => this.sendInterval(
+                      intervals[0])}
               />
             </div>}
           </div>

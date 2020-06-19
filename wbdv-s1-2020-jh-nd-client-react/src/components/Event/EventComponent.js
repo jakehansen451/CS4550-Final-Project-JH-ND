@@ -21,8 +21,9 @@ class EventComponent extends React.Component {
     console.log(this.state);
     return (
         <div>
-          <h2>{this.state.title}</h2>
-
+          <h2>{this.state.event.title}</h2>
+          <h6>{this.state.event.start}</h6>
+          <h6>{this.state.event.end}</h6>
         </div>
     )
   }
