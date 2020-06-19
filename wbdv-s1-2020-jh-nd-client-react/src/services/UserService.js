@@ -1,4 +1,4 @@
-import { herokuApiUrl as url } from '../config';
+import {localUrl as url} from '../config';
 
 const createUser = (user) =>
     fetch(`${url}/users/`, {
@@ -25,8 +25,11 @@ const deleteUser = (userId) => {
 const getUser = (userId) =>
     fetch(`${url}/users/${userId}`)
     .then(response => {
-      if (response.status === 404) return null;
-      else return response.json();
+      if (response.status === 404) {
+        return null;
+      } else {
+        return response.json();
+      }
     });
 
 const getAllUsers = () =>
@@ -42,8 +45,11 @@ const login = (userInfo) =>
       method: 'POST',
       credentials: "include"
     }).then(response => {
-      if (response.status === 404) return null;
-      else return response.json();
+      if (response.status === 404) {
+        return null;
+      } else {
+        return response.json();
+      }
     });
 
 const logout = () =>
@@ -56,37 +62,56 @@ const logout = () =>
     }).then(response => response.json());
 
 const register = (userInfo) =>
-  fetch(`${url}/register`, {
-    body: JSON.stringify(userInfo),
-    headers: {
-      'content-type': 'application/json'
-    },
-    method: 'POST',
-    credentials: "include"
-  }).then(response => response.json());
+    fetch(`${url}/register`, {
+      body: JSON.stringify(userInfo),
+      headers: {
+        'content-type': 'application/json'
+      },
+      method: 'POST',
+      credentials: "include"
+    }).then(response => response.json());
 
 const getSession = () =>
     fetch(`${url}/profile`, {
       method: 'POST',
       credentials: 'include'
     }).then(response => {
-      if (response.status === 404) return null;
-      else return response.json();
+      if (response.status === 404) {
+        return null;
+      } else {
+        return response.json();
+      }
     });
 
 const getTutorsForCourse = (courseId) =>
     fetch(`${url}/users/tutors/${courseId}/`)
     .then(response => {
-      if (response.status === 404) return null;
-      else return response.json();
+      if (response.status === 404) {
+        return null;
+      } else {
+        return response.json();
+      }
     });
 
 const getStudentsForCourse = (courseId) =>
     fetch(`${url}/users/students/${courseId}/`)
     .then(response => {
-      if (response.status === 404) return null;
-      else return response.json();
+      if (response.status === 404) {
+        return null;
+      } else {
+        return response.json();
+      }
     });
+
+const getFreeTimesForUsers = (userIdsString, startTime, endTime) => {
+  console.log(userIdsString);
+  console.log(startTime);
+  console.log(endTime);
+  const urlString = `${url}/free/users/${userIdsString}?start=${startTime}&end=${endTime}`;
+  console.log(urlString);
+  return fetch(urlString)
+    .then(response => response.json());
+};
 
 export default {
   createUser,
@@ -100,4 +125,5 @@ export default {
   getSession,
   getTutorsForCourse,
   getStudentsForCourse,
-}
+  getFreeTimesForUsers,
+};

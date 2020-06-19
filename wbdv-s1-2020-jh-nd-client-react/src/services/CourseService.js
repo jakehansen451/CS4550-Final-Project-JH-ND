@@ -1,4 +1,4 @@
-import {herokuApiUrl as url} from '../config';
+import {localUrl as url} from '../config';
 
 const createCourse = (course) =>
     fetch(`${url}/courses/`, {

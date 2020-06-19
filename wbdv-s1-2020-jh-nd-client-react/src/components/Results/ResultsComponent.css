@@ -1,3 +1,7 @@
+.wbdv-results {
+  max-width: 600px;
+}
+
 .wbdv-results-page-title-bar {
   display: inline-flex;
   justify-content: space-between;
@@ -53,7 +57,6 @@
 
 .wbdv-calendar {
   flex-shrink: 0;
-  width: 500px;
   height: 500px;
   background-color: #eeeeee;
   border: 1px solid #dddddd;
@@ -78,7 +81,7 @@
   text-align: center;
 }
 
-@media screen and (max-width: 1000px) {
+@media screen and (max-width: 500px) {
   .wbdv-time-select-body {
     flex-direction: column;
   }

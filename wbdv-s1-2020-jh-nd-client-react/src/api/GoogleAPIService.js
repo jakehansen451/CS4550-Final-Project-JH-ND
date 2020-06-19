@@ -1,6 +1,6 @@
 import {gapi} from 'gapi-script';
 import store from '../store/Store';
-import {herokuApiUrl} from "../config";
+import {localUrl} from "../config";
 
 const SCOPE = 'https://www.googleapis.com/auth/calendar';
 const CLIENT_ID = '46098970829-859lp0f58tvg2o77h1g8iclvgpflf17v.apps.googleusercontent.com';
@@ -64,7 +64,7 @@ const getRefreshToken = (code) => {
 };
 
 const sendData = (data) =>
-    fetch(`${herokuApiUrl}/users/` + store.getState().current_user._id + `/tokens`, {
+    fetch(`${localUrl}/users/` + store.getState().current_user._id + `/tokens`, {
         method: 'POST',
         body: data,
         headers: {'content-type': 'application/json'}

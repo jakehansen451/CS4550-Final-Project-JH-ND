@@ -8,6 +8,7 @@ import 'react-week-calendar/dist/style.css';
 import {isEmpty} from "../../utils/Utils";
 
 import './ResultsComponent.css'
+import UserService from "../../services/UserService";
 
 const days = ['Sunday', 'Monday', 'Tuesday', 'Wedensday', 'Thursday', 'Friday',
   'Saturday'];
@@ -27,28 +28,22 @@ class ResultsComponent extends React.Component {
     free_time_blocks: fake_time_blocks,
   };
 
+  componentDidMount() {
+    console.log(this.state);
+    const now = new Date();
+    const weekLater = new Date();
+    weekLater.setDate(now.getDate() + 7);
+    UserService.getFreeTimesForUsers(
+        this.state.userIds.join(','),
+        now.toISOString(),
+        weekLater.toISOString()
+    ).then(r => console.log(r));
+  }
+
   componentDidUpdate() {
     if (isEmpty(this.props.current_user)) {
       this.props.history.push('/');
     }
-  }
-
-  parse(events) {
-    const eventTimes = events.map((event) => {
-      const startDateTime = new Date(event.start.dateTime).toISOString();
-      const endDateTime = new Date(event.end.dateTime).toISOString();
-
-      return ({
-        start: startDateTime.substring(11, 23),
-        end: endDateTime.substring(11, 23),
-        date: startDateTime.substring(0, 10)
-
-      });
-
-    });
-
-    console.log(eventTimes)
-
   }
 
   recomposeISO = (date, time) => `${date}T${time}Z`;
@@ -85,8 +80,10 @@ class ResultsComponent extends React.Component {
       </div>;
 
   render() {
+    console.log(this.state);
+    console.log(this.props);
     return (
-        <div>
+        <div className='wbdv-results'>
           <div className='wbdv-results-page-title-bar'>
             <h1>Results</h1>
           </div>
@@ -102,12 +99,6 @@ class ResultsComponent extends React.Component {
                     (admin) => this.renderUser(admin))}
               </div>
             </div>
-            <div className='wbdv-calendar'>
-              <WeekCalendar
-                  onEventClick={(something) => console.log(something)}
-                  onIntervalSelect={(interval) => console.log(interval)}
-              />
-            </div>
             <div className='wbdv-time-list'>
               <h5>Choose from available times</h5>
               <div className='wbdv-time-slot-row'>
@@ -122,6 +113,12 @@ class ResultsComponent extends React.Component {
                     : <Link to='/details/'><h4>Select</h4></Link>}
               </div>
             </div>
+          </div>
+          <div className='wbdv-calendar'>
+            <WeekCalendar
+                onEventClick={(something) => console.log(something)}
+                onIntervalSelect={(interval) => console.log(interval)}
+            />
           </div>
         </div>
     )
