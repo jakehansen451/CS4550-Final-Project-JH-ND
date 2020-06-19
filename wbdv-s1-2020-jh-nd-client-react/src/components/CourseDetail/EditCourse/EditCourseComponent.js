@@ -1,6 +1,8 @@
 import React from 'react';
 import {connect} from 'react-redux';
 import CourseService from "../../../services/CourseService";
+import '../../../styles.css';
+import './EditCourseComponent.css';
 
 class EditCourseComponent extends React.Component {
   state = {
@@ -26,18 +28,25 @@ class EditCourseComponent extends React.Component {
 
   render() {
     return (
-        <div>
-          <div>
-            <label>Change Course Title:</label>
+        <div className='wbdv-edit-course'>
+          <div className='wbdv-edit-course-row'>
+            <label className='wbdv-edit-course-label'>
+              Change Course Title:
+            </label>
             <input
+                className='wbdv-input'
                 onChange={(e) => this.setState({courseName: e.target.value})}
             />
           </div>
-          <div>
-            <button onClick={this.updateCourse}>
+          <div className='wbdv-edit-course-buttons'>
+            <button
+                className='wbdv-btn wbdv-green-btn wbdv-edit-course-btn'
+                onClick={this.updateCourse}
+            >
               Update Course
             </button>
             <button
+                className='wbdv-btn wbdv-red-btn wbdv-edit-course-btn'
                 onClick={this.props.deleteCourse}
             >
               Delete Course

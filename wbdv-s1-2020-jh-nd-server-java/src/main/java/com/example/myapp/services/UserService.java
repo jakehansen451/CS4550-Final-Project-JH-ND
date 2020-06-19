@@ -33,10 +33,15 @@ public class UserService {
     }
 
     public User updateUser(Long userId, User updatedUser) {
-        updatedUser.setId(userId);
-        repository.save(updatedUser);
+        User user = repository.findUserById(userId);
+        user.setPassword(updatedUser.getPassword());
+        user.setFirstName(updatedUser.getFirstName());
+        user.setLastName(updatedUser.getLastName());
+        user.setEmail(updatedUser.getEmail());
+        user.setRole(updatedUser.getRole());
+        repository.save(user);
 
-        return updatedUser;
+        return user;
     }
 
     public void deleteUserById(Long userId) {

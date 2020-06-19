@@ -7,6 +7,8 @@ import UserService from "../../services/UserService";
 import EditCourseComponent from './EditCourse/EditCourseComponent';
 import * as Actions from '../../store/Actions';
 import NavigatorComponent from "../Navigator/NavigatorComponent";
+import '../../styles.css';
+import './CourseDetailComponent.css';
 
 class CourseDetailComponent extends React.Component {
   state = {
@@ -36,9 +38,11 @@ class CourseDetailComponent extends React.Component {
   }
 
   renderUserRow = (user, index) =>
-      <Link key={index} to={`/profile/${user._id}/`}>
-        {`${user.lastName}, ${user.firstName}`}
-      </Link>;
+      <div key={index} className='wbdv-detail-user-row'>
+        <Link to={`/profile/${user._id}/`}>
+          {`${user.lastName}, ${user.firstName}`}
+        </Link>
+      </div>;
 
   canEnrollTutor = () =>
       this.props.current_user
@@ -86,10 +90,12 @@ class CourseDetailComponent extends React.Component {
       }));
 
   renderEventRow = (event, index) =>
-      <Link key={index} to={`/events/${event._id}`}>
-        <div>{event.title}</div>
-        <div>`${event.startTime} to ${event.endTime}</div>
-      </Link>;
+      <div className='wbdv-render-event-row'>
+        <Link key={index} to={`/events/${event._id}`}>
+          <div>{event.title}</div>
+          <div>{`${event.startTime} to ${event.endTime}`}</div>
+        </Link>
+      </div>;
 
   deleteCourse = () => {
     CourseService.deleteCourse(this.state.courseId)
@@ -100,16 +106,18 @@ class CourseDetailComponent extends React.Component {
   };
 
   render() {
+    console.log(this.state);
+    console.log(this.props);
     return (
-        <div>
+        <div className='wbdv-course-detail'>
           <NavigatorComponent
               currentPage={this.props.history.location.pathname}/>
           {!isEmpty(this.state.course) &&
           <div>
             <h2>{this.state.course.title}</h2>
-            <div>
+            <div className='wbdv-admin-row'>
               <h5>Taught by:</h5>
-              <div>
+              <div className='wbdv-taught-by'>
                 {`${this.state.course.admin.firstName} ${this.state.course.admin.lastName}`}
               </div>
             </div>
@@ -122,70 +130,90 @@ class CourseDetailComponent extends React.Component {
                 courseUpdated={(course) => this.setState({course})}
                 deleteCourse={this.deleteCourse}
             />}
-            {this.canEnrollTutor() &&
-            <div>
-              <button
-                  onClick={this.enrollAsTutor}
-              >
-                Join as Tutor
-              </button>
-            </div>
-            }
-            {this.state.tutors.find(
-                t => t._id === this.props.current_user._id) &&
-            <div>
-              <button
-                  onClick={this.quitAsTutor}
-              >
-                Leave as Tutor
-              </button>
-            </div>
-            }
-            {this.canEnrollStudent() &&
-            <div>
-              <button
-                  onClick={this.enrollAsStudent}
-              >
-                Enroll
-              </button>
-            </div>
-            }
-            {this.state.students.find(
-                s => s._id === this.props.current_user._id) &&
-            <div>
-              <button
-                  onClick={this.quitAsStudent}
-              >
-                Unenroll
-              </button>
-            </div>
-            }
-            <div>
-              <h6>Tutors:</h6>
+            {!isEmpty(this.props.current_user) &&
+            <div className='wbdv-enroll-unenroll-row'>
+              {this.canEnrollStudent() &&
               <div>
-                {this.state.tutors.length === 0 ?
-                    <div>This course currently has no registered tutors.</div> :
-                    <div>{this.state.tutors.map(this.renderUserRow)}</div>}
+                <button
+                    className='wbdv-btn wbdv-green-btn wbdv-enroll-section-btn wbdv-enroll-btn'
+                    onClick={this.enrollAsStudent}
+                >
+                  Enroll
+                </button>
+              </div>}
+              {this.state.students.find(
+                  s => s._id === this.props.current_user._id) &&
+              <div>
+                <button
+                    className='wbdv-btn wbdv-red-btn wbdv-enroll-section-btn'
+                    onClick={this.quitAsStudent}
+                >
+                  Unenroll
+                </button>
+              </div>}
+              {this.canEnrollTutor() &&
+              <div>
+                <button
+                    className='wbdv-btn wbdv-green-btn wbdv-enroll-section-btn'
+                    onClick={this.enrollAsTutor}
+                >
+                  Join as Tutor
+                </button>
+              </div>}
+              {this.state.tutors.find(
+                  t => t._id === this.props.current_user._id) &&
+              <div>
+                <button
+                    className='wbdv-btn wbdv-red-btn wbdv-enroll-section-btn'
+                    onClick={this.quitAsTutor}
+                >
+                  Leave as Tutor
+                </button>
+              </div>}
+            </div>}
+            <div className='wbdv-course-two-column'>
+              <div className='wbdv-student-column'>
+                <h6>Students:</h6>
+                <div className='wbdv-student-list'>
+                  {this.state.students.length === 0 ?
+                      <div>This course currently has no registered
+                        Students.</div>
+                      :
+                      <div>{this.state.students.map(this.renderUserRow)}</div>}
+                </div>
+              </div>
+              <div className='wbdv-tutor-column'>
+                <h6>Tutors:</h6>
+                <div className='wbdv-tutor-list'>
+                  {this.state.tutors.length === 0 ?
+                      <div>This course currently has no registered tutors.</div>
+                      :
+                      <div>{this.state.tutors.map(this.renderUserRow)}</div>}
+                </div>
               </div>
             </div>
-            <div>
-              <h6>Students:</h6>
-              <div>
-                {this.state.students.length === 0 ?
-                    <div>This course currently has no registered Students.</div>
-                    :
-                    <div>{this.state.students.map(this.renderUserRow)}</div>}
-              </div>
-            </div>
-            <div>
+            {!isEmpty(this.props.current_user) &&
+            <div className='wbdv-events-list'>
               <h6>Office Hours</h6>
-              {this.state.events.length === 0 ?
-                  <div>This course has no scheduled events.</div>
-                  :
-                  <div>
-                    {this.events.map(this.renderEventRow)}
-                  </div>}
-            </div>
+              <div>
+                {!isEmpty(this.props.current_user) &&
+                <button
+                    className='wbdv-btn wbdv-green-btn wbdv-schedule-events-btn'
+                    onClick={() => this.props.history.push(
+                        `/search/${this.state.courseId}/`)}
+                >
+                  Schedule Events
+                </button>}
+              </div>
+              <div>
+                {this.state.events.length === 0 ?
+                    <div>This course has no scheduled events.</div>
+                    :
+                    <div>
+                      {this.state.events.map(this.renderEventRow)}
+                    </div>}
+              </div>
+            </div>}
           </div>}
         </div>
     )
@@ -198,6 +226,7 @@ const mapStateToProps = (state) => ({
 
 const mapDispatchToProps = (dispatch) => ({
   setUser: (user) => dispatch(Actions.setUser(user)),
+  selectUser: (user) => dispatch(Actions.selectUser(user)),
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(

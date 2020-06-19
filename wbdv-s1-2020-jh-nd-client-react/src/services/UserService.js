@@ -1,4 +1,4 @@
-import { localApiUrl as url } from '../config';
+import { herokuApiUrl as url } from '../config';
 
 const createUser = (user) =>
     fetch(`${url}/users/`, {
