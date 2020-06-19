@@ -34,8 +34,14 @@ public class EventsController {
 
     @DeleteMapping("/api/events/{eventId}")
     public int deleteEventById(@PathVariable("eventId") Long eventId) {
+
         eventService.deleteEventById(eventId);
         return 1;
+    }
+
+    @GetMapping("/api/events/{eventId}")
+    public Event findByEventById(@PathVariable("eventId") Long eventId) {
+        return eventService.findEventById(eventId);
     }
 
     @GetMapping("api/events/")
@@ -63,6 +69,7 @@ public class EventsController {
         newEvent.setCourse(courseService.findCourseById(courseId));
         newEvent.setOrganizer(userService.findUserById(organizerId));
         newEvent.setParticipants(attendeesIds.stream().map(id -> userService.findUserById(id)).collect(Collectors.toSet()));
+
         return eventService.createNewEvent(newEvent);
     }
 

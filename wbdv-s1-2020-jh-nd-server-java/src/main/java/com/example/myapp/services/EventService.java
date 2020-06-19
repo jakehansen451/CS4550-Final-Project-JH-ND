@@ -7,6 +7,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 @Service
@@ -17,9 +18,23 @@ public class EventService {
     @Autowired
     private GoogleCalendarService googleCalendarService;
 
-    public void deleteEventById(Long eventId) {
-        eventRepository.deleteById(eventId);
+    @Autowired
+    private UserService userService;
+
+    public int deleteEventById(Long eventId) {
+        Optional<Event> maybeEvent = eventRepository.findById(eventId);
+
+        if (maybeEvent.isPresent()) {
+            Event event = maybeEvent.get();
+            User user = event.getOrganizer();
+            eventRepository.deleteById(eventId);
+            return 1;
+        }
+
+        return 0;
     }
+
+
 
     public List<Event> getAllEvents() {
         return (List<Event>) eventRepository.findAll();
@@ -27,15 +42,18 @@ public class EventService {
 
     public Event createNewEvent(Event newEvent) {
 
-        googleCalendarService.addEvent(newEvent.getTitle(),
+        com.google.api.services.calendar.model.Event googleEvent = googleCalendarService.addEvent(newEvent.getTitle(),
                 newEvent.getStart(),
                 newEvent.getEnd(),
                 newEvent.getParticipants().stream().map(User::getId).collect(Collectors.toList()),
                 newEvent.getOrganizer().getId());
 
-
+        newEvent.setGoogleEventId(googleEvent.getId());
 
         return eventRepository.save(newEvent);
     }
 
+    public Event findEventById(Long eventId) {
+        return eventRepository.findById(eventId).orElse(null);
+    }
 }

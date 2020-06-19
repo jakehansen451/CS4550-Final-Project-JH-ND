@@ -39,7 +39,6 @@ public class GoogleCalendarService {
     }
 
 
-
     public Event addEvent(String title, String start, String end, List<Long> attendeesIds, Long organizerId) {
         Event event = createEventFrom(title, start, end, attendeesIds);
         User organizer = userService.findUserById(organizerId);
@@ -48,6 +47,17 @@ public class GoogleCalendarService {
             return calendar.events().insert("primary", event).execute();
         } catch (Exception e) {
             return createEventFrom(e.getMessage(), java.util.Calendar.getInstance().getTime().toString(), java.util.Calendar.getInstance().getTime().toString(), new ArrayList<>());
+        }
+
+    }
+
+    public int deleteEvent(User organizer, String eventId) {
+        try {
+            Calendar calendar = getCalendar(organizer.getAccessToken(), organizer.getRefreshToken(), organizer.getId());
+            calendar.events().delete("primary", eventId).execute();
+            return 1;
+        } catch (Exception e) {
+            return 0;
         }
 
     }
