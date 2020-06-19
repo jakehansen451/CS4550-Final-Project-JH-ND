@@ -2,10 +2,10 @@ import React from 'react'
 import {connect} from 'react-redux'
 import * as Actions from "../../store/Actions";
 import * as DateUtils from '../../utils/DateUtils'
-import {isEmpty} from "../../utils/Utils";
 import UserService from "../../services/UserService";
 import EventService from "../../services/EventService";
 import {Link} from "react-router-dom";
+import {isEmpty} from "../../utils/Utils";
 import '../../styles.css';
 import './DetailsComponent.css';
 import NavigatorComponent from "../Navigator/NavigatorComponent";
@@ -31,12 +31,10 @@ class DetailsComponent extends React.Component {
   }
 
   componentDidUpdate() {
-    /*
     if (isEmpty(this.props.current_user)) {
       console.log(this.props);
       this.props.history.push('/');
     }
-    */
 
     if (this.state.users.length === 0 && this.props.selected_users.length > 0) {
       for (const user of this.props.selected_users) {
@@ -52,6 +50,7 @@ class DetailsComponent extends React.Component {
             }
         )
       }
+
     }
   }
 
@@ -80,7 +79,10 @@ class DetailsComponent extends React.Component {
           this.state.courseId,
           this.state.hostId,
           this.state.users.map(u => u._id).join(',')
-      ).then(event => this.props.history.push(`/events/${event._id}`));
+      ).then(event => {
+        console.log(event);
+        this.props.history.push(`/events/${event._id}`)
+      });
 
     } else {
       alert('Event title cannot be empty');
