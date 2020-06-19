@@ -5,7 +5,6 @@ import {localUrl as url} from '../config';
 
 
 import store from '../store/Store';
-import {localApiUrl} from "../config";
 
 const SCOPE = 'https://www.googleapis.com/auth/calendar';
 const CLIENT_ID = '46098970829-859lp0f58tvg2o77h1g8iclvgpflf17v.apps.googleusercontent.com';

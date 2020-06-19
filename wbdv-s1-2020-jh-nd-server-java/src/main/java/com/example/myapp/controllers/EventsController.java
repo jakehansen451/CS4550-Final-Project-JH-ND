@@ -33,18 +33,18 @@ public class EventsController {
         return 1;
     }
 
-    @GetMapping("api/events")
+    @GetMapping("api/events/")
     public List<Event> getEvents() {
         return eventService.getAllEvents();
     }
 
-    @PostMapping("/api/events")
-    public Event createNewEvent(@RequestBody Event newEvent) {
+    @PostMapping("/api/events/")
+    public Event createNewEvent(@RequestBody Event newEvent) throws Exception {
         return eventService.createNewEvent(newEvent);
     }
 
     @PutMapping("api/events/{eventId}")
-    public Event updateEvent(@PathVariable("eventId") Long eventId, @RequestBody Event updatedEvent) {
+    public Event updateEvent(@PathVariable("eventId") Long eventId, @RequestBody Event updatedEvent) throws Exception {
         return eventService.updateEvent(eventId, updatedEvent);
     }
 
@@ -65,6 +65,10 @@ public class EventsController {
             User user = userService.findUserById(id);
             String accessToken = user.getAccessToken();
             String refreshToken = user.getRefreshToken();
+
+            if (accessToken == null || refreshToken == null) {
+                return events;
+            }
 
             List<TimePeriod> busyTime = googleCalendarService.getFreeBusy(accessToken, refreshToken, id, start, end);
             events.addAll(busyTime);
@@ -104,4 +108,6 @@ public class EventsController {
 
         return googleCalendarService.addEvent(title, start, end, attendeesIds, organizerId);
     }
+
+
 }

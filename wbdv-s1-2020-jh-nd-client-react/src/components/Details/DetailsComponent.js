@@ -3,11 +3,11 @@ import {connect} from 'react-redux'
 import * as Actions from "../../store/Actions";
 import * as DateUtils from '../../utils/DateUtils'
 import {isEmpty} from "../../utils/Utils";
+import UserService from "../../services/UserService";
+import CourseService from "../../services/CourseService";
+import EventService from "../../services/EventService";
 
 import './DetailsComponent.css'
-import UserService from "../../services/UserService";
-import EventService from "../../services/EventService";
-import CourseService from "../../services/CourseService";
 
 class DetailsComponent extends React.Component {
   state = {
@@ -65,7 +65,7 @@ class DetailsComponent extends React.Component {
       .then(course => payload.course = course);
 
       console.log(payload);
-    } else alert('Event title cannot be empty')
+    } else alert('Event title cannot be empty');
   };
 
   render() {
