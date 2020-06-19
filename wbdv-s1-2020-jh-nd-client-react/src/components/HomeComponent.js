@@ -14,6 +14,14 @@ class HomeComponent extends React.Component {
     .then(response => response && this.props.login(response));
   }
 
+    logout = () => {
+        UserService.logout()
+            .then(r => {
+                this.props.unsetUser();
+                this.props.history.push('/');
+            })
+    };
+
   render() {
     return (
         <div>
@@ -37,19 +45,28 @@ class HomeComponent extends React.Component {
 
             <div className="jumbotron jumbotron-fluid">
               <div className="container">
-                <h1 className="display-4">Fluid jumbotron</h1>
-                <p className="lead">This is a modified jumbotron that occupies the entire horizontal space of its
-                  parent.</p>
+                <h1 className="display-4">Welcome{isEmpty(this.props.current_user) ? null : ` back, ${this.props.current_user.firstName}!`}</h1>
+
+                <p className="lead">This website helps tutors, faculty and students to find best time to meet in the online format regardless of their timezones.</p>
+
+
+                <hr className="my-4"/>
+                  {!isEmpty(this.props.current_user) &&
+                  <p>
+                      <a className="btn" role="button" onClick={this.logout}>Log out</a>
+                  </p>}
               </div>
             </div>
           </div>
 
 
+          <div className="footer navbar-fixed-bottom">
           <footer id="sticky-footer" className="py-4 bg-light text-white-50">
             <div className="container text-center">
               <small className="text-muted">This website was sponsored by coffee</small>
             </div>
           </footer>
+          </div>
         </div>
 
     )
@@ -62,6 +79,7 @@ const mapStateToProps = (state) => ({
 
 const mapDispatchToProps = (dispatch) => ({
   login: (user) => dispatch(Actions.setUser(user)),
+    unsetUser: () => dispatch(Actions.unsetUser()),
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(HomeComponent);
