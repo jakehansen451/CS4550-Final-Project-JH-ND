@@ -85,16 +85,30 @@ class ResultsComponent extends React.Component {
     }
   }
 
+  getHourSlot = (timeSlot) => {
+    const startDate = new Date(timeSlot.start);
+    const endDate = new Date(timeSlot.end);
+    if (endDate - startDate > 2 * 60 * 60 * 1000) {
+      const newEnd = new Date(startDate);
+      newEnd.setHours(startDate.getHours() + 1);
+      return {
+        start: timeSlot.start,
+        end: newEnd.toISOString()
+      }
+    }
+    return timeSlot;
+  };
+
   renderFreeTimeBlock = (timeSlot, index) => {
     const start_datetime = new Date(timeSlot.start);
     const end_datetime = new Date(timeSlot.end);
     return (
         <div
-            className={this.props.selected_time_block === timeSlot
+            className={this.props.selected_time_block.start === timeSlot.start
                 ? 'wbdv-time-slot-row wbdv-selected-time'
                 : 'wbdv-time-slot-row'}
             key={index}
-            onClick={() => this.props.selectTime(timeSlot)}
+            onClick={() => this.props.selectTime(this.getHourSlot(timeSlot))}
         >
           <div className='wbdv-time-slot-day'>
             {days[start_datetime.getDay()]}
@@ -118,10 +132,10 @@ class ResultsComponent extends React.Component {
       this.generateDetailsUrl(interval.start.toISOString(),
           interval.end.toISOString()));
 
-  generateDetailsUrl = (start,
-      end) => `/details/${this.state.courseId}/`.concat(
+  generateDetailsUrl = (start, end) => {
+      return `/details/${this.state.courseId}/`.concat(
       `${this.props.selected_users.map(user => user._id).join(',')}/`,
-      `${start}/`, `${end}`);
+      `${start}/`, `${end}`)};
 
   render() {
     return (

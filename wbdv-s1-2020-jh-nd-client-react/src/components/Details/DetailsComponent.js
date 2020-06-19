@@ -4,10 +4,10 @@ import * as Actions from "../../store/Actions";
 import * as DateUtils from '../../utils/DateUtils'
 import {isEmpty} from "../../utils/Utils";
 import UserService from "../../services/UserService";
-import CourseService from "../../services/CourseService";
 import EventService from "../../services/EventService";
-
-import './DetailsComponent.css'
+import {Link} from "react-router-dom";
+import '../../styles.css';
+import './DetailsComponent.css';
 
 class DetailsComponent extends React.Component {
   state = {
@@ -16,15 +16,26 @@ class DetailsComponent extends React.Component {
     users: [],
     hostOptions: [],
     hostId: '',
+    date: '',
     start: this.props.match.params.startTime,
     end: this.props.match.params.endTime,
   };
 
+  componentDidMount() {
+    const startDate = new Date(this.state.start);
+    const splitArr = startDate.toLocaleDateString().split('/');
+    const date = [splitArr[2], splitArr[0].padStart(2, '0'),
+      splitArr[1].padStart(2, '0')].join('-');
+    this.setState({date});
+  }
+
   componentDidUpdate() {
+    /*
     if (isEmpty(this.props.current_user)) {
       console.log(this.props);
       this.props.history.push('/');
     }
+    */
 
     if (this.state.users.length === 0 && this.props.selected_users.length > 0) {
       for (const user of this.props.selected_users) {
@@ -51,6 +62,13 @@ class DetailsComponent extends React.Component {
     )
   };
 
+  renderUserRow = (user, index) =>
+      <div key={index} className='wbdv-detail-user-row'>
+        <Link to={`/profile/${user._id}`}>
+          {`${user.lastName}, ${user.firstName}`}
+        </Link>
+      </div>;
+
   createEvent = () => {
     if (this.state.title) {
 
@@ -63,30 +81,25 @@ class DetailsComponent extends React.Component {
           this.state.users.map(u => u._id).join(',')
       ).then(event => this.props.history.push(`/events/${event._id}`));
 
-
     } else {
       alert('Event title cannot be empty');
     }
   };
 
   render() {
-    const startDate = new Date(this.state.start);
-    const splitArr = startDate.toLocaleDateString().split('/');
-    const date = [splitArr[2], splitArr[0].padStart(2, '0'),
-      splitArr[1].padStart(2, '0')].join('-');
-
-    const startLocal = startDate.toLocaleTimeString('en-GB');
+    const startLocal = new Date(this.state.start).toLocaleTimeString('en-GB');
     const endLocal = new Date(this.state.end).toLocaleTimeString('en-GB');
 
     return (
         <div>
           <h1>Event Details</h1>
           <div>
-            <div>
+            <div className='wbdv-event-detail-two-column'>
               <form className='wbdv-details-form'>
                 <div className='wbdv-details-form-row'>
                   <h6>Title:</h6>
                   <input
+                      className='wbdv-input wbdv-event-create-input'
                       type='text'
                       value={this.state.title}
                       onChange={(e) => this.setState({title: e.target.value})}
@@ -95,22 +108,21 @@ class DetailsComponent extends React.Component {
                 <div className='wbdv-details-form-row'>
                   <h6>Date:</h6>
                   <input
+                      className='wbdv-input wbdv-event-create-input'
                       type='date'
-                      value={date}
-                      onChange={(event) => this.props.selectTime({
-                        ...this.props.selected_time_block,
-                        date: event.target.value,
-                      })}
+                      value={this.state.date}
+                      onChange={e => this.setState({})}
                   />
                 </div>
                 <div className='wbdv-details-form-row'>
                   <h6>Start:</h6>
                   <input
+                      className='wbdv-input wbdv-event-create-input'
                       type='time'
                       value={startLocal}
                       onChange={(event) => this.props.selectTime({
                         ...this.props.selected_time_block,
-                        start: DateUtils.UTCFromLocalTime(date,
+                        start: DateUtils.UTCFromLocalTime(this.state.date,
                             event.target.value),
                       })}
                   />
@@ -118,29 +130,41 @@ class DetailsComponent extends React.Component {
                 <div className='wbdv-details-form-row'>
                   <h6>End:</h6>
                   <input
+                      className='wbdv-input wbdv-event-create-input'
                       type='time'
                       value={endLocal}
                       onChange={(event) => this.props.selectTime({
                         ...this.props.selected_time_block,
-                        end: DateUtils.UTCFromLocalTime(date,
+                        end: DateUtils.UTCFromLocalTime(this.state.date,
                             event.target.value),
                       })}
                   />
                 </div>
                 <div className='wbdv-details-form-row'>
                   <h6>Host:</h6>
-                  <select>
+                  <select
+                      className='wbdv-input wbdv-event-create-input'
+                  >
                     {this.state.hostOptions.map(this.renderHostOption)}
                   </select>
                 </div>
               </form>
-              <button
-                  className='wbdv-btn wbdv-schedule-meeting-btn'
-                  onClick={this.createEvent}
-              >
-                <h4>Schedule Meeting</h4>
-              </button>
+              {this.state.users.length > 0 &&
+              <div className='wbdv-invitees-column'>
+                <h4>Invitees</h4>
+                <Link className='wbdv-detail-edit-invitees-link'
+                      to={`/search/${this.state.courseId}`}>
+                  Edit Invitees
+                </Link>
+                {this.state.users.map(this.renderUserRow)}
+              </div>}
             </div>
+            <button
+                className='wbdv-btn wbdv-schedule-meeting-btn'
+                onClick={this.createEvent}
+            >
+              <h4>Schedule Meeting</h4>
+            </button>
           </div>
         </div>
     )

@@ -19,3 +19,13 @@
 .wbdv-schedule-meeting-btn:focus {
   outline: none;
 }
+
+.wbdv-detail-edit-invitees-link {
+  white-space: nowrap;
+  border-bottom: 1px solid var(--lightest-grey);
+  padding-bottom: 0.5rem;
+}
+
+.wbdv-detail-user-row {
+  margin-top: 0.5rem;
+}

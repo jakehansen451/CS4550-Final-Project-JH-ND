@@ -49,6 +49,7 @@
 .wbdv-time-slot-end {
   text-align: right;
 }
+
 .wbdv-selected-time {
   background-color: var(--lighter-green);
 }
@@ -93,10 +94,17 @@
   padding: 0.5rem 1rem;
 }
 
+@media screen and (max-width: 620px) {
+  .wbdv-time-select-body {
+    flex-wrap: wrap;
+  }
+}
+
 @media screen and (max-width: 500px) {
   .wbdv-time-select-body {
     flex-direction: column;
   }
+
   .wbdv-calendar {
     margin: 1rem 0;
   }
