@@ -117,7 +117,6 @@ class ProfileComponent extends React.Component {
   };
 
   render() {
-    console.log(this.props.current_user);
     return (
         <div className='wbdv-profile'>
           <NavigatorComponent
