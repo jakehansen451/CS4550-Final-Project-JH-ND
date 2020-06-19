@@ -1,6 +1,7 @@
 // Actions
 export const SELECT_USER = 'SELECT_USER';
 export const DESELECT_USER = 'DESELECT_USER';
+export const SET_SELECTED_USERS = 'SET_SELECTED_USERS';
 export const SELECT_TIME = 'SELECT_TIME';
 export const SET_GOOGLE_AUTH = "SET_GOOGLE_AUTH";
 export const SET_USER = 'SET_USER';
@@ -17,6 +18,10 @@ export const deselectUser = (deselected_user) => {
 
 export const selectTime = (time_block) => {
   return {type: SELECT_TIME, time_block}
+};
+
+export const setSelectedUsers = (users) => {
+  return {type: SET_SELECTED_USERS, users}
 };
 
 export const setGoogleAuth = (googleAuth) => {

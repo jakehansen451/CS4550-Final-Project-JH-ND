@@ -5,7 +5,7 @@ import * as Actions from "../../store/Actions";
 import * as Utils from '../../utils/Utils'
 import WeekCalendar from 'react-week-calendar';
 import 'react-week-calendar/dist/style.css';
-import googleService from "../../api/GoogleAPIService";
+import {isEmpty} from "../../utils/Utils";
 
 import './ResultsComponent.css'
 
@@ -22,17 +22,15 @@ const fake_time_blocks = [
 
 class ResultsComponent extends React.Component {
   state = {
+    courseId: this.props.match.params.courseId,
+    userIds: this.props.match.params.userIds.split(','),
     free_time_blocks: fake_time_blocks,
   };
 
-  componentDidMount() {
-    googleService.handleClientLoad(() => {
-      // let events = googleService.getEventsList();
-      // events.then((events) => {
-      //     this.parse(events)
-      // })
-    });
-
+  componentDidUpdate() {
+    if (isEmpty(this.props.current_user)) {
+      this.props.history.push('/');
+    }
   }
 
   parse(events) {
@@ -95,7 +93,8 @@ class ResultsComponent extends React.Component {
           <div className='wbdv-time-select-body'>
             <div className='wbdv-user-column'>
               <h4>Participants</h4>
-              <Link to='/search/' className='wbdv-edit-participants-button'>
+              <Link to={`/search/${this.state.courseId}`}
+                    className='wbdv-edit-participants-button'>
                 <h6>Edit Participants</h6>
               </Link>
               <div className='wbdv-scroll-column'>
@@ -130,6 +129,7 @@ class ResultsComponent extends React.Component {
 }
 
 const mapStateToProps = (state) => ({
+  current_user: state.current_user,
   selected_users: state.selected_users,
   selected_time_block: state.selected_time_block,
 });

@@ -1,30 +1,5 @@
 import * as Actions from './Actions';
 
-let fakeState = {
-  selectedUsers: [],
-  selected_time_block: {},
-  /*
-  current_user: {
-    _id: '3',
-    username: 'alice',
-    password: 'alice',
-    firstName: 'Alice',
-    lastName: 'Albertson',
-    email: 'albertson.a@gmail.com',
-    role: 'STUDENT',
-    roleData: {
-      coursesEnrolled: ['0'],
-    },
-    events: [],
-  },
-  */
-  courses: [
-    {title: 'CS2500', _id: '0'},
-    {title: 'CS3800', _id: '1'},
-    {title: 'CS4550', _id: '2'},
-  ]
-};
-
 const selectedUsers = (selected_users = [], action) => {
   switch (action.type) {
     case Actions.SELECT_USER:
@@ -32,6 +7,8 @@ const selectedUsers = (selected_users = [], action) => {
     case Actions.DESELECT_USER:
       return selected_users.filter(
           (user) => user._id !== action.deselected_user._id);
+    case Actions.SET_SELECTED_USERS:
+      return action.users;
     default:
       return selected_users;
   }
@@ -70,7 +47,7 @@ const currentUser = (currentUser = {}, action) => {
   }
 };
 
-const rootReducer = (state = fakeState, action) => {
+const rootReducer = (state = {}, action) => {
   return {
     users: state.users,
     selected_users: selectedUsers(state.selected_users, action),

@@ -1,17 +1,20 @@
-
 import React from 'react'
-import { connect } from 'react-redux'
-import { Link } from 'react-router-dom'
+import {connect} from 'react-redux'
+import {Link} from 'react-router-dom'
 import * as Actions from "../../store/Actions";
 import * as DateUtils from '../../utils/DateUtils'
 import googleService from "../../api/GoogleAPIService";
+import {isEmpty} from "../../utils/Utils";
 
 import './DetailsComponent.css'
 
 class DetailsComponent extends React.Component {
-    componentDidMount() {
-        googleService.handleClientLoad(() => {})
+  componentDidUpdate() {
+    if (isEmpty(this.props.current_user)) {
+      console.log(this.props);
+      this.props.history.push('/');
     }
+  }
 
   createUserOption = (user) => {
     return (
@@ -21,13 +24,16 @@ class DetailsComponent extends React.Component {
     )
   };
 
-    addMeeting = () => {
-        let date = this.props.selected_time_block.date;
-        let startDateTime = new Date(date + " " + this.props.selected_time_block.start + " UTC").toISOString();
-        let endDateTime = new Date(date + " " + this.props.selected_time_block.end + " UTC").toISOString();
+  addMeeting = () => {
+    let date = this.props.selected_time_block.date;
+    let startDateTime = new Date(
+        date + " " + this.props.selected_time_block.start
+        + " UTC").toISOString();
+    let endDateTime = new Date(
+        date + " " + this.props.selected_time_block.end + " UTC").toISOString();
 
-        googleService.addEvent(startDateTime, endDateTime, [], "Demo title");
-    };
+    googleService.addEvent(startDateTime, endDateTime, [], "Demo title");
+  };
 
   render() {
     const time_block = this.props.selected_time_block;
@@ -38,81 +44,76 @@ class DetailsComponent extends React.Component {
     const endLocal = DateUtils.localFromUTCDateTime(date, end, 'en-GB');
 
     return (
-    // Utils.isEmpty(this.props.selected_time_block)
-    // || this.props.selected_users.length === 0
-    //     ? <div>
-    //         <h1>Details</h1>
-    //         <Link to='/'>
-    //           <h4>Return home</h4>
-    //         </Link>
-    //       </div>
-    //     :
         <div>
-            <h1>Details</h1>
+          <h1>Details</h1>
+          <div>
             <div>
-              <div>
-                <form className='wbdv-details-form'>
-                  <div className='wbdv-details-form-row'>
-                    <h6>Date:</h6>
-                    <input
-                        type='date'
-                        value={date}
-                        onChange={(event) => this.props.selectTime({
-                          ...this.props.selected_time_block,
-                          date: event.target.value,
-                        })}
-                    />
-                  </div>
-                  <div className='wbdv-details-form-row'>
-                    <h6>Start:</h6>
-                    <input
-                        type='time'
-                        value={startLocal}
-                        onChange={(event) => this.props.selectTime({
-                          ...this.props.selected_time_block,
-                          start: DateUtils.UTCFromLocalTime(date, event.target.value),
-                        })}
-                    />
-                  </div>
-                  <div className='wbdv-details-form-row'>
-                    <h6>End:</h6>
-                    <input
-                        type='time'
-                        value={endLocal}
-                        onChange={(event) => this.props.selectTime({
-                          ...this.props.selected_time_block,
-                          end: DateUtils.UTCFromLocalTime(date, event.target.value),
-                        })}
-                    />
-                  </div>
-                  <div className='wbdv-details-form-row'>
-                    <h6>Host:</h6>
-                    <select>
-                      {this.props.selected_users.map(this.createUserOption)}
-                    </select>
-                  </div>
-                  <div className='wbdv-details-form-row'>
-                    <h6>Type:</h6>
-                    <select>
-                      <option value='PUBLIC'>
-                        Public - anyone can join
-                      </option>
-                      <option value='PRIVATE'>
-                        Private - only invitees can join
-                      </option>
-                    </select>
-                  </div>
-                </form>
-                <Link onClick={this.addMeeting} to='/'>
-                    <h4>Schedule Meeting</h4>
-                </Link>
-              </div>
+              <form className='wbdv-details-form'>
+                <div className='wbdv-details-form-row'>
+                  <h6>Date:</h6>
+                  <input
+                      type='date'
+                      value={date}
+                      onChange={(event) => this.props.selectTime({
+                        ...this.props.selected_time_block,
+                        date: event.target.value,
+                      })}
+                  />
+                </div>
+                <div className='wbdv-details-form-row'>
+                  <h6>Start:</h6>
+                  <input
+                      type='time'
+                      value={startLocal}
+                      onChange={(event) => this.props.selectTime({
+                        ...this.props.selected_time_block,
+                        start: DateUtils.UTCFromLocalTime(date,
+                            event.target.value),
+                      })}
+                  />
+                </div>
+                <div className='wbdv-details-form-row'>
+                  <h6>End:</h6>
+                  <input
+                      type='time'
+                      value={endLocal}
+                      onChange={(event) => this.props.selectTime({
+                        ...this.props.selected_time_block,
+                        end: DateUtils.UTCFromLocalTime(date,
+                            event.target.value),
+                      })}
+                  />
+                </div>
+                <div className='wbdv-details-form-row'>
+                  <h6>Host:</h6>
+                  <select>
+                    {this.props.selected_users.map(this.createUserOption)}
+                  </select>
+                </div>
+                <div className='wbdv-details-form-row'>
+                  <h6>Type:</h6>
+                  <select>
+                    <option value='PUBLIC'>
+                      Public - anyone can join
+                    </option>
+                    <option value='PRIVATE'>
+                      Private - only invitees can join
+                    </option>
+                  </select>
+                </div>
+              </form>
+              <Link onClick={this.addMeeting} to='/'>
+                <h4>Schedule Meeting</h4>
+              </Link>
             </div>
           </div>
-  )}
+        </div>
+    )
+  }
 }
 
 const mapStateToProps = (state) => ({
+  current_user: state.current_user,
   selected_users: state.selected_users,
   selected_time_block: state.selected_time_block,
 });
