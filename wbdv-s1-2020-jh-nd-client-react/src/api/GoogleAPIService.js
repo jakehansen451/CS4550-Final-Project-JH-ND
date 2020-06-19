@@ -1,7 +1,5 @@
 import {gapi} from 'gapi-script';
-import React from "react";
 import {localApiUrl as apiUrl} from '../config';
-import {localUrl as url} from '../config';
 
 
 import store from '../store/Store';

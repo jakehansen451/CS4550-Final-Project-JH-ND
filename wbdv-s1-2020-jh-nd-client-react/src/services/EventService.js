@@ -23,7 +23,8 @@ const deleteEvent = (eventId) => {
 
 const getEvent = (eventId) =>
     fetch(`${url}/events/${eventId}`)
-    .then(response => response.json());
+    .then((res) => res.text())
+    .then((text) => text.length ? JSON.parse(text) : {});
 
 const getAllEvents = () =>
     fetch(`${url}/events/`)

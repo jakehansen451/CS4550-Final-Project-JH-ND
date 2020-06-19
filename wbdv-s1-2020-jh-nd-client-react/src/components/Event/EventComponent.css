@@ -1,0 +1,18 @@
+.wbdv-event-host-row {
+  display: inline-flex;
+  margin-bottom: 1rem;
+  border-bottom: 1px solid var(--lightest-grey);
+}
+
+.wbdv-hosted-by {
+  margin: 0 1rem 0 0;
+  line-height: 1.5;
+}
+
+.wbdv-event-date-time {
+  margin-bottom: 1rem;
+}
+
+.wbdv-delete-event-btn {
+  width: 9rem;
+}
